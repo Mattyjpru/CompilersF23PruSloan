@@ -5,3 +5,8 @@
 
 #include <stdio.h>
 #include "yourmain.h"
+#include "PSlexer.l"
+
+int main(){
+    return yourmain();
+}

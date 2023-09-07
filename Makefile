@@ -3,7 +3,7 @@ CFLAGS=
 
 
 test: tester.c
-	${CC} ${CFLAGS} lexer.c -o lexer
+	${CC} ${CFLAGS} PSlexer.l -o lexer.c
 
 clean: 
-	rm -f *.o lexer
+	rm -f *.o lexer.c PSlexer.l
