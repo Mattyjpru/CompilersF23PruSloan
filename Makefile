@@ -1,9 +1,10 @@
 CC=gcc
-CFLAGS=
+#Executable=PruSloanLexer
 
 
-test: tester.c
-	${CC} ${CFLAGS} PSlexer.l -o lexer.c
+all: 
+	@echo $(shell lex PSlexer.l)
+#	${CC} -lex.yy.c
 
 clean: 
-	rm -f *.o lexer.c PSlexer.l
+	rm -f *.o lex.yy.c 
