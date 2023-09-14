@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=
 
 
-test: tester.c
+test: PSlexer.c
 	${CC} ${CFLAGS} PSlexer.l -o lexer.c
 
 clean: 
