@@ -724,26 +724,16 @@ do_action:	/* This label is used only to access EOF actions. */
 			goto yy_find_action;
 
 case 1:
-YY_RULE_SETUP
-#line 7 "PSlexer.l"
-
-	YY_BREAK
-case 2:
-YY_RULE_SETUP
 #line 8 "PSlexer.l"
-
-	YY_BREAK
-case 3:
-YY_RULE_SETUP
+case 2:
 #line 9 "PSlexer.l"
-
-	YY_BREAK
+case 3:
+#line 10 "PSlexer.l"
 case 4:
-YY_RULE_SETUP
-#line 13 "PSlexer.l"
+#line 14 "PSlexer.l"
 ECHO;
 	YY_BREAK
-#line 746 "lex.yy.c"
+#line 736 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1748,9 +1738,11 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 13 "PSlexer.l"
+#line 14 "PSlexer.l"
 
 int main(int argc, char *argv){
-    while (val==)
+    int val;
+    while (val==yylex())
+        printf("Value is %d\n", val)
     return 0;
 }
