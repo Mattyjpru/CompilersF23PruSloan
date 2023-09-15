@@ -1,0 +1,13 @@
+CC=gcc
+LEXER=PruSloanLexer
+
+
+all: $(LEXER)
+	$(shell lex PSlexer.l)
+	${CC} lex.yy.c -ll $(LEXER)
+#dont forget to switch to our example
+# 	$(shell ./$(LEXER) < te1.f23 | tee PS_Lexer_Output.txt)
+	$(shell ./$(EXECUTABLE) < PS_example.f23)
+
+clean: 
+	rm -f *.o lex.yy.c 
