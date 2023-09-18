@@ -7,9 +7,10 @@
 [0-9]*                      |
 [0-9]*\.[0-9]*              {return 1;}
 [A-Z|a-z]*                  {return 2;}
-                            {return K_DO;}
-                            {return K_DOUBLE;}
-                            {return K_ELSE;}
+"do"                            {return K_DO;}
+-?(([0-9]+)| (([0-9]*\.[0-9]+)|
+([0-9]+\.[0-9]*))([dD][-+]?[0-9]+)?   {return K_DOUBLE;}
+"else"                            {return K_ELSE;}
                             {return K_EXIT;}
                             {return K_FUNCTION;}
                             {return K_IF;}
@@ -26,38 +27,38 @@
                             {return K_STRING;}
                             {return K_THEN;}
                             {return K_WHILE;}
-                            {return ASSIGN;}
-                            {return ASSIGN_PLUS;}
-                            {return ASSIGN_MINUS;}
-                            {return ASSIGN_MULTIPLY;}
-                            {return ASSIGN_DIVIDE;}
-                            {return ASSIGN_MOD;}
-                            {return COMMA;}
-                            {return COMMENT;}
-                            {return DAND;}
-                            {return DIVIDE;}
-                            {return DOR;}
-                            {return DEQ;}
-                            {return GEQ;}
-                            {return GT;}
-                            {return LBRACKET;}
-                            {return LEQ;}
-                            {return LCURLY;}
-                            {return LPAREN;}
-                            {return LT;}
-                            {return MINUS;}
-                            {return DECREMENT;}
-                            {return MOD;}
-                            {return MULTIPLY;}
-                            {return NE;}
-                            {return NOT;}
-                            {return PERIOD;}
-                            {return PLUS;}
-                            {return INCREMENT;}
-                            {return RBRACKET;}
-                            {return RCURLY;}
-                            {return RPAREN;}
-                            {return SEMI;}
+:=                            {return ASSIGN;}
++=                            {return ASSIGN_PLUS;}
+-=                            {return ASSIGN_MINUS;}
+*=                            {return ASSIGN_MULTIPLY;}
+/=                            {return ASSIGN_DIVIDE;}
+%=                            {return ASSIGN_MOD;}
+,                            {return COMMA;}
+\/\/                            {return COMMENT;}
+&&                            {return DAND;}
+/                            {return DIVIDE;}
+||                            {return DOR;}
+==                            {return DEQ;}
+>=                            {return GEQ;}
+>                           {return GT;}
+[]                            {return LBRACKET;}
+<=                            {return LEQ;}
+\{                            {return LCURLY;}
+(                            {return LPAREN;}
+<                            {return LT;}
+-                            {return MINUS;}
+--                            {return DECREMENT;}
+ %                           {return MOD;}
+ *                           {return MULTIPLY;}
+!=                            {return NE;}
+!                           {return NOT;}
+.                            {return PERIOD;}
++                            {return PLUS;}
+++                            {return INCREMENT;}
+ ]                           {return RBRACKET;}
+ }                           {return RCURLY;}
+ )                           {return RPAREN;}
+ ;                           {return SEMI;}
                             {return IDENTIFIER;}
                             {return SCONSTANT;}
                             {return ICONSTANT;}
