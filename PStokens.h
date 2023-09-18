@@ -1,55 +1,55 @@
-#define K_DO
-#define K_DOUBLE
-#define K_ELSE
-#define K_EXIT
-#define K_FUNCTION
-#define K_IF
-#define K_INTEGER
-#define K_PRINT_DOUBLE
-#define K_PRINT_INTEGER
-#define K_PRINT_STRING
-#define K_PROCEDURE
-#define K_PROGRAM
-#define K_READ_DOUBLE
-#define K_READ_INTEGER
-#define K_READ_STRING
-#define K_RETURN
-#define K_STRING
-#define K_THEN
-#define K_WHILE
-#define ASSIGN
-#define ASSIGN_PLUS
-#define ASSIGN_MINUS
-#define ASSIGN_MULTIPLY
-#define ASSIGN_DIVIDE
-#define ASSIGN_MOD
-#define COMMA
-#define COMMENT
-#define DAND
-#define DIVIDE
-#define DOR
-#define DEQ
-#define GEQ
-#define GT
-#define LBRACKET
-#define LEQ
-#define LCURLY
-#define LPAREN
-#define LT
-#define MINUS
-#define DECREMENT
-#define MOD
-#define MULTIPLY
-#define NE
-#define NOT
-#define PERIOD
-#define PLUS
-#define INCREMENT
-#define RBRACKET
-#define RCURLY
-#define RPAREN
-#define SEMI
-#define IDENTIFIER
-#define SCONSTANT
-#define ICONSTANT
-#define DCONSTANT
+#define K_DO 1000
+#define K_DOUBLE 1000
+#define K_ELSE 1000
+#define K_EXIT 1000
+#define K_FUNCTION 1000
+#define K_IF 1000
+#define K_INTEGER 1000
+#define K_PRINT_DOUBLE 1000
+#define K_PRINT_INTEGER 1000
+#define K_PRINT_STRING 1000
+#define K_PROCEDURE 1000
+#define K_PROGRAM 1000
+#define K_READ_DOUBLE 1000
+#define K_READ_INTEGER 1000
+#define K_READ_STRING 1000
+#define K_RETURN 1000
+#define K_STRING 1000
+#define K_THEN 1000
+#define K_WHILE 1000
+#define ASSIGN 1000
+#define ASSIGN_PLUS 1000
+#define ASSIGN_MINUS 1000
+#define ASSIGN_MULTIPLY 1000
+#define ASSIGN_DIVIDE 1000
+#define ASSIGN_MOD 1000
+#define COMMA 1000
+#define COMMENT 1000
+#define DAND 1000
+#define DIVIDE 1000
+#define DOR 1000
+#define DEQ 1000
+#define GEQ 1000
+#define GT 1000
+#define LBRACKET 1000
+#define LEQ 1000
+#define LCURLY 1000
+#define LPAREN 1000
+#define LT 1000
+#define MINUS 1000
+#define DECREMENT 1000
+#define MOD 1000
+#define MULTIPLY 1000
+#define NE 1000
+#define NOT 1000
+#define PERIOD 1000
+#define PLUS 1000
+#define INCREMENT 1000
+#define RBRACKET 1000
+#define RCURLY 1000
+#define RPAREN 1000
+#define SEMI 1000
+#define IDENTIFIER 1000
+#define SCONSTANT 1000
+#define ICONSTANT 1000
+#define DCONSTANT 1000
