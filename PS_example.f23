@@ -1,11 +1,30 @@
-program tiny_example_1
+program PruSloan_example
 {
     function integer main()
     {
         integer i;
         i := 441;
         print_integer( i );
-        string str := "Hello World";
+        string str := "HellWorld";
         double d := 1.2d-0
+        integer temp := 14;
+        temp +=i;
+        temp -= 56;
+        temp *= 5;
+        temp /= 10;
+        if (temp>i){
+            do { temp++; }
+            while(temp<1000000000)
+            then return temp;
+        }
+        else{
+            read_integer;
+            ead_string;
+            read_double;
+            print_double;
+            print_integer;
+            print_string;
+            exit;
+        }
     }
 }
