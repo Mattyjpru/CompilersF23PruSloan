@@ -69,6 +69,7 @@ union{
 \)                                                          return RPAREN;
 ;                                                           return SEMI;
 %%
+
 int main(int argc, char **argv){
     int token;
     printf("Token:\t\tMatch:\n");
