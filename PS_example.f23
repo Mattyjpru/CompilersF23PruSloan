@@ -12,7 +12,8 @@ program PruSloan_example
         temp -= 56;
         temp *= 5;
         temp /= 10;
-        if (temp>i){
+
+        if (temp>i || temp <= 5 && temp >= 5 && temp == 5){
             do { temp++; }
             while(temp<1000000000)
             then return temp;

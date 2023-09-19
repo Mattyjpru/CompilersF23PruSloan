@@ -598,15 +598,8 @@ char *yytext;
 #include <stdio.h>
 #include "PStokens.h"
 #include <string.h>
-
-union{
-    int iVal;
-    double dVal;
-    char* sVal;
-} yylval;
-
-#line 608 "lex.yy.c"
-#line 609 "lex.yy.c"
+#line 601 "lex.yy.c"
+#line 602 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -823,9 +816,9 @@ YY_DECL
 		}
 
 	{
-#line 14 "PSlexer.l"
+#line 7 "PSlexer.l"
 
-#line 828 "lex.yy.c"
+#line 821 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -885,291 +878,291 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 15 "PSlexer.l"
+#line 8 "PSlexer.l"
 ;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 16 "PSlexer.l"
+#line 9 "PSlexer.l"
 return K_DO;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 17 "PSlexer.l"
+#line 10 "PSlexer.l"
 return K_DOUBLE;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 18 "PSlexer.l"
+#line 11 "PSlexer.l"
 return K_ELSE;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 19 "PSlexer.l"
+#line 12 "PSlexer.l"
 return K_EXIT;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 20 "PSlexer.l"
+#line 13 "PSlexer.l"
 return K_FUNCTION;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 21 "PSlexer.l"
+#line 14 "PSlexer.l"
 return K_IF;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 22 "PSlexer.l"
+#line 15 "PSlexer.l"
 return K_INTEGER;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 23 "PSlexer.l"
+#line 16 "PSlexer.l"
 return K_PRINT_DOUBLE;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 24 "PSlexer.l"
+#line 17 "PSlexer.l"
 return K_PRINT_INTEGER;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 25 "PSlexer.l"
+#line 18 "PSlexer.l"
 return K_PRINT_STRING;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 26 "PSlexer.l"
+#line 19 "PSlexer.l"
 return K_PROCEDURE;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 27 "PSlexer.l"
+#line 20 "PSlexer.l"
 return K_PROGRAM;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 28 "PSlexer.l"
+#line 21 "PSlexer.l"
 return K_READ_DOUBLE;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 29 "PSlexer.l"
+#line 22 "PSlexer.l"
 return K_READ_INTEGER;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 30 "PSlexer.l"
+#line 23 "PSlexer.l"
 return K_READ_STRING;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 31 "PSlexer.l"
+#line 24 "PSlexer.l"
 return K_RETURN;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 32 "PSlexer.l"
+#line 25 "PSlexer.l"
 return K_STRING;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 33 "PSlexer.l"
+#line 26 "PSlexer.l"
 return K_THEN;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 34 "PSlexer.l"
+#line 27 "PSlexer.l"
 return K_WHILE;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 35 "PSlexer.l"
+#line 28 "PSlexer.l"
 return DCONSTANT;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 36 "PSlexer.l"
+#line 29 "PSlexer.l"
 return IDENTIFIER;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 37 "PSlexer.l"
+#line 30 "PSlexer.l"
 return ICONSTANT;
 	YY_BREAK
 case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
-#line 38 "PSlexer.l"
+#line 31 "PSlexer.l"
 return SCONSTANT;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 39 "PSlexer.l"
+#line 32 "PSlexer.l"
 return ASSIGN;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 40 "PSlexer.l"
+#line 33 "PSlexer.l"
 return ASSIGN_PLUS;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 41 "PSlexer.l"
+#line 34 "PSlexer.l"
 return ASSIGN_MINUS;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 42 "PSlexer.l"
+#line 35 "PSlexer.l"
 return ASSIGN_MULTIPLY;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 43 "PSlexer.l"
+#line 36 "PSlexer.l"
 return ASSIGN_DIVIDE;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 44 "PSlexer.l"
+#line 37 "PSlexer.l"
 return ASSIGN_MOD;
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 45 "PSlexer.l"
+#line 38 "PSlexer.l"
 return COMMA;
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 46 "PSlexer.l"
+#line 39 "PSlexer.l"
 return COMMENT;
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 47 "PSlexer.l"
+#line 40 "PSlexer.l"
 return DAND;
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 48 "PSlexer.l"
+#line 41 "PSlexer.l"
 return DIVIDE;
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 49 "PSlexer.l"
+#line 42 "PSlexer.l"
 return DOR;
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 50 "PSlexer.l"
+#line 43 "PSlexer.l"
 return DEQ;
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 51 "PSlexer.l"
+#line 44 "PSlexer.l"
 return GEQ;
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 52 "PSlexer.l"
+#line 45 "PSlexer.l"
 return GT;
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 53 "PSlexer.l"
+#line 46 "PSlexer.l"
 return LBRACKET;
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 54 "PSlexer.l"
+#line 47 "PSlexer.l"
 return LEQ;
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 55 "PSlexer.l"
+#line 48 "PSlexer.l"
 return LCURLY;
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 56 "PSlexer.l"
+#line 49 "PSlexer.l"
 return LPAREN;
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 57 "PSlexer.l"
+#line 50 "PSlexer.l"
 return LT;
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 58 "PSlexer.l"
+#line 51 "PSlexer.l"
 return MINUS;
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 59 "PSlexer.l"
+#line 52 "PSlexer.l"
 return DECREMENT;
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 60 "PSlexer.l"
+#line 53 "PSlexer.l"
 return MOD;
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 61 "PSlexer.l"
+#line 54 "PSlexer.l"
 return MULTIPLY;
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 62 "PSlexer.l"
+#line 55 "PSlexer.l"
 return NE;
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 63 "PSlexer.l"
+#line 56 "PSlexer.l"
 return NOT;
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 64 "PSlexer.l"
+#line 57 "PSlexer.l"
 return PERIOD;
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 65 "PSlexer.l"
+#line 58 "PSlexer.l"
 return PLUS;
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 66 "PSlexer.l"
+#line 59 "PSlexer.l"
 return INCREMENT;
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 67 "PSlexer.l"
+#line 60 "PSlexer.l"
 return RBRACKET;
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 68 "PSlexer.l"
+#line 61 "PSlexer.l"
 return RCURLY;
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 69 "PSlexer.l"
+#line 62 "PSlexer.l"
 return RPAREN;
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 70 "PSlexer.l"
+#line 63 "PSlexer.l"
 return SEMI;
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 71 "PSlexer.l"
+#line 64 "PSlexer.l"
 ECHO;
 	YY_BREAK
-#line 1172 "lex.yy.c"
+#line 1165 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2174,7 +2167,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 71 "PSlexer.l"
+#line 64 "PSlexer.l"
 
 
 int main(int argc, char **argv){
