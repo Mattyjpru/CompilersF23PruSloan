@@ -2,13 +2,6 @@
 #include <stdio.h>
 #include "PStokens.h"
 #include <string.h>
-
-union{
-    int iVal;
-    double dVal;
-    char* sVal;
-} yylval;
-
 %}
 
 %%
