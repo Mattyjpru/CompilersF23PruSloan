@@ -20,5 +20,14 @@ Token:		Match:
 251		i
 249		)
 250		;
+216		string
+251		str
+219		:=
+252		"Hello World"
+250		;
+201		double
+251		d
+219		:=
+254		1.2d-0
 248		}
 248		}
