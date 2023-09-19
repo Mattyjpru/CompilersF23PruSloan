@@ -32,6 +32,9 @@ union{
 "string"                   return K_STRING;
 "then"                     return K_THEN;
 "while"                    return K_WHILE;
+[A-Za-z0-9$_]{0,32}                                     return IDENTIFIER;
+[0-9]*                                               return ICONSTANT;
+"\""([^\n\"\\]*(\\[.\n])*)*"\""                     return SCONSTANT;
 :=                         return ASSIGN;
 \+=                         return ASSIGN_PLUS;
 \-=                         return ASSIGN_MINUS;
@@ -64,8 +67,6 @@ union{
 \}                         return RCURLY;
 \)                         return RPAREN;
 ;                          return SEMI;
-[A-Za-z0-9$_]{32}                                     return IDENTIFIER;
-[0-9]*                                               return ICONSTANT;
 %%
 int main(int argc, char **argv){
     int token;

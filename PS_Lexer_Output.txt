@@ -1,7 +1,24 @@
-Value is 211
-tiny_example_1{Value is 204
-Value is 206
-main(){Value is 206
-i;iValue is 219
-441;Value is 208
-(i);}}
+Token:		Match:
+211		program
+251		tiny_example_1
+235		{
+204		function
+206		integer
+251		main
+236		(
+249		)
+235		{
+206		integer
+251		i
+250		;
+251		i
+219		:=
+251		441
+250		;
+208		print_integer
+236		(
+251		i
+249		)
+250		;
+248		}
+248		}
