@@ -2,6 +2,13 @@
 #include <stdio.h>
 #include "PStokens.h"
 #include <string.h>
+
+union{
+    int iVal;
+    double dVal;
+    char* sVal;
+} yylval;
+
 %}
 
 %%
@@ -25,13 +32,15 @@
 "string"                   return K_STRING;
 "then"                     return K_THEN;
 "while"                    return K_WHILE;
-
 :=                         return ASSIGN;
+
 
 %%
 int main(int argc, char **argv){
-    int val;
-    while ((val=yylex()) != 0)
-        printf("Value is %d\n", val);
+    int token;
+    printf("Token:\t\tMatch:\n");
+    while ((token=yylex()) != 0){
+        printf("%d\t\t%s\n", token, yytext);
+    }
     return 0;
 }
