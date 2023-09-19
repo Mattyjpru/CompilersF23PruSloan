@@ -511,8 +511,9 @@ char *yytext;
 #line 2 "PSlexer.l"
 #include <stdio.h>
 #include "PStokens.h"
-#line 514 "lex.yy.c"
+#include <string.h>
 #line 515 "lex.yy.c"
+#line 516 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -729,9 +730,9 @@ YY_DECL
 		}
 
 	{
-#line 6 "PSlexer.l"
+#line 7 "PSlexer.l"
 
-#line 734 "lex.yy.c"
+#line 735 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -791,115 +792,115 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 7 "PSlexer.l"
+#line 8 "PSlexer.l"
 ;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 8 "PSlexer.l"
+#line 9 "PSlexer.l"
 return K_DO;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 9 "PSlexer.l"
+#line 10 "PSlexer.l"
 return K_DOUBLE;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 10 "PSlexer.l"
+#line 11 "PSlexer.l"
 return K_ELSE;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 11 "PSlexer.l"
+#line 12 "PSlexer.l"
 return K_EXIT;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 12 "PSlexer.l"
+#line 13 "PSlexer.l"
 return K_FUNCTION;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 13 "PSlexer.l"
+#line 14 "PSlexer.l"
 return K_IF;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 14 "PSlexer.l"
+#line 15 "PSlexer.l"
 return K_INTEGER;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 15 "PSlexer.l"
+#line 16 "PSlexer.l"
 return K_PRINT_DOUBLE;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 16 "PSlexer.l"
+#line 17 "PSlexer.l"
 return K_PRINT_INTEGER;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 17 "PSlexer.l"
+#line 18 "PSlexer.l"
 return K_PRINT_STRING;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 18 "PSlexer.l"
+#line 19 "PSlexer.l"
 return K_PROCEDURE;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 19 "PSlexer.l"
+#line 20 "PSlexer.l"
 return K_PROGRAM;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 20 "PSlexer.l"
+#line 21 "PSlexer.l"
 return K_READ_DOUBLE;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 21 "PSlexer.l"
+#line 22 "PSlexer.l"
 return K_READ_INTEGER;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 22 "PSlexer.l"
+#line 23 "PSlexer.l"
 return K_READ_STRING;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 23 "PSlexer.l"
+#line 24 "PSlexer.l"
 return K_RETURN;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 24 "PSlexer.l"
+#line 25 "PSlexer.l"
 return K_STRING;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 25 "PSlexer.l"
+#line 26 "PSlexer.l"
 return K_THEN;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 26 "PSlexer.l"
+#line 27 "PSlexer.l"
 return K_WHILE;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 28 "PSlexer.l"
+#line 29 "PSlexer.l"
 return ASSIGN;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 30 "PSlexer.l"
+#line 31 "PSlexer.l"
 ECHO;
 	YY_BREAK
-#line 902 "lex.yy.c"
+#line 903 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1904,7 +1905,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 30 "PSlexer.l"
+#line 31 "PSlexer.l"
 
 int main(int argc, char **argv){
     int val;
