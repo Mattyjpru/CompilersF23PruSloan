@@ -6,5 +6,6 @@ program tiny_example_1
         i := 441;
         print_integer( i );
         string str := "Hello World";
+        double d := 1.2d-0
     }
 }
