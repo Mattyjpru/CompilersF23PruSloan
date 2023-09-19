@@ -33,7 +33,43 @@ union{
 "then"                     return K_THEN;
 "while"                    return K_WHILE;
 :=                         return ASSIGN;
+\+=                         return ASSIGN_PLUS;
+-=                         return ASSIGN_MINUS;
+\*=                         return ASSIGN_MULTIPLY;
+\/=                         return ASSIGN_DIVIDE;
+%=                         return ASSIGN_MOD;
+,                          return COMMA;
+\/\/                       return COMMENT;
+&&                         return DAND;
+\/                          return DIVIDE;
+\|\|                         return DOR;
+==                         return DEQ;
+>=                         return GEQ;
+>                          return GT;
+\[                         return LBRACKET;
+<=                         return LEQ;
+\{                         return LCURLY;
+(                          return LPAREN;
+<                          return LT;
+-                          return MINUS;
+--                         return DECREMENT;
+%                         return MOD;
+*                         return MULTIPLY;
+!=                         return NE;
+!                          return NOT;
+.                          return PERIOD;
++                          return PLUS;
++\+                         return INCREMENT;
+]                         return RBRACKET;
+}                         return RCURLY;
+)                         return RPAREN;
+;                         return SEMI;
 
+−?(([0-9]+)|(([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*))([dD][−+]?[0-9]+)?                         return DCONSTANT;
+
+[A-Za-z0-9$_]{32}                                     return IDENTIFIER;
+                                                     //return SCONSTANT;
+[0-9]*                                               return ICONSTANT;
 
 %%
 int main(int argc, char **argv){
