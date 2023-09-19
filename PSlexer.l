@@ -31,7 +31,7 @@
 %%
 int main(int argc, char **argv){
     int val;
-    while (val==yylex())
+    while ((val=yylex()) != 0)
         printf("Value is %d\n", val);
     return 0;
 }
