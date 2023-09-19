@@ -52,4 +52,4 @@
 #define IDENTIFIER 251
 #define SCONSTANT 252
 #define ICONSTANT 253
-#define DCONSTAN 254
+#define DCONSTANT 254

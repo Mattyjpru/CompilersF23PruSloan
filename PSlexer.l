@@ -35,6 +35,7 @@ union{
 [A-Za-z0-9$_]{0,32}                                     return IDENTIFIER;
 [0-9]*                                               return ICONSTANT;
 "\""([^\n\"\\]*(\\[.\n])*)*"\""                     return SCONSTANT;
+-?(([0-9]+)|([0-9]*\.[0-9]+)([dD][-+]?[0-9]+)?) return DCONSTANT;
 :=                         return ASSIGN;
 \+=                         return ASSIGN_PLUS;
 \-=                         return ASSIGN_MINUS;
