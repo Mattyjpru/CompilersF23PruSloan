@@ -1,12 +1,13 @@
-program PruSloan_example
+program $PruSloan_example
 {
     function integer main()
     {
         integer i;
         i := 441;
         print_integer( i );
-        string str := "HellWorld";
-        double d := 1.2d-0
+        string str := "Hello World";
+        double dval := 1.2d-0
+        dval := set_dval_to_value(dval)
         integer temp := 14;
         temp +=i;
         temp -= 56;
@@ -20,12 +21,21 @@ program PruSloan_example
         }
         else{
             read_integer;
-            ead_string;
+            read_string;
             read_double;
             print_double;
             print_integer;
             print_string;
             exit;
         }
+    }
+
+    procedure
+        set_dval_to_value(
+            double dval,
+        )
+    {
+        dval := 4.0;
+        return dval;
     }
 }

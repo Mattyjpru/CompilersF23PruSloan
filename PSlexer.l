@@ -5,7 +5,7 @@
 %}
 
 %%
-[" "|\t|\n]                                                 ;
+[ \t\n\r]                                                       ;
 "do"                                                        return K_DO;
 "double"                                                    return K_DOUBLE;
 "else"                                                      return K_ELSE;

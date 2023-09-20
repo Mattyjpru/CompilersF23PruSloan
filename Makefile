@@ -4,9 +4,10 @@
 ##############################################################################
 CC=gcc
 LEXER=PruSloanLexer
+OUTPUT=PS_Lexer_Output.txt
 
 all: $(LEXER)
-	./$(LEXER) < PS_example.f23 | tee PS_Lexer_Output.txt
+	./$(LEXER) < PS_example.f23 | tee $(OUTPUT)
 
 $(LEXER): lex.yy.c
 	${CC} lex.yy.c -ll -o $(LEXER)
@@ -15,4 +16,4 @@ lex.yy.c:
 	lex PSlexer.l
 
 clean: 
-	rm -f *.o lex.yy.c $(LEXER)
+	rm -f *.o lex.yy.c $(LEXER) $(OUTPUT)
