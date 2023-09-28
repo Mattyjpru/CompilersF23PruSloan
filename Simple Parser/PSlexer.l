@@ -1,6 +1,5 @@
 %{
-#include <stdio.h>
-#include "PStokens.h"
+#include "y.tab.h"
 #include <string.h>
 %}
 
