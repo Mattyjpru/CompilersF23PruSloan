@@ -4,7 +4,7 @@
 ##############################################################################
 CC=gcc
 LEXER=PruSloanLexer
-OUTPUT=PS_Lexer_Output.txt
+OUTPUT=PS_Parser_Out.txt
 
 all: $(BUILD)
 	./$(BUILD) < PS_example.f23 | tee $(OUTPUT)
