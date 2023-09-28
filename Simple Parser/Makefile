@@ -1,6 +1,6 @@
 ##############################################################################
-# Lexer Makefile
-# Writen By Matthew Pru and Cody Sloan
+# Compilers Project Makefile
+# Written By Matthew Pru and Cody Sloan
 ##############################################################################
 CC=gcc
 LEXER=PruSloanLexer
@@ -13,7 +13,7 @@ $(BUILD): lex.yy.c y.tab.c
 	${CC} lex.yy.c y.tab.c -ly -ll -o $(BUILD)
 
 y.tab.c:
-	yacc PSSimParser.yacc
+	yacc -d PSSimParser.yacc
 
 lex.yy.c:
 	lex PSlexer.l
