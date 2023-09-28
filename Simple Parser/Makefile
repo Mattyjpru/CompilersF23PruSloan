@@ -6,11 +6,14 @@ CC=gcc
 LEXER=PruSloanLexer
 OUTPUT=PS_Lexer_Output.txt
 
-all: $(LEXER)
-	./$(LEXER) < PS_example.f23 | tee $(OUTPUT)
+all: $(BUILD)
+	./$(BUILD) < PS_example.f23 | tee $(OUTPUT)
 
-$(LEXER): lex.yy.c
-	${CC} lex.yy.c -ll -o $(LEXER)
+$(BUILD): lex.yy.c y.tab.c
+	${CC} lex.yy.c y.tab.c -ly -ll -o $(BUILD)
+
+y.tab.c:
+	yacc PSSimParser.yacc
 
 lex.yy.c:
 	lex PSlexer.l
