@@ -74,14 +74,20 @@ expr:
     expr PLUS expr
     |
     K_INTEGER
+    //eventually have conditions for double as well
     |
+    LPAREN expr RPAREN
+    ;
 
 
-################ TODO ##################
+//################ TODO ##################
 param_list:
 
 
 function: K_FUNCTION d_type IDENTIFIER LPAREN RPAREN;
+//############# Terminals ################
+
+
 %%
 extern FILE* yyin;
 
