@@ -34,6 +34,7 @@ task: function
     | task function
     | task procedure
     ;
+
 var:
     K_INTEGER IDENTIFIER SEMI
     |
@@ -58,6 +59,11 @@ ret_t:
     K_STRING
     |
     ;
+
+
+################ TODO ##################
+param_list:
+
 function: K_FUNCTION ret_t IDENTIFIER LPAREN RPAREN;
 %%
 extern FILE* yyin;
