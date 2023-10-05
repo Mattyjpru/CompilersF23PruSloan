@@ -3,13 +3,10 @@
 # Written By Matthew Pru and Cody Sloan
 ##############################################################################
 CC=gcc
-LEXER=PruSloanLexer
+BUILD=PruSloanParser
 OUTPUT=PS_Parser_Out.txt
 
-all: $(BUILD)
-	./$(BUILD) < PS_example.f23 | tee $(OUTPUT)
-
-$(BUILD): lex.yy.c y.tab.c
+all: lex.yy.c y.tab.c
 	${CC} lex.yy.c y.tab.c -ly -ll -o $(BUILD)
 
 y.tab.c:

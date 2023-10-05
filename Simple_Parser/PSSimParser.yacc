@@ -18,8 +18,8 @@
 %token LEQ LCURLY LPAREN LT MINUS DECREMENT MOD MULTIPLY NE NOT PERIOD
 %token PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI IDENTIFIER SCONSTANT
 %token ICONSTANT DCONSTANT */
-%token K_PROGRAM, K_FUNCTION, ICONSTANT, K_PRINT_INTEGER, K_PRINT_STRING, IDENTIFIER, K_INTEGER, K_STRING
-LPAREN, LCURLY, RPAREN, RCURLY, COMMA, ASSIGN, SEMI, SCONSTANT
+%token K_PROGRAM K_FUNCTION ICONSTANT K_PRINT_INTEGER K_PRINT_STRING IDENTIFIER K_INTEGER K_STRING 
+%token LPAREN LCURLY RPAREN RCURLY COMMA ASSIGN SEMI SCONSTANT K_PROCEDURE
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
 
@@ -38,6 +38,10 @@ task: function
     ;
 
 procedure:
+    K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+    |
+    K_PROCEDURE IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
+    ;
 
 
 var:
@@ -51,8 +55,6 @@ ass:
     IDENTIFIER ASSIGN ICONSTANT SEMI
     |
     IDENTIFIER ASSIGN SCONSTANT SEMI
-    /* |
-    IDENTIFIER ASSIGN DCONSTANT SEMI */
     ;
     
 
@@ -91,11 +93,22 @@ param_list:
     |
     d_type IDENTIFIER COMMA param_list
     ;
+block:
+    block block
+    |
+    expr
+    |
+    print
+    |
+    var
+    |
+    ass
 
 function: 
-    K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN;
+    K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
     |
-    K_FUNCTION d_type IDENTIFIER LPAREN RPAREN;
+    K_FUNCTION d_type IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
+    ;
 //############# Terminals ################
 
 
@@ -108,11 +121,9 @@ int yyerror(char *msg){
     printf("Invalid Program\n")
 }
 
-int main(int argc, char** argv){
+int main(int argc ,char** argv){
     do {
-        printf("++++++++++++++++++++++++++++++++++++++++++++++++\n
-        Walking through the Parse Tree Begins Here\n
-        ++++++++++++++++++++++++++++++++++++++++++++++++\n")
+        printf("++++++++++++++++++++++++++++++++++++++++++++++++\nWalking through the Parse Tree Begins Here\n++++++++++++++++++++++++++++++++++++++++++++++++\n");
         yyparse();
     } while ( !feof( yyin ) );
     // code generator goes here
