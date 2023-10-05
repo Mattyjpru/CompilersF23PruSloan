@@ -24,9 +24,24 @@ LPAREN, LCURLY, RPAREN, RCURLY, COMMA, ASSIGN, SEMI
 %left DIVIDE MULTIPLY
 
 %%
+statement: prog { printf("Valid Program\n");
+                  exit(0);  };
 
+prog: K_PROGRAM IDENTIFIER LBRACKET task RBRACKET;
+
+task: function
+    | procedure
+    | task function
+    | task procedure
+    ;
+
+function: K_FUNCTION ret_t IDENTIFIER LPAREN RPAREN;
 %%
 extern FILE* yyin;
+
+int yyerror(char *msg){
+    printf("Invalid Program\n")
+}
 
 int main(int argc, char** argv){
     do {
