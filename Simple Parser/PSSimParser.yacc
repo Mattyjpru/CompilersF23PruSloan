@@ -36,35 +36,52 @@ task: function
     ;
 
 var:
-    K_INTEGER IDENTIFIER SEMI
+    d_type IDENTIFIER SEMI
     |
-    K_INTEGER ass
+    d_type ass
     |
-    K_STRING IDENTIFIER SEMI
-    |
-    K_STRING ass
     ;
 
 ass:
     IDENTIFIER ASSIGN ICONSTANT SEMI
     |
     IDENTIFIER ASSIGN SCONSTANT SEMI
-    |
-    IDENTIFIER ASSIGN DCONSTANT SEMI
+    /* |
+    IDENTIFIER ASSIGN DCONSTANT SEMI */
     ;
     
-ret_t:
+
+
+d_type:
     K_INTEGER
     |
     K_STRING
-    |
     ;
+
+print:
+    K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
+    |
+    K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
+    |
+    K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI
+    |
+    K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+    ;
+
+expr:
+    expr MINUS expr
+    |
+    expr PLUS expr
+    |
+    K_INTEGER
+    |
 
 
 ################ TODO ##################
 param_list:
 
-function: K_FUNCTION ret_t IDENTIFIER LPAREN RPAREN;
+
+function: K_FUNCTION d_type IDENTIFIER LPAREN RPAREN;
 %%
 extern FILE* yyin;
 
@@ -74,6 +91,9 @@ int yyerror(char *msg){
 
 int main(int argc, char** argv){
     do {
+        printf("++++++++++++++++++++++++++++++++++++++++++++++++\n
+        Walking through the Parse Tree Begins Here\n
+        ++++++++++++++++++++++++++++++++++++++++++++++++\n")
         yyparse();
     } while ( !feof( yyin ) );
     // code generator goes here
