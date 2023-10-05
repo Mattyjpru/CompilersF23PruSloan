@@ -25,12 +25,23 @@ ass:
     |
     IDENTIFIER ASSIGN DCONSTANT SEMI
     ;
-    
+
 ret_t:
     K_INTEGER
     |
     K_STRING
     |
     ;
+
+print:
+    K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
+    |
+    K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
+    |
+    K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI
+    |
+    K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+    ;
+    
 
 program, function, iconstant, print_integer, print_string, identifier
