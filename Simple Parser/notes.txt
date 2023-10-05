@@ -8,4 +8,29 @@ program:
 
 
 
+var:
+    K_INTEGER IDENTIFIER SEMI
+    |
+    K_INTEGER ass
+    |
+    K_STRING IDENTIFIER SEMI
+    |
+    K_STRING ass
+    ;
+
+ass:
+    IDENTIFIER ASSIGN ICONSTANT SEMI
+    |
+    IDENTIFIER ASSIGN SCONSTANT SEMI
+    |
+    IDENTIFIER ASSIGN DCONSTANT SEMI
+    ;
+    
+ret_t:
+    K_INTEGER
+    |
+    K_STRING
+    |
+    ;
+
 program, function, iconstant, print_integer, print_string, identifier
