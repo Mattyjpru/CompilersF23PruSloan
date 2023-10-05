@@ -19,21 +19,26 @@
 %token PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI IDENTIFIER SCONSTANT
 %token ICONSTANT DCONSTANT */
 %token K_PROGRAM, K_FUNCTION, ICONSTANT, K_PRINT_INTEGER, K_PRINT_STRING, IDENTIFIER, K_INTEGER, K_STRING
-LPAREN, LCURLY, RPAREN, RCURLY, COMMA, ASSIGN, SEMI
+LPAREN, LCURLY, RPAREN, RCURLY, COMMA, ASSIGN, SEMI, SCONSTANT
 %left MINUS PLUS
-%left DIVIDE MULTIPLY
+//%left DIVIDE MULTIPLY
 
 %%
-statement: prog { printf("Valid Program\n");
+statement: 
+    prog { printf("Valid Program\n");
                   exit(0);  };
 
-prog: K_PROGRAM IDENTIFIER LCURLY task RCURLY;
+prog: 
+    K_PROGRAM IDENTIFIER LCURLY task RCURLY;
 
 task: function
     | procedure
     | task function
     | task procedure
     ;
+
+procedure:
+
 
 var:
     d_type IDENTIFIER SEMI
@@ -82,12 +87,18 @@ expr:
 
 //################ TODO ##################
 param_list:
+    d_type IDENTIFIER
+    |
+    d_type IDENTIFIER COMMA param_list
+    ;
 
-
-function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN;
+function: 
+    K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN;
+    |
+    K_FUNCTION d_type IDENTIFIER LPAREN RPAREN;
 //############# Terminals ################
 
-    
+
 
 
 %%
