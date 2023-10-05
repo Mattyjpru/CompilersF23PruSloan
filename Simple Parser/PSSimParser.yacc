@@ -27,7 +27,7 @@ LPAREN, LCURLY, RPAREN, RCURLY, COMMA, ASSIGN, SEMI
 statement: prog { printf("Valid Program\n");
                   exit(0);  };
 
-prog: K_PROGRAM IDENTIFIER LBRACKET task RBRACKET;
+prog: K_PROGRAM IDENTIFIER LCURLY task RCURLY;
 
 task: function
     | procedure
@@ -84,8 +84,10 @@ expr:
 param_list:
 
 
-function: K_FUNCTION d_type IDENTIFIER LPAREN RPAREN;
+function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN;
 //############# Terminals ################
+
+    
 
 
 %%
