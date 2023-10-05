@@ -6,6 +6,7 @@
         printf("Invalid Program\n");
         exit(0);
     }
+    int yylex();
 %}
 %union {
     double dVal;

@@ -121,6 +121,7 @@
         printf("Invalid Program\n");
         exit(0);
     }
+    int yylex();
 
 
 /* Enabling traces.  */
@@ -143,13 +144,13 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 10 "PSSimParser.yacc"
+#line 11 "PSSimParser.yacc"
 {
     double dVal;
     int iVal;
 }
 /* Line 193 of yacc.c.  */
-#line 153 "y.tab.c"
+#line 154 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -162,7 +163,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 166 "y.tab.c"
+#line 167 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -462,10 +463,10 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    30,    30,    34,    36,    37,    38,    39,    43,    45,
-      50,    52,    56,    58,    64,    66,    70,    72,    74,    76,
-      80,    82,    84,    87,    93,    95,    99,   101,   103,   105,
-     107,   109,   111,   113,   116,   118
+       0,    31,    31,    35,    37,    38,    39,    40,    44,    46,
+      51,    53,    57,    59,    65,    67,    71,    73,    75,    77,
+      81,    83,    85,    88,    94,    96,   100,   102,   104,   106,
+     108,   110,   112,   114,   117,   119
 };
 #endif
 
@@ -1418,14 +1419,14 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 30 "PSSimParser.yacc"
+#line 31 "PSSimParser.yacc"
     { printf("Valid Program\n");
                   exit(0);  }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1429 "y.tab.c"
+#line 1430 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1639,7 +1640,7 @@ yyreturn:
 }
 
 
-#line 123 "PSSimParser.yacc"
+#line 124 "PSSimParser.yacc"
 
 extern FILE* yyin ;
 
