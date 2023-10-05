@@ -2,8 +2,10 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    #include "lex.yy.c"
-    void yyerror(const char *s);
+    int yyerror(char *msg){
+        printf("Invalid Program\n");
+        exit(0);
+    }
 %}
 %union {
     double dVal;
@@ -48,7 +50,6 @@ var:
     d_type IDENTIFIER SEMI
     |
     d_type ass
-    |
     ;
 
 ass:
@@ -93,8 +94,15 @@ param_list:
     |
     d_type IDENTIFIER COMMA param_list
     ;
+
 block:
-    block block
+    expr block
+    |
+    print block
+    |
+    var block
+    |
+    ass block
     |
     expr
     |
@@ -103,23 +111,19 @@ block:
     var
     |
     ass
-
+    ;
 function: 
     K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
     |
     K_FUNCTION d_type IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
     ;
-//############# Terminals ################
-
 
 
 
 %%
-extern FILE* yyin;
+extern FILE* yyin ;
 
-int yyerror(char *msg){
-    printf("Invalid Program\n")
-}
+
 
 int main(int argc ,char** argv){
     do {
