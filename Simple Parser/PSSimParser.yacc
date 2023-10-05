@@ -22,6 +22,8 @@
 %left DIVIDE MULTIPLY
 
 %%
+
+%%
 extern FILE* yyin;
 
 int main(int argc, char** argv){
@@ -30,4 +32,3 @@ int main(int argc, char** argv){
     } while ( !feof( yyin ) );
     // code generator goes here
 }
-%%
