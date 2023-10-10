@@ -7,3 +7,13 @@ program tiny_example_1
 		print_integer( i );
 	}
 }
+
+program tiny_example_1
+{
+function integer main()
+{
+integer i;
+i := 441;
+print_integer( i );
+}
+}
