@@ -1,0 +1,43 @@
+++++++++++++++++++++++++++++++++++++++++++++++++
+Walking through the Parse Tree Begins Here
+++++++++++++++++++++++++++++++++++++++++++++++++
+PROGRAM-> program
+IDENTIFIER-> tiny_example_1
+LCURLY-> {
+FUNCTION-> function
+INTEGER-> integer
+IDENTIFIER-> main
+LPAREN-> (
+RPAREN-> )
+LCURLY-> {
+INTEGER-> integer
+IDENTIFIER-> i
+SEMI-> ;
+IDENTIFIER-> i
+ASSIGNMENT-> :=
+IDENTIFIER-> 441
+SEMI-> ;
+PRINT_INT-> print_integer
+LPAREN-> (
+IDENTIFIER-> i
+RPAREN-> )
+SEMI-> ;
+RCURLY-> }
+RCURLY-> }
+PROGRAM-> program
+IDENTIFIER-> tiny_example_2
+LCURLY-> {
+FUNCTION-> function
+INTEGER-> integer
+IDENTIFIER-> main
+LPAREN-> (
+RPAREN-> )
+LCURLY-> {
+PRINT_STR-> print_string
+LPAREN-> (
+SCONSTANT-> "Hello\n"
+RPAREN-> )
+SEMI-> ;
+RCURLY-> }
+RCURLY-> }
+Invalid Program

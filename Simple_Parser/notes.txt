@@ -147,3 +147,6 @@ int main(int argc, char **argv){
     }
     return 0;
 }
+
+original complex sconstant:
+"\""([^\n\"\\]*(\\[.\n])*)*"\""                             printf("SCONSTANT-> %s\n",yytext);//return SCONSTANT;

@@ -25,13 +25,14 @@ statement:
                   exit(0);  };
 
 print:
-    K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
-    |
-    K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
-    |
     K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI
     |
     K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+    |
+    K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
+    |
+    K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
+    
     ;
 
 prog: 
@@ -112,8 +113,7 @@ block:
     var
     |
     ass
-    |
-    epsilon
+
     ;
 
 epsilon: ;
