@@ -24,20 +24,4 @@ RPAREN-> )
 SEMI-> ;
 RCURLY-> }
 RCURLY-> }
-PROGRAM-> program
-IDENTIFIER-> tiny_example_2
-LCURLY-> {
-FUNCTION-> function
-INTEGER-> integer
-IDENTIFIER-> main
-LPAREN-> (
-RPAREN-> )
-LCURLY-> {
-PRINT_STR-> print_string
-LPAREN-> (
-SCONSTANT-> "Hello\n"
-RPAREN-> )
-SEMI-> ;
-RCURLY-> }
-RCURLY-> }
-Invalid Program: syntax error
+Valid Program
