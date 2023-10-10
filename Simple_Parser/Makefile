@@ -19,4 +19,4 @@ lex.yy.c:
 	lex PSlexer.l
 
 clean: 
-	rm -f *.o lex.yy.c $(BUILD) $(OUTPUT) y.tab.c
+	rm -f *.o lex.yy.c $(BUILD) $(OUTPUT) y.tab.c y.tab.h
