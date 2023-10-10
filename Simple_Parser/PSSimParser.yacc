@@ -3,7 +3,7 @@
     #include <stdlib.h>
     #include <string.h>
     int yyerror(char *msg){
-        printf("Invalid Program\n");
+        printf("Invalid Program: %s\n", msg);
         exit(0);
     }
     int yylex();

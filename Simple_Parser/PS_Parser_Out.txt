@@ -15,7 +15,7 @@ IDENTIFIER-> i
 SEMI-> ;
 IDENTIFIER-> i
 ASSIGNMENT-> :=
-IDENTIFIER-> 441
+ICONSTANT-> 441
 SEMI-> ;
 PRINT_INT-> print_integer
 LPAREN-> (
@@ -40,4 +40,4 @@ RPAREN-> )
 SEMI-> ;
 RCURLY-> }
 RCURLY-> }
-Invalid Program
+Invalid Program: syntax error
