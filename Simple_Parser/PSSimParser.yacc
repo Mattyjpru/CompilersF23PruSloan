@@ -113,7 +113,8 @@ block:
     var
     |
     ass
-
+    |
+    epsilon
     ;
 
 epsilon: ;
