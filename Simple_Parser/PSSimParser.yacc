@@ -7,6 +7,7 @@
         exit(0);
     }
     int yylex();
+    int nodeCount = 0;
 %}
 %union {
     double dVal;
@@ -24,19 +25,8 @@ statement:
     prog { printf("Valid Program\n");
                   exit(0);  };
 
-print:
-    K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI
-    |
-    K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-    |
-    K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
-    |
-    K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
-    
-    ;
-
-prog: 
-    K_PROGRAM IDENTIFIER LCURLY task RCURLY;
+prog: K_PROGRAM IDENTIFIER LCURLY task RCURLY
+    {};
 
 task: function
     | procedure
@@ -56,6 +46,16 @@ function:
     K_FUNCTION d_type IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
     ;
 
+print:
+    K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI
+    |
+    K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+    |
+    K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
+    |
+    K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
+    ;
+
 var:
     d_type IDENTIFIER SEMI
     |
@@ -68,7 +68,6 @@ ass:
     IDENTIFIER ASSIGN SCONSTANT SEMI
     ;
     
-
 
 d_type:
     K_INTEGER
@@ -90,7 +89,6 @@ expr:
     ;
 
 
-//################ TODO ##################
 param_list:
     d_type IDENTIFIER
     |
