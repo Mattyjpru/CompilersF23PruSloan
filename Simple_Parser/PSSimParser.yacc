@@ -15,7 +15,7 @@
     char* sVal;
 }
 
-%type<sVal> IDENTIFIER SCONSTANT 
+%type<sVal> IDENTIFIER SCONSTANT expr
 %type<iVal> ICONSTANT
 %type<dVal> DCONSTANT
 
@@ -94,19 +94,29 @@ d_type:
 expr:
     expr MINUS expr             
     {printf("Node %d: Reduced: Block: expr MINUS expr\n", nodeCount++);
-    printf("Terminal Symbol: %s\n", $1)}
+    printf("expr-> %s\n",$1);
+    printf("Terminal Symbol: MINUS\n");
+    printf("expr -> %s\n", $3);}
     |
     expr PLUS expr              
     {printf("Node %d: Reduced: Block: expr PLUS expr\n", nodeCount++);
+    printf("expr-> %s\n",$1);
+    printf("Terminal Symbol: PLUS\n");
+    printf("expr -> %s\n", $3);
+    
     }
     |
     K_INTEGER                   
     {printf("Node %d: Reduced: Block: K_INTEGER\n", nodeCount++);
-    printf("Terminal Symbol: %s\n", $1)}
+    printf("Terminal Symbol: K_INTEGER\n")
+    }
     //eventually have conditions for double as well
     |
     LPAREN expr RPAREN          
     {printf("Node %d: Reduced: Block: LPAREN expr RPAREN\n", nodeCount++);
+    printf("Terminal Symbol: LPAREN\n");
+    printf("expr -> %s\n", $2);
+    printf("Terminal Symbol: RPAREN\n");
     }
     ;
 
