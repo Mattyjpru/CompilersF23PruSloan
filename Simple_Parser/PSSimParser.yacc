@@ -26,7 +26,13 @@ statement:
                   exit(0);  };
 
 prog: K_PROGRAM IDENTIFIER LCURLY task RCURLY
-    {};
+    {
+        printf("** Node %d: Reduced: program: K_PROGRAM IDENTIFIER LCURLY task RCURLY\n", nodeCount++);
+        printf("**** Terminal Symbol: K_PROGRAM\n");
+        printf("**** IDENTIFIER -> %s\n", $2);
+        printf("**** Terminal Symbol: LCURLY\n");
+        printf("**** task -> %s\n", $4);
+    };
 
 task: function
     | procedure
@@ -68,14 +74,11 @@ ass:
     IDENTIFIER ASSIGN SCONSTANT SEMI
     ;
     
-
 d_type:
     K_INTEGER
     |
     K_STRING
     ;
-
-
 
 expr:
     expr MINUS expr
