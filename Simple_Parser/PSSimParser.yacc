@@ -15,7 +15,7 @@
     char* sVal;
 }
 
-%type<sVal> IDENTIFIER SCONSTANT expr param_list block d_type var ass task function procedure print
+%type<sVal> IDENTIFIER SCONSTANT expr param_list block d_type var assignment task function procedure print
 %type<iVal> ICONSTANT
 %type<dVal> DCONSTANT
 
@@ -177,7 +177,7 @@ var:
         printf("\tTerminal Symbol: SEMI\n");
     }
     |
-    d_type ass
+    d_type assignment
     {
         printf("Node %d: Reduced: var: d_type ass\n", nodeCount++);
         printf("\td_type -> %s\n", $1);
@@ -185,7 +185,7 @@ var:
     }
     ;
 
-ass:
+assignment:
     IDENTIFIER ASSIGN ICONSTANT SEMI
     {
         printf("Node %d: Reduced: ass: IDENTIFIER ASSIGN ICONSTANT SEMI\n", 
@@ -198,7 +198,7 @@ ass:
     |
     IDENTIFIER ASSIGN SCONSTANT SEMI
     {
-        printf("Node %d: Reduced: ass: IDENTIFIER ASSIGN SCONSTANT SEMI\n", 
+        printf("Node %d: Reduced: assignment: IDENTIFIER ASSIGN SCONSTANT SEMI\n", 
         nodeCount++);
         printf("\tIDENTIFIER -> %s\n", $1);
         printf("\tTerminal Symbol: ASSIGN\n");
@@ -299,10 +299,10 @@ block:
         printf("\tblock -> %s\n", $2);
     }
     |
-    ass block       
+    assignment block       
     {
-        printf("Node %d: Reduced: block: ass block\n", nodeCount++);
-        printf("\tass -> %s\n", $1);
+        printf("Node %d: Reduced: block: assignment block\n", nodeCount++);
+        printf("\tassignment -> %s\n", $1);
         printf("\tblock -> %s\n", $2);
     }
     |
@@ -324,10 +324,10 @@ block:
         printf("\tvar -> %s\n", $1);
     }
     |
-    ass             
+    assignment             
     {
-        printf("Node %d: Reduced: block: ass\n", nodeCount++);
-        printf("\tass -> %s\n", $1);
+        printf("Node %d: Reduced: block: assignment\n", nodeCount++);
+        printf("\assignment -> %s\n", $1);
     }
     |
     epsilon     {printf("\tblock Exit");}

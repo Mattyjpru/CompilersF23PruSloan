@@ -1,0 +1,48 @@
+++++++++++++++++++++++++++++++++++++++++++++++++
+Walking through the Parse Tree Begins Here
+++++++++++++++++++++++++++++++++++++++++++++++++
+Node 0: Reduced: d_type: K_INTEGER
+	Terminal Symbol: K_INTEGER
+Node 1: Reduced: d_type: K_INTEGER
+	Terminal Symbol: K_INTEGER
+Node 2: Reduced: var: d_type IDENTIFIER SEMI
+	d_type -> (null)
+	IDENTIFIER -> (null)
+	Terminal Symbol: SEMI
+Node 3: Reduced: ass: IDENTIFIER ASSIGN ICONSTANT SEMI
+	IDENTIFIER -> (null)
+	Terminal Symbol: ASSIGN
+	ICONSTANT -> 0
+	Terminal Symbol: SEMI
+Node 4: Reduced: print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
+	Terminal Symbol: K_PRINT_INTEGER
+	Terminal Symbol: LPAREN
+	IDENTIFIER -> (null)
+	Terminal Symbol: RPAREN
+	Terminal Symbol: SEMI
+Node 5: Reduced: block: print
+	print -> (null)
+Node 6: Reduced: block: assignment block
+	assignment -> (null)
+	block -> (null)
+Node 7: Reduced: block: var block
+	var -> (null)
+	block -> (null)
+Node 8: Reduced: function: K_FUNCTION d_type IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
+	Terminal Symbol: K_FUNCTION
+	d_type -> (null)
+	IDENTIFIER -> (null)
+	Terminal Symbol: LPAREN
+	Terminal Symbol: RPAREN
+	Terminal Symbol: LCURLY
+	block -> (null)
+	Terminal Symbol: RCURLY
+Node 9: Reduced: task: function
+	function -> (null)
+Node 10: Reduced: program: K_PROGRAM IDENTIFIER LCURLY task RCURLY
+	Terminal Symbol: K_PROGRAM
+	IDENTIFIER -> (null)
+	Terminal Symbol: LCURLY
+	task -> (null)
+	Terminal Symbol: RCURLY
+Valid Program
