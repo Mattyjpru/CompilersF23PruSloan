@@ -1690,14 +1690,14 @@ yyreduce:
     {
         printf("Node %d: Reduced: var: d_type ass\n", nodeCount++);
         printf("\td_type -> %s\n", (yyvsp[(1) - (2)].sVal));
-        printf("\tass -> %s\n", (yyvsp[(2) - (2)].sVal));
+        printf("\tassignment -> %s\n", (yyvsp[(2) - (2)].sVal));
     }
     break;
 
   case 18:
 #line 190 "PSSimParser.yacc"
     {
-        printf("Node %d: Reduced: ass: IDENTIFIER ASSIGN ICONSTANT SEMI\n", 
+        printf("Node %d: Reduced: assignment: IDENTIFIER ASSIGN ICONSTANT SEMI\n", 
         nodeCount++);
         printf("\tIDENTIFIER -> %s\n", (yyvsp[(1) - (4)].sVal));
         printf("\tTerminal Symbol: ASSIGN\n");

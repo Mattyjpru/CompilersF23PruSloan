@@ -179,16 +179,16 @@ var:
     |
     d_type assignment
     {
-        printf("Node %d: Reduced: var: d_type ass\n", nodeCount++);
+        printf("Node %d: Reduced: var: d_type assignment\n", nodeCount++);
         printf("\td_type -> %s\n", $1);
-        printf("\tass -> %s\n", $2);
+        printf("\tassignment -> %s\n", $2);
     }
     ;
 
 assignment:
     IDENTIFIER ASSIGN ICONSTANT SEMI
     {
-        printf("Node %d: Reduced: ass: IDENTIFIER ASSIGN ICONSTANT SEMI\n", 
+        printf("Node %d: Reduced: assignment: IDENTIFIER ASSIGN ICONSTANT SEMI\n", 
         nodeCount++);
         printf("\tIDENTIFIER -> %s\n", $1);
         printf("\tTerminal Symbol: ASSIGN\n");
