@@ -2,17 +2,20 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
+    #include <ctype.h>
     int yyerror(char *msg){
         printf("Invalid Program: %s\n", msg);
         exit(0);
     }
     int yylex();
+    int yywrap();
     int nodeCount = 0;
 %}
+
 %union {
-    double dVal;
     int iVal;
-    char* sVal;
+    double dVal;
+    char  *sVal;
 }
 
 %type<sVal> IDENTIFIER SCONSTANT expr param_list block d_type var assignment task function procedure print
@@ -42,23 +45,27 @@ task: function
     {
         printf("Node %d: Reduced: task: function\n", nodeCount++);
         printf("\tfunction -> %s\n", $1);
+        $$ = "function";
     }
     | procedure
     {
         printf("Node %d: Reduced: task: procedure\n", nodeCount++);
         printf("\tprocedure -> %s\n", $1);
+        $$ = "procedure";
     }
     | task function
     {
         printf("Node %d: Reduced: task: task function\n", nodeCount++);
         printf("\ttask -> %s\n", $1);
         printf("\tfunction -> %s\n", $2);
+        $$ = "task function";
     }
     | task procedure
     {
         printf("Node %d: Reduced: task: task procedure\n", nodeCount++);
         printf("\ttask -> %s\n", $1);
         printf("\tprocedure -> %s\n", $2);
+        $$ = "task procedure";
     }
     ;
 
@@ -75,6 +82,7 @@ procedure:
         printf("\tTerminal Symbol: LCURLY\n");
         printf("\tblock -> %s\n", $7);
         printf("\tTerminal Symbol: RCURLY\n");
+        $$ = "K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY";
     }
     |
     K_PROCEDURE IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
@@ -88,6 +96,7 @@ procedure:
         printf("\tTerminal Symbol: LCURLY\n");
         printf("\tblock -> %s\n", $6);
         printf("\tTerminal Symbol: RCURLY\n");
+        $$ = "K_PROCEDURE IDENTIFIER LPAREN RPAREN LCURLY block RCURLY";
     }
     ;
 
@@ -105,6 +114,7 @@ function:
         printf("\tTerminal Symbol: LCURLY\n");
         printf("\tblock -> %s\n", $8);
         printf("\tTerminal Symbol: RCURLY\n");
+        $$ = "K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY";
     }
     |
     K_FUNCTION d_type IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
@@ -119,6 +129,7 @@ function:
         printf("\tTerminal Symbol: LCURLY\n");
         printf("\tblock -> %s\n", $7);
         printf("\tTerminal Symbol: RCURLY\n");
+        $$ = "K_FUNCTION d_type IDENTIFIER LPAREN RPAREN LCURLY block RCURLY";
     }
     ;
 
@@ -132,6 +143,7 @@ print:
         printf("\tICONSTANT -> %d\n", $3);
         printf("\tTerminal Symbol: RPAREN\n");
         printf("\tTerminal Symbol: SEMI\n");
+        $$ = "K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI";
     }
     |
     K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
@@ -143,6 +155,7 @@ print:
         printf("\tSCONSTANT -> %s\n", $3);
         printf("\tTerminal Symbol: RPAREN\n");
         printf("\tTerminal Symbol: SEMI\n");
+        $$ = "K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI";
     }
     |
     K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
@@ -154,6 +167,7 @@ print:
         printf("\tIDENTIFIER -> %s\n", $3);
         printf("\tTerminal Symbol: RPAREN\n");
         printf("\tTerminal Symbol: SEMI\n");
+        $$ = "K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI";
     }
     |
     K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
@@ -165,6 +179,7 @@ print:
         printf("\tIDENTIFIER -> %s\n", $3);
         printf("\tTerminal Symbol: RPAREN\n");
         printf("\tTerminal Symbol: SEMI\n");
+        $$ = "K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI";
     }
     ;
 
@@ -175,6 +190,7 @@ var:
         printf("\td_type -> %s\n", $1);
         printf("\tIDENTIFIER -> %s\n", $2);
         printf("\tTerminal Symbol: SEMI\n");
+        $$ = "d_type IDENTIFIER SEMI";
     }
     |
     d_type assignment
@@ -182,6 +198,7 @@ var:
         printf("Node %d: Reduced: var: d_type assignment\n", nodeCount++);
         printf("\td_type -> %s\n", $1);
         printf("\tassignment -> %s\n", $2);
+        $$ = "d_type assignment";
     }
     ;
 
@@ -194,6 +211,7 @@ assignment:
         printf("\tTerminal Symbol: ASSIGN\n");
         printf("\tICONSTANT -> %d\n", $3);
         printf("\tTerminal Symbol: SEMI\n");
+        $$ = "IDENTIFIER ASSIGN ICONSTANT SEMI";
     }
     |
     IDENTIFIER ASSIGN SCONSTANT SEMI
@@ -204,6 +222,7 @@ assignment:
         printf("\tTerminal Symbol: ASSIGN\n");
         printf("\tSCONSTANT -> %s\n", $3);
         printf("\tTerminal Symbol: SEMI\n");
+        $$ = "IDENTIFIER ASSIGN SCONSTANT SEMI";
     }
     ;
     
@@ -213,12 +232,14 @@ d_type:
     {
         printf("Node %d: Reduced: d_type: K_INTEGER\n", nodeCount++);
         printf("\tTerminal Symbol: K_INTEGER\n");
+        $$ = "K_INTEGER";
     }
     |
     K_STRING                    
     {
         printf("Node %d: Reduced: d_type: K_STRING\n", nodeCount++);
         printf("\tTerminal Symbol: K_STRING\n");
+        $$ = "K_STRING";
     }
     ;
 
@@ -231,6 +252,7 @@ expr:
         printf("\texpr-> %s\n", $1);
         printf("\tTerminal Symbol: MINUS\n");
         printf("\texpr -> %s\n", $3);
+        $$ = "expr MINUS expr";
     }
     |
     expr PLUS expr              
@@ -239,12 +261,14 @@ expr:
         printf("\texpr-> %s\n",$1);
         printf("\tTerminal Symbol: PLUS\n");
         printf("\texpr -> %s\n", $3);
+        $$ = "expr PLUS expr";
     }
     |
     K_INTEGER                   
     {
         printf("Node %d: Reduced: expr: K_INTEGER\n", nodeCount++);
         printf("\tTerminal Symbol: K_INTEGER\n");
+        $$ = "K_INTEGER";
     }
     //eventually have conditions for double as well
     |
@@ -254,6 +278,7 @@ expr:
         printf("\tTerminal Symbol: LPAREN\n");
         printf("\texpr -> %s\n", $2);
         printf("\tTerminal Symbol: RPAREN\n");
+        $$ = "LPAREN expr RPAREN";
     }
     ;
 
@@ -264,6 +289,7 @@ param_list:
         printf("Node %d: Reduced: param_list: d_type IDENTIFIER\n", nodeCount++);
         printf("\td_type -> %s\n", $1);
         printf("\tIDENTIFIER -> %s\n", $2);
+        $$ = "d_type IDENTIFIER";
     }
     |
     d_type IDENTIFIER COMMA param_list      
@@ -274,6 +300,7 @@ param_list:
         printf("\tIDENTIFIER -> %s\n", $2);
         printf("\tTerminal Symbol: COMMA\n");
         printf("\tparam_list -> %s\n", $4);
+        $$ = "d_type IDENTIFIER COMMA param_list";
     }
     ;
 
@@ -283,6 +310,7 @@ block:
         printf("Node %d: Reduced: block: expr block\n", nodeCount++);
         printf("\texpr -> %s\n", $1);
         printf("\tblock -> %s\n", $2);
+        $$ = "expr block";
     }
     |
     print block     
@@ -290,6 +318,7 @@ block:
         printf("Node %d: Reduced: block: print block\n", nodeCount++);
         printf("\tprint -> %s\n", $1);
         printf("\tblock -> %s\n", $2);
+        $$ = "print block";
     }
     |
     var block       
@@ -297,6 +326,7 @@ block:
         printf("Node %d: Reduced: block: var block\n", nodeCount++);
         printf("\tvar -> %s\n", $1);
         printf("\tblock -> %s\n", $2);
+        $$ = "var block";
     }
     |
     assignment block       
@@ -304,39 +334,44 @@ block:
         printf("Node %d: Reduced: block: assignment block\n", nodeCount++);
         printf("\tassignment -> %s\n", $1);
         printf("\tblock -> %s\n", $2);
+        $$ = "assignment block";
     }
     |
     expr            
     {
         printf("Node %d: Reduced: block: expr\n", nodeCount++);
         printf("\texpr -> %s\n", $1);
+        $$ = "expr";
     }
     |
     print           
     {
         printf("Node %d: Reduced: block: print\n", nodeCount++);
         printf("\tprint -> %s\n", $1);
+        $$ = "print";
     }
     |
     var             
     {
         printf("Node %d: Reduced: block: var\n", nodeCount++);
         printf("\tvar -> %s\n", $1);
+        $$ = "var";
     }
     |
     assignment             
     {
         printf("Node %d: Reduced: block: assignment\n", nodeCount++);
         printf("\assignment -> %s\n", $1);
+        $$ = "assignment";
     }
     |
-    epsilon     {printf("\tblock Exit");}
+    epsilon     {printf("\tblock Exit"); $$ = "epsilon";}
     ;
 
 epsilon: ;
 
 %%
-extern FILE* yyin ;
+extern FILE* yyin;
 
 
 
