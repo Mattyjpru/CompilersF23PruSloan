@@ -74,48 +74,83 @@ ass:
     IDENTIFIER ASSIGN SCONSTANT SEMI
     ;
     
+
 d_type:
-    K_INTEGER
+    K_INTEGER                   
+    {printf("Node %d: Reduced: Block: K_INTEGER\n", nodeCount++);
+    printf("Terminal Symbol: %s", $1)}
     |
-    K_STRING
+    K_STRING                    
+    {printf("Node %d: Reduced: Block: K_STRING\n", nodeCount++);
+    printf("Terminal Symbol: %s\n", $1)}
     ;
 
+
+
 expr:
-    expr MINUS expr
+    expr MINUS expr             
+    {printf("Node %d: Reduced: Block: expr MINUS expr\n", nodeCount++);
+    printf("Terminal Symbol: %s\n", $1)}
     |
-    expr PLUS expr
+    expr PLUS expr              
+    {printf("Node %d: Reduced: Block: expr PLUS expr\n", nodeCount++);
+    }
     |
-    K_INTEGER
+    K_INTEGER                   
+    {printf("Node %d: Reduced: Block: K_INTEGER\n", nodeCount++);
+    }
     //eventually have conditions for double as well
     |
-    LPAREN expr RPAREN
+    LPAREN expr RPAREN          
+    {printf("Node %d: Reduced: Block: LPAREN expr RPAREN\n", nodeCount++);
+    }
     ;
 
 
 param_list:
-    d_type IDENTIFIER
+    d_type IDENTIFIER                       
+    {printf("Node %d: Reduced: Block: d_type IDENTIFIER\n", nodeCount++);
+    }
     |
-    d_type IDENTIFIER COMMA param_list
+    d_type IDENTIFIER COMMA param_list      
+    {printf("Node %d: Reduced: Block: d_type IDENTIFIER COMMA param_list\n", nodeCount++);
+    }
     ;
 
 block:
-    expr block
+    expr block      
+    {printf("Node %d: Reduced: Block: expr block\n", nodeCount++);
+    }
     |
-    print block
+    print block     
+    {printf("Node %d: Reduced: Block: print block\n", nodeCount++);
+    }
     |
-    var block
+    var block       
+    {printf("Node %d: Reduced: Block: var block\n", nodeCount++);
+    }
     |
-    ass block
+    ass block       
+    {printf("Node %d: Reduced: Block: ass block\n", nodeCount++);
+    }
     |
-    expr
+    expr            
+    {printf("Node %d: Reduced: Block: expr\n", nodeCount++);
+    }
     |
-    print
+    print           
+    {printf("Node %d: Reduced: Block: print\n", nodeCount++);
+    }
     |
-    var
+    var             
+    {printf("Node %d: Reduced: Block: var\n", nodeCount++);
+    }
     |
-    ass
+    ass             
+    {printf("Node %d: Reduced: Block: ass\n", nodeCount++);
+    }
     |
-    epsilon
+    epsilon     {printf("Block Exit")}
     ;
 
 epsilon: ;

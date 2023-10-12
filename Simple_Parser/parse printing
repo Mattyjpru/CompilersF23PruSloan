@@ -61,7 +61,7 @@ d_type:
 expr:
     expr MINUS expr             
     {printf("Node %d: Reduced: Block: expr MINUS expr\n", nodeCount++);
-    }
+    printf("Terminal Symbol: %s\n", $1)}
     |
     expr PLUS expr              
     {printf("Node %d: Reduced: Block: expr PLUS expr\n", nodeCount++);
