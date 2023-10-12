@@ -2,13 +2,11 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    #include <ctype.h>
     int yyerror(char *msg){
         printf("Invalid Program: %s\n", msg);
         exit(0);
     }
     int yylex();
-    int yywrap();
     int nodeCount = 0;
 %}
 
