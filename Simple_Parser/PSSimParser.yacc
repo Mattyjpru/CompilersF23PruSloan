@@ -27,11 +27,12 @@ statement:
 
 prog: K_PROGRAM IDENTIFIER LCURLY task RCURLY
     {
-        printf("** Node %d: Reduced: program: K_PROGRAM IDENTIFIER LCURLY task RCURLY\n", nodeCount++);
-        printf("**** Terminal Symbol: K_PROGRAM\n");
-        printf("**** IDENTIFIER -> %s\n", $2);
-        printf("**** Terminal Symbol: LCURLY\n");
-        printf("**** task -> %s\n", $4);
+        printf("Node %d: Reduced: program: K_PROGRAM IDENTIFIER LCURLY task RCURLY\n", nodeCount++);
+        printf("Terminal Symbol: K_PROGRAM\n");
+        printf("IDENTIFIER -> %s\n", $2);
+        printf("Terminal Symbol: LCURLY\n");
+        printf("task -> %s\n", $4);
+        printf("Terminal Symbol: RCURLY\n");
     };
 
 task: function
