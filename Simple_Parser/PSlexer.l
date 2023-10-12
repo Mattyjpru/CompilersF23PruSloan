@@ -1,6 +1,5 @@
 %{
 #include "y.tab.h"
-#include <string.h>
 %}
 
 %%
@@ -28,7 +27,7 @@
 -?((([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*))([dD][-+]?[0-9]+)?)   return DCONSTANT;
 [0-9]*                                                      return ICONSTANT;
 \"(\\.|[^"\\])*\"                                           return SCONSTANT;
-[A-Za-z0-9$_]{0,32}                                         return IDENTIFIER;
+[A-Za-z0-9$_]{0,32}                                         {yylval.sVal = strdup(yytext); return IDENTIFIER;}
 :=                                                          return ASSIGN;
 \+=                                                         return ASSIGN_PLUS;
 \-=                                                         return ASSIGN_MINUS;
