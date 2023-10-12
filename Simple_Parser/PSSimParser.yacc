@@ -15,7 +15,7 @@
     char* sVal;
 }
 
-%type<sVal> IDENTIFIER SCONSTANT expr
+%type<sVal> IDENTIFIER SCONSTANT expr param_list
 %type<iVal> ICONSTANT
 %type<dVal> DCONSTANT
 
@@ -25,10 +25,10 @@
 
 %%
 statement: 
-    prog { printf("Valid Program\n");
+    program { printf("Valid Program\n");
                   exit(0);  };
 
-prog: K_PROGRAM IDENTIFIER LCURLY task RCURLY
+program: K_PROGRAM IDENTIFIER LCURLY task RCURLY
     {
         printf("Node %d: Reduced: program: K_PROGRAM IDENTIFIER LCURLY task RCURLY\n", nodeCount++);
         printf("Terminal Symbol: K_PROGRAM\n");
@@ -39,13 +39,38 @@ prog: K_PROGRAM IDENTIFIER LCURLY task RCURLY
     };
 
 task: function
+    {
+        printf("Node %d: Reduced: task: function\n", nodeCount++);
+        printf("function -> %s\n", $1);
+    }
     | procedure
+    {
+        printf("Node %d: Reduced: task: procedure\n", nodeCount++);
+        printf("procedure -> %s\n", $1);
+    }
     | task function
+    {
+        printf("Node %d: Reduced: task: task function\n", nodeCount++);
+        printf("task -> %s\n", $1);
+        printf("function -> $s\n", $2);
+    }
     | task procedure
+    {
+        printf("Node %d: Reduced: task: task procedure\n", nodeCount++);
+        printf("task -> %s\n", $1);
+        printf("procedure -> $s\n", $2);
+    }
     ;
 
 procedure:
     K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+    {
+        printf("Node %d: Reduced: procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY\n",
+        nodeCount++);
+        printf("Terminal Symbol: K_PROCEDURE\n");
+        printf("Terminal Symbol: LPAREN\n");
+
+    }
     |
     K_PROCEDURE IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
     ;
