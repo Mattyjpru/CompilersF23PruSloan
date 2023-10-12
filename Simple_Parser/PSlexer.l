@@ -27,7 +27,7 @@
 "while"                                                     return K_WHILE;
 -?((([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*))([dD][-+]?[0-9]+)?)   return DCONSTANT;
 [0-9]*                                                      return ICONSTANT;
-"\""([^\n\"\\]*(\\[.\n])*)*"\""                             return SCONSTANT;
+\"(\\.|[^"\\])*\"                                           return SCONSTANT;
 [A-Za-z0-9$_]{0,32}                                         return IDENTIFIER;
 :=                                                          return ASSIGN;
 \+=                                                         return ASSIGN_PLUS;
