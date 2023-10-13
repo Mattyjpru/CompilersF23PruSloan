@@ -16,7 +16,6 @@ all: $(BUILD)
 	@printf "++++++++++++++++++++++++++++++++++++++++++++++++\n" | tee -a $(OUTPUT)
 	@./$(BUILD) < simple2.f23 | tee -a $(OUTPUT)
 
-
 #Old rule
 #	./$(BUILD) < simple1.f23 | tee $(OUTPUT)
 
