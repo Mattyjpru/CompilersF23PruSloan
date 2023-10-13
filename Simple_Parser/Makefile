@@ -7,7 +7,18 @@ BUILD=PruSloanParser
 OUTPUT=PS_Parser_Out.txt
 
 all: $(BUILD)
-	./$(BUILD) < simple1.f23 | tee $(OUTPUT)
+	@printf "++++++++++++++++++++++++++++++++++++++++++++++++\n" | tee $(OUTPUT)
+	@printf "# Parsing Tree for the first program begins here:\n" | tee -a $(OUTPUT)
+	@printf "++++++++++++++++++++++++++++++++++++++++++++++++\n" | tee -a $(OUTPUT)
+	@./$(BUILD) < simple1.f23 | tee -a $(OUTPUT)
+	@printf "\n++++++++++++++++++++++++++++++++++++++++++++++++\n" | tee -a $(OUTPUT)
+	@printf "# Parsing Tree for the second program begins here:\n" | tee -a $(OUTPUT)
+	@printf "++++++++++++++++++++++++++++++++++++++++++++++++\n" | tee -a $(OUTPUT)
+	@./$(BUILD) < simple2.f23 | tee -a $(OUTPUT)
+
+
+#Old rule
+#	./$(BUILD) < simple1.f23 | tee $(OUTPUT)
 
 $(BUILD): lex.yy.c y.tab.c
 	${CC} lex.yy.c y.tab.c -o $(BUILD)
