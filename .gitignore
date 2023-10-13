@@ -1,8 +1,9 @@
-lex.yy.c
-PS_Lexer_Output.txt
-PruSloanLexer
-a.out
-PS_Parser_Out.txt
-PruSloanParser
-y.tab.c
-y.tab.h
+Lexer/lex.yy.c
+Lexer/PS_Lexer_Output.txt
+Lexer/PruSloanLexer
+Lexer/a.out
+Simple_Parser/PS_Parser_Out.txt
+Simple_Parser/PruSloanParser
+Simple_Parser/y.tab.c
+Simple_Parser/y.tab.h
+Simple_Parser/lex.yy.c
