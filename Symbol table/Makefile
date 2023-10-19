@@ -3,8 +3,8 @@
 # Written By Matthew Pru and Cody Sloan
 ##############################################################################
 CC=gcc
-BUILD=PruSloanParser
-OUTPUT=PS_Parser_Out.txt
+BUILD=PruSloanSymbolTable
+OUTPUT=PS_ST_Parser_Out.txt
 
 all: $(BUILD)
 	@printf "++++++++++++++++++++++++++++++++++++++++++++++++\n" | tee $(OUTPUT)
@@ -23,7 +23,7 @@ $(BUILD): lex.yy.c y.tab.c
 	${CC} lex.yy.c y.tab.c -o $(BUILD)
 
 y.tab.c:
-	yacc -d PSSimParser.yacc
+	yacc -d PS_ST_Parser.yacc
 
 lex.yy.c:
 	lex PSlexer.l

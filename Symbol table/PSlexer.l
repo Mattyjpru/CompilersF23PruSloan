@@ -1,9 +1,11 @@
 %{
 #include "y.tab.h"
+int line=0;
 %}
 
 %%
-[ \t\n\r]                                                       ;
+[\n\r]                                                      {line++;}
+[ \t]                                                       ;
 "do"                                                        return K_DO;
 "double"                                                    return K_DOUBLE;
 "else"                                                      return K_ELSE;

@@ -8,27 +8,58 @@
     }
     int yylex();
     int nodeCount = 0;
-
-
+    int st_loc=0;
+    char[16] use;
+    //Symbol Table stuff
     struct stEntry{
         char* name;
         char* d_type;
         char* use;
         int line_no;
-    } symbolTable[0];
+    } symbolTable[2048];
 
     void insert(){
-
+        strcpy(use, yytext);
     }
 
-    void add(char c){
+    void newSymbol(char c){
+        int q=search(yytext)
+        if(!q)/*?*/{
+            switch(c){
+                case 'V':
 
+                    st_loc++;
+                    break;
+                case 'H':
+
+                    st_loc++;
+                    break;
+                case 'C':
+
+                    st_loc++;
+                    break;
+                case 'K'
+
+                    st_loc++;
+                    break;
+                case 'F':
+
+                    st_loc++;
+                    break;
+
+            }
+        }
     }
 
     int search(char* use){
-
+        for(int i=0; i<st_loc; i++){
+            if(strcmp(symbol_table[i], use)==0){
+                return -1;
+            }
+        }
+        return 0;
     }
-    
+
 
 
 %}
@@ -421,7 +452,7 @@ epsilon: ;
 
 %%
 extern FILE* yyin;
-
+extern int line;
 int main(int argc ,char** argv){
     do {
         /* printf("++++++++++++++++++++++++++++++++++++++++++++++++\n");
