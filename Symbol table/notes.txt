@@ -1,0 +1,152 @@
+function:
+    
+
+
+
+program:
+
+
+
+
+var:
+    K_INTEGER IDENTIFIER SEMI
+    |
+    K_INTEGER ass
+    |
+    K_STRING IDENTIFIER SEMI
+    |
+    K_STRING ass
+    ;
+
+ass:
+    IDENTIFIER ASSIGN ICONSTANT SEMI
+    |
+    IDENTIFIER ASSIGN SCONSTANT SEMI
+    |
+    IDENTIFIER ASSIGN DCONSTANT SEMI
+    ;
+
+ret_t:
+    K_INTEGER
+    |
+    K_STRING
+    |
+    ;
+
+print:
+    K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
+    |
+    K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
+    |
+    K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI
+    |
+    K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+    ;
+    
+
+program, function, iconstant, print_integer, print_string, identifier
+
+
+
+
+##############################################################################
+# Compilers Project Makefile
+# Written By Matthew Pru and Cody Sloan
+##############################################################################
+CC=gcc
+LEXER=PruSloanLexer
+OUTPUT=PS_Parser_Out.txt
+
+all: $(BUILD)
+	./$(BUILD) < simple | tee $(OUTPUT)
+
+$(BUILD): lex.yy.c y.tab.c
+	${CC} lex.yy.c y.tab.c -ly -ll -o $(BUILD)
+
+y.tab.c:
+	yacc -d PSSimParser.yacc
+
+lex.yy.c:
+	lex PSlexer.l
+
+clean: 
+	rm -f *.o lex.yy.c $(BUILD) $(OUTPUT)
+
+
+// full lexer
+
+%{
+#include "y.tab.h"
+#include <string.h>
+%}
+
+%%
+[ \t\n\r]                                                       ;
+"do"                                                        return K_DO;
+"double"                                                    return K_DOUBLE;
+"else"                                                      return K_ELSE;
+"exit"                                                      return K_EXIT;
+"function"                                                  return K_FUNCTION;
+"if"                                                        return K_IF;
+"integer"                                                   return K_INTEGER;
+"print_double"                                              return K_PRINT_DOUBLE;
+"print_integer"                                             return K_PRINT_INTEGER;
+"print_string"                                              return K_PRINT_STRING;
+"procedure"                                                 return K_PROCEDURE;
+"program"                                                   return K_PROGRAM;
+"read_double"                                               return K_READ_DOUBLE;
+"read_integer"                                              return K_READ_INTEGER;
+"read_string"                                               return K_READ_STRING;
+"return"                                                    return K_RETURN;
+"string"                                                    return K_STRING;
+"then"                                                      return K_THEN;
+"while"                                                     return K_WHILE;
+-?((([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*))([dD][-+]?[0-9]+)?)   return DCONSTANT;
+[A-Za-z0-9$_]{0,32}                                         return IDENTIFIER;
+[0-9]*                                                      return ICONSTANT;
+"\""([^\n\"\\]*(\\[.\n])*)*"\""                             return SCONSTANT;
+:=                                                          return ASSIGN;
+\+=                                                         return ASSIGN_PLUS;
+\-=                                                         return ASSIGN_MINUS;
+\*=                                                         return ASSIGN_MULTIPLY;
+\/=                                                         return ASSIGN_DIVIDE;
+\%=                                                         return ASSIGN_MOD;
+,                                                           return COMMA;
+\/\/                                                        return COMMENT;
+&&                                                          return DAND;
+\/                                                          return DIVIDE;
+\|\|                                                        return DOR;
+==                                                          return DEQ;
+\>=                                                         return GEQ;
+\>                                                          return GT;
+\[                                                          return LBRACKET;
+\<=                                                         return LEQ;
+\{                                                          return LCURLY;
+\(                                                          return LPAREN;
+\<                                                          return LT;
+\-                                                          return MINUS;
+\-\-                                                        return DECREMENT;
+\%                                                          return MOD;
+\*                                                          return MULTIPLY;
+\!=                                                         return NE;
+\!                                                          return NOT;
+\.                                                          return PERIOD;
+\+                                                          return PLUS;
+\+\+                                                        return INCREMENT;
+\]                                                          return RBRACKET;
+\}                                                          return RCURLY;
+\)                                                          return RPAREN;
+;                                                           return SEMI;
+%%
+
+int main(int argc, char **argv){
+    int token;
+    printf("Token:\t\tMatch:\n");
+    while ((token=yylex()) != 0){
+        printf("%d\t\t%s\n", token, yytext);
+    }
+    return 0;
+}
+
+original complex sconstant:
+"\""([^\n\"\\]*(\\[.\n])*)*"\""                             printf("SCONSTANT-> %s\n",yytext);//return SCONSTANT;
