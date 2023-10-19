@@ -8,6 +8,29 @@
     }
     int yylex();
     int nodeCount = 0;
+
+
+    struct stEntry{
+        char* name;
+        char* d_type;
+        char* use;
+        int line_no;
+    } symbolTable[0];
+
+    void insert(){
+
+    }
+
+    void add(char c){
+
+    }
+
+    int search(char* use){
+
+    }
+    
+
+
 %}
 
 %union {
