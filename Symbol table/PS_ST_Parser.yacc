@@ -15,6 +15,7 @@
         char* name;
         char* d_type;
         char* use;
+        //char* val;
         int line_no;
     } symbolTable[2048];
 
