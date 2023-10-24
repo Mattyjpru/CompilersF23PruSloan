@@ -8,7 +8,7 @@
         exit(0);
     }
     int yylex();
-    char* yytext;
+    extern char* yytext;
     int nodeCount = 0;
     int st_loc=0;
     char use[16];
