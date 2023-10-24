@@ -7,3 +7,8 @@ Simple_Parser/PruSloanParser
 Simple_Parser/y.tab.c
 Simple_Parser/y.tab.h
 Simple_Parser/lex.yy.c
+Symbol_Table/PS_Parser_Out.txt
+Symbol_Table/PruSloanParser
+Symbol_Table/y.tab.c
+Symbol_Table/y.tab.h
+Symbol_Table/lex.yy.c

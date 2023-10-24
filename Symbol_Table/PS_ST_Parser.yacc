@@ -283,7 +283,6 @@ epsilon: ;
 
 %%
 extern FILE* yyin;
-/* extern char* yytext; */
 
 int main(int argc ,char** argv){
     do {

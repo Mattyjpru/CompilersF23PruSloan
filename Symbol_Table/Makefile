@@ -7,14 +7,9 @@ BUILD=PruSloanSymbolTable
 OUTPUT=PS_ST_Parser_Out.txt
 
 all: $(BUILD)
-	@printf "++++++++++++++++++++++++++++++++++++++++++++++++\n" | tee $(OUTPUT)
-	@printf "# Parsing Tree for the first program begins here:\n" | tee -a $(OUTPUT)
-	@printf "++++++++++++++++++++++++++++++++++++++++++++++++\n" | tee -a $(OUTPUT)
 	@./$(BUILD) < simple1.f23 | tee -a $(OUTPUT)
-	@printf "\n++++++++++++++++++++++++++++++++++++++++++++++++\n" | tee -a $(OUTPUT)
-	@printf "# Parsing Tree for the second program begins here:\n" | tee -a $(OUTPUT)
-	@printf "++++++++++++++++++++++++++++++++++++++++++++++++\n" | tee -a $(OUTPUT)
-	@./$(BUILD) < simple2.f23 | tee -a $(OUTPUT)
+
+
 
 #Old rule
 #	./$(BUILD) < simple1.f23 | tee $(OUTPUT)
