@@ -11,6 +11,7 @@
     int st_loc=0;
     char[16] use;
     //Symbol Table stuff
+    
     struct stEntry{
         char* name;
         char* d_type;

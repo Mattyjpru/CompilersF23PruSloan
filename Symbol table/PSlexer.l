@@ -25,7 +25,15 @@ int line=0;
 "string"                                                    return K_STRING;
 "then"                                                      return K_THEN;
 "while"                                                     return K_WHILE;
--?((([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*))([dD][-+]?[0-9]+)?)   {return DCONSTANT;}
+-?((([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*))([dD][-+]?[0-9]+)?)   
+                                                            {
+                                                                char *current_pos = strchr(yytext,'d');
+                                                                while (current_pos) {
+                                                                    *current_pos = replace;
+                                                                    current_pos = strchr(current_pos,find);
+                                                                }
+                                                                
+                                                                return DCONSTANT;}
 [0-9]+                                                      {yylval.iVal = atoi(yytext); return ICONSTANT;}
 \"(\\.|[^"\\])*\"                                           {yylval.sVal = strdup(yytext); return SCONSTANT;}
 [A-Za-z0-9$_]{0,32}                                         {yylval.sVal = strdup(yytext); return IDENTIFIER;}
