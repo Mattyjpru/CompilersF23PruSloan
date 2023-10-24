@@ -2,12 +2,13 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    #include"lex.yy.c"
+    //#include"lex.yy.c"
     int yyerror(char *msg){
         printf("Invalid Program: %s\n", msg);
         exit(0);
     }
     int yylex();
+    char* yytext;
     int nodeCount = 0;
     int st_loc=0;
     char use[16];
@@ -282,6 +283,7 @@ epsilon: ;
 
 %%
 extern FILE* yyin;
+/* extern char* yytext; */
 
 int main(int argc ,char** argv){
     do {

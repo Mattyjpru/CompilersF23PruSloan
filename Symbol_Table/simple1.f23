@@ -2,6 +2,8 @@ program tiny_example_1
 {
 	function integer main()
 	{
+		double D:=1.01d-2;
+		double d:=1.05D+2;
 		integer i;
 		i := 441;
 		print_integer( i );
