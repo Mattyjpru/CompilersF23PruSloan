@@ -2,6 +2,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
+    #include"lex.yy.c"
     int yyerror(char *msg){
         printf("Invalid Program: %s\n", msg);
         exit(0);
@@ -9,7 +10,7 @@
     int yylex();
     int nodeCount = 0;
     int st_loc=0;
-    char[16] use;
+    char use[16];
     //Symbol Table stuff
 
     struct stEntry{
@@ -24,8 +25,17 @@
         strcpy(use, yytext);
     }
 
+    int search(char* use){
+        for(int i=0; i<st_loc; i++){
+            if(strcmp(symbolTable[i].name, use)==0){
+                return -1;
+            }
+        }
+        return 0;
+    }
+
     void newSymbol(char c){
-        int q=search(yytext)
+        int q=search(yytext);
         if(!q)/*?*/{
             switch(c){
                 case 'V':
@@ -40,8 +50,7 @@
 
                     st_loc++;
                     break;
-                case 'K'
-
+                case 'K':
                     st_loc++;
                     break;
                 case 'F':
@@ -51,15 +60,6 @@
 
             }
         }
-    }
-
-    int search(char* use){
-        for(int i=0; i<st_loc; i++){
-            if(strcmp(symbol_table[i], use)==0){
-                return -1;
-            }
-        }
-        return 0;
     }
 %}
 
@@ -83,7 +83,7 @@ statement:
     program { printf("Valid Program\n");
                   exit(0);  };
 
-program: K_PROGRAM {insert_type();} IDENTIFIER{} LCURLY task RCURLY
+program: K_PROGRAM {insert();} IDENTIFIER{} LCURLY task RCURLY
     {
 
     };

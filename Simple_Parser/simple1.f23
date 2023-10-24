@@ -3,6 +3,8 @@ program tiny_example_1
 	function integer main()
 	{
 		integer i;
+		double d = 1.001d-2;
+		double D = 2.01D+3;
 		i := 441;
 		print_integer( i );
 	}
