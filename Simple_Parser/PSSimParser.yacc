@@ -133,13 +133,6 @@ function:
     ;
 
 block:
-    expr SEMI         
-    {
-        printf("Node %d: Reduced: block: expr\n", nodeCount++);
-        printf("\t expr -> %s\n", $1);
-        $$ = "expr";
-    }
-    |
     print           
     {
         printf("Node %d: Reduced: block: print\n", nodeCount++);
@@ -159,14 +152,6 @@ block:
         printf("Node %d: Reduced: block: assignment\n", nodeCount++);
         printf("\assignment -> %s\n", $1);
         $$ = "assignment";
-    }
-    |
-    expr SEMI block      
-    {
-        printf("Node %d: Reduced: block: expr block\n", nodeCount++);
-        printf("\t expr -> %s\n", $1);
-        printf("\t block -> %s\n", $3);
-        $$ = "expr block";
     }
     |
     print block     

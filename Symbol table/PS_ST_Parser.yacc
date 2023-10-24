@@ -8,6 +8,58 @@
     }
     int yylex();
     int nodeCount = 0;
+    int st_loc=0;
+    char[16] use;
+    //Symbol Table stuff
+    struct stEntry{
+        char* name;
+        char* d_type;
+        char* use;
+        //char* val;
+        int line_no;
+    } symbolTable[2048];
+
+    void insert(){
+        strcpy(use, yytext);
+    }
+
+    void newSymbol(char c){
+        int q=search(yytext)
+        if(!q)/*?*/{
+            switch(c){
+                case 'V':
+
+                    st_loc++;
+                    break;
+                case 'H':
+
+                    st_loc++;
+                    break;
+                case 'C':
+
+                    st_loc++;
+                    break;
+                case 'K'
+
+                    st_loc++;
+                    break;
+                case 'F':
+
+                    st_loc++;
+                    break;
+
+            }
+        }
+    }
+
+    int search(char* use){
+        for(int i=0; i<st_loc; i++){
+            if(strcmp(symbol_table[i], use)==0){
+                return -1;
+            }
+        }
+        return 0;
+    }
 %}
 
 %union {
@@ -76,11 +128,7 @@ function:
     ;
 
 block:
-    expr SEMI         
-    {
-
-    }
-    | print           
+    print           
     {
 
     }
@@ -89,10 +137,6 @@ block:
 
     }
     | assignment             
-    {
-
-    }
-    | expr SEMI block      
     {
 
     }
