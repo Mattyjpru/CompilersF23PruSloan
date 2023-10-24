@@ -34,7 +34,7 @@ char* repD(char* str, char target){
 "string"                                                    return K_STRING;
 "then"                                                      return K_THEN;
 "while"                                                     return K_WHILE;
--?((([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*))([dD][-+]?[0-9]+)?)   {yylval.dval = atof(repD(repD("d"),"D"));return DCONSTANT;}
+-?((([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*))([dD][-+]?[0-9]+)?)   {yylval.dval = atof(repD(repD("d"),"D")); return DCONSTANT;}
 [0-9]+                                                      {yylval.iVal = atoi(yytext); return ICONSTANT;}
 \"(\\.|[^"\\])*\"                                           {yylval.sVal = strdup(yytext); return SCONSTANT;}
 [A-Za-z0-9$_]{0,32}                                         {yylval.sVal = strdup(yytext); return IDENTIFIER;}
