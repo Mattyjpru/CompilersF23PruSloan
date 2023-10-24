@@ -164,11 +164,20 @@ print:
     {
 
     }
+    |
+    K_PRINT_DOUBLE LPAREN DCONSTANT RPAREN SEMI
+    {
+
+    }
     | K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
     {
 
     }
     | K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
+    {
+
+    }
+    | K_PRINT_DOUBLE LPAREN IDENTIFIER RPAREN SEMI
     {
 
     }
@@ -198,6 +207,11 @@ assignment:
     {
 
     }
+    |
+    IDENTIFIER ASSIGN DCONSTANT SEMI
+    {
+
+    }
     | IDENTIFIER ASSIGN SCONSTANT SEMI
     {
 
@@ -218,6 +232,10 @@ d_type:
     {
 
     }
+    |K_DOUBLE
+    {
+
+    }
     ;
 
 expr:
@@ -225,6 +243,11 @@ expr:
     {
 
     }
+    | DCONSTANT                   
+    {
+
+    }
+    
     | IDENTIFIER
     {
 
