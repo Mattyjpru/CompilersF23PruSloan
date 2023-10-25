@@ -12,7 +12,7 @@
     extern FILE* yyin;
     int nodeCount = 0;
     int st_loc=0;
-    char use[16];
+    char useBuff[16];
     //Symbol Table stuff
 
     struct stEntry{
@@ -24,7 +24,7 @@
     } symbolTable[48];
 
     void insert(){
-        strcpy(use, yytext);
+        strcpy(useBuff, yytext);
     }
 
     int search(char* in){
@@ -42,14 +42,14 @@
             switch(c){
                 case 'V':
                     symbolTable[st_loc].name=strdup(yytext);
-                    symbolTable[st_loc].d_type=strdup(use);
+                    symbolTable[st_loc].d_type=strdup(useBuff);
                     symbolTable[st_loc].line_no=line;
                     symbolTable[st_loc].use=strdup("Variable");
                     st_loc++;
                     break;
                 case 'D':
                     symbolTable[st_loc].name=strdup(yytext);        
-                    symbolTable[st_loc].d_type=strdup(use);     
+                    symbolTable[st_loc].d_type=strdup(useBuff);     
                     symbolTable[st_loc].line_no=line;    
                     symbolTable[st_loc].use=strdup("Procedure");
                     st_loc++;
@@ -70,7 +70,7 @@
                     break;
                 case 'F':
                     symbolTable[st_loc].name=strdup(yytext);
-                    symbolTable[st_loc].d_type=strdup(use);
+                    symbolTable[st_loc].d_type=strdup(useBuff);
                     symbolTable[st_loc].line_no=line;
                     symbolTable[st_loc].use=strdup("Function");
                     st_loc++;
