@@ -87,7 +87,7 @@
     char  *sVal;
 }
 
-%type<sVal> IDENTIFIER SCONSTANT //expr param_list block d_type var assignment task function procedure print
+%type<sVal> IDENTIFIER SCONSTANT 
 %type<iVal> ICONSTANT
 %type<dVal> DCONSTANT
 
@@ -102,31 +102,29 @@ statement:
     program { printf("Valid Program\n");
                   exit(0);  };
 
-program: K_PROGRAM  IDENTIFIER {newSymbol('V');} LCURLY task RCURLY
+program: K_PROGRAM  IDENTIFIER{newSymbol('V');} LCURLY task RCURLY
     ;
 
 task: function
     {newSymbol('F');}
-    | procedure {newSymbol('D');}
-    | task function {newSymbol('F');}
-    | task procedure {newSymbol('D');}
+    | procedure{newSymbol('D');}
+    | task function{newSymbol('F');}
+    | task procedure{newSymbol('D');}
     ;
 
 procedure:
-    K_PROCEDURE {newSymbol('D');} IDENTIFIER {newSymbol('V');} LPAREN param_list RPAREN LCURLY block RCURLY
-    | K_PROCEDURE {newSymbol('D');} IDENTIFIER {newSymbol('V');} LPAREN RPAREN LCURLY block RCURLY
-    
+    K_PROCEDURE{newSymbol('D');} IDENTIFIER{newSymbol('V');} LPAREN param_list RPAREN LCURLY block RCURLY
+    | K_PROCEDURE{newSymbol('D');} IDENTIFIER{newSymbol('V');} LPAREN RPAREN LCURLY block RCURLY///////////////////////////////////////////////////////////////////////
     ;
 
 function: 
-    K_FUNCTION {newSymbol('F');} d_type IDENTIFIER {newSymbol('V');} LPAREN param_list RPAREN LCURLY block RCURLY
-    | K_FUNCTION {newSymbol('F');} d_type IDENTIFIER {newSymbol('V');} LPAREN RPAREN LCURLY block RCURLY
-    
+    K_FUNCTION{newSymbol('F');} d_type IDENTIFIER{newSymbol('V');} LPAREN param_list RPAREN LCURLY block RCURLY
+    | K_FUNCTION{newSymbol('F');} d_type IDENTIFIER{newSymbol('V');} LPAREN RPAREN LCURLY block RCURLY///////////////////////////////////////////////////////////////////////
     ;
 
 block:
     print           
-    
+    {printf("!");}
     | var             
     {printf("!");}
     | assignment             
@@ -142,40 +140,40 @@ block:
     ;
 
 print:
-    K_PRINT_INTEGER LPAREN ICONSTANT {newSymbol('C');} RPAREN SEMI
-    |K_PRINT_DOUBLE LPAREN DCONSTANT {newSymbol('C');} RPAREN SEMI
-    | K_PRINT_STRING LPAREN SCONSTANT {newSymbol('C');} RPAREN SEMI
-    | K_PRINT_INTEGER LPAREN IDENTIFIER {newSymbol('V');} RPAREN SEMI
-    | K_PRINT_DOUBLE LPAREN IDENTIFIER {newSymbol('V');} RPAREN SEMI
-    | K_PRINT_STRING LPAREN IDENTIFIER {newSymbol('V');} RPAREN SEMI
+    K_PRINT_INTEGER LPAREN ICONSTANT{newSymbol('C');} RPAREN SEMI
+    | K_PRINT_DOUBLE LPAREN DCONSTANT{newSymbol('C');} RPAREN SEMI
+    | K_PRINT_STRING LPAREN SCONSTANT{newSymbol('C');} RPAREN SEMI
+    | K_PRINT_INTEGER LPAREN IDENTIFIER{newSymbol('V');} RPAREN SEMI
+    | K_PRINT_DOUBLE LPAREN IDENTIFIER{newSymbol('V');} RPAREN SEMI
+    | K_PRINT_STRING LPAREN IDENTIFIER{newSymbol('V');} RPAREN SEMI
     | K_PRINT_INTEGER LPAREN expr RPAREN SEMI
     {printf("!");}
     ;
 
 var:
-    d_type IDENTIFIER {newSymbol('V');} SEMI
-    | d_type assignment
+    d_type IDENTIFIER{newSymbol('V');} SEMI
+    |d_type assignment
     {printf("!");}
     ;
 
 assignment:
-    IDENTIFIER {newSymbol('V');} ASSIGN ICONSTANT {newSymbol('C');} SEMI
-    |IDENTIFIER {newSymbol('V');} ASSIGN DCONSTANT {newSymbol('C');} SEMI
-    | IDENTIFIER {newSymbol('V');} ASSIGN SCONSTANT {newSymbol('C');} SEMI
-    | IDENTIFIER {newSymbol('V');} ASSIGN expr SEMI
+    IDENTIFIER{newSymbol('V');} ASSIGN ICONSTANT{newSymbol('C');} SEMI
+    | IDENTIFIER{newSymbol('V');} ASSIGN DCONSTANT{newSymbol('C');} SEMI///////////////////////////////////////////////////////////////////////
+    | IDENTIFIER{newSymbol('V');} ASSIGN SCONSTANT{newSymbol('C');} SEMI///////////////////////////////////////////////////////////////////////
+    | IDENTIFIER{newSymbol('V');} ASSIGN expr SEMI///////////////////////////////////////////////////////////////////////
     ;
     
 
 d_type:
-    K_INTEGER {insert();}
-    | K_STRING {insert();}
-    |K_DOUBLE {insert();}
+    K_INTEGER{insert();}
+    |K_STRING{insert();}
+    |K_DOUBLE{insert();}
     ;
 
 expr:
-    ICONSTANT {newSymbol('C');}
-    | DCONSTANT {newSymbol('C');}
-    | IDENTIFIER {newSymbol('V');}
+    ICONSTANT{newSymbol('C');}
+    | DCONSTANT{newSymbol('C');}
+    | IDENTIFIER{newSymbol('V');}
     | expr MINUS expr             
     {printf("!");}
     | expr PLUS expr              
@@ -186,11 +184,11 @@ expr:
 
 
 param_list:
-    d_type IDENTIFIER {newSymbol('V');}                       
-    | d_type IDENTIFIER {newSymbol('V');} COMMA param_list      
+    d_type IDENTIFIER{newSymbol('V');}                       
+    | d_type IDENTIFIER{newSymbol('V');} COMMA param_list      
     ;
 
-epsilon: ;
+epsilon: {printf("!");};
 
 %%
 
