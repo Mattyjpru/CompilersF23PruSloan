@@ -2,7 +2,6 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    //#include"lex.yy.c"
     int yyerror(char *msg){
         printf("Invalid Program: %s\n", msg);
         exit(0);
@@ -11,16 +10,16 @@
     extern char* yytext;
     int nodeCount = 0;
     int st_loc=0;
-    char use[16];
+    char useRead[16];
     //Symbol Table stuff
 
     struct stEntry{
         char* name;
         char* d_type;
         char* use;
-        //char* val;
+        char* val;
         int line_no;
-    } symbolTable[2048];
+    } symbolTable[48];
 
     void insert(){
         strcpy(use, yytext);
@@ -37,25 +36,41 @@
 
     void newSymbol(char c){
         int q=search(yytext);
-        if(!q)/*?*/{
+        if(!q){
             switch(c){
                 case 'V':
-
+                    symbolTable[st_loc].name=strdup(yytext);
+                    symbolTable[st_loc].d_type=strdup(use);
+                    symbolTable[st_loc].line_no=n;
+                    symbolTable[st_loc].use=strdup("Variable");
                     st_loc++;
                     break;
-                case 'H':
-
+                case 'D':
+                    symbolTable[st_loc].name=strdup(yytext);        
+                    symbolTable[st_loc].d_type=strdup(use);     
+                    symbolTable[st_loc].line_no=n;    
+                    symbolTable[st_loc].use=strdup("Procedure");
                     st_loc++;
                     break;
                 case 'C':
-
+                    symbolTable[st_loc].name=strdup(yytext);
+                    symbolTable[st_loc].d_type=strdup("CONST");
+                    symbolTable[st_loc].line_no=n;
+                    symbolTable[st_loc].use=strdup("Constant");
                     st_loc++;
                     break;
                 case 'K':
+                    symbolTable[st_loc].name=strdup(yytext);
+                    symbolTable[st_loc].d_type=strdup(None);
+                    symbolTable[st_loc].line_no=n;
+                    symbolTable[st_loc].use=strdup("Keyword");
                     st_loc++;
                     break;
                 case 'F':
-
+                    symbolTable[st_loc].name=strdup(yytext);
+                    symbolTable[st_loc].d_type=strdup(use);
+                    symbolTable[st_loc].line_no=n;
+                    symbolTable[st_loc].use=strdup("Function");
                     st_loc++;
                     break;
 
@@ -91,11 +106,11 @@ program: K_PROGRAM {insert();} IDENTIFIER{} LCURLY task RCURLY
 
 task: function
     {
-
+        add('F')
     }
     | procedure
     {
-
+        add('D')
     }
     | task function
     {
@@ -161,16 +176,16 @@ block:
     ;
 
 print:
-    K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI
+    K_PRINT_INTEGER LPAREN ICONSTANT{add('C');} RPAREN SEMI
     {
 
     }
     |
-    K_PRINT_DOUBLE LPAREN DCONSTANT RPAREN SEMI
+    K_PRINT_DOUBLE LPAREN DCONSTANT{add('C');} RPAREN SEMI
     {
 
     }
-    | K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+    | K_PRINT_STRING LPAREN SCONSTANT{add('C');} RPAREN SEMI
     {
 
     }
@@ -204,16 +219,16 @@ var:
     ;
 
 assignment:
-    IDENTIFIER ASSIGN ICONSTANT SEMI
+    IDENTIFIER ASSIGN ICONSTANT{add('C');} SEMI
     {
 
     }
     |
-    IDENTIFIER ASSIGN DCONSTANT SEMI
+    IDENTIFIER ASSIGN DCONSTANT{add('C');} SEMI
     {
         printf("yeah Booooooi %f\n", $3);
     }
-    | IDENTIFIER ASSIGN SCONSTANT SEMI
+    | IDENTIFIER ASSIGN SCONSTANT{add('C');} SEMI
     {
 
     }
@@ -227,31 +242,31 @@ assignment:
 d_type:
     K_INTEGER                   
     {
-
+        insert();
     }
     | K_STRING                    
     {
-
+        insert();
     }
     |K_DOUBLE
     {
-
+        insert();
     }
     ;
 
 expr:
     ICONSTANT                   
     {
-
+        add('C');
     }
     | DCONSTANT                   
     {
-
+        add('C');
     }
     
     | IDENTIFIER
     {
-
+        add('V');
     }
     | expr MINUS expr             
     {
@@ -283,7 +298,7 @@ epsilon: ;
 
 %%
 extern FILE* yyin;
-
+extern int n;
 int main(int argc ,char** argv){
     do {
         /* printf("++++++++++++++++++++++++++++++++++++++++++++++++\n");
