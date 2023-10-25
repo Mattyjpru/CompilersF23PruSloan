@@ -195,6 +195,8 @@
     }
     int yylex();
     extern char* yytext;
+    extern int line;
+    extern FILE* yyin;
     int nodeCount = 0;
     int st_loc=0;
     char use[16];
@@ -286,14 +288,14 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 82 "PS_ST_Parser.yacc"
+#line 84 "PS_ST_Parser.yacc"
 {
     int iVal;
     double dVal;
     char  *sVal;
 }
 /* Line 193 of yacc.c.  */
-#line 297 "y.tab.c"
+#line 299 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -306,7 +308,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 310 "y.tab.c"
+#line 312 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -621,13 +623,13 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   100,   100,   103,   103,   106,   108,   109,   110,   115,
-     115,   115,   117,   117,   117,   122,   122,   122,   124,   124,
-     124,   129,   131,   133,   135,   137,   139,   141,   146,   146,
-     149,   149,   151,   151,   153,   153,   155,   155,   157,   157,
-     159,   164,   164,   166,   171,   171,   171,   174,   174,   174,
-     178,   178,   178,   179,   179,   185,   186,   187,   191,   192,
-     194,   195,   197,   199,   205,   207,   207,   211
+       0,   102,   102,   105,   105,   108,   110,   111,   112,   116,
+     116,   116,   117,   117,   117,   122,   122,   122,   123,   123,
+     123,   128,   130,   132,   134,   136,   138,   140,   145,   145,
+     146,   146,   147,   147,   148,   148,   149,   149,   150,   150,
+     151,   156,   156,   157,   162,   162,   162,   163,   163,   163,
+     164,   164,   164,   165,   165,   170,   171,   172,   176,   177,
+     178,   179,   181,   183,   189,   190,   190,   193
 };
 #endif
 
@@ -1622,43 +1624,43 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 100 "PS_ST_Parser.yacc"
+#line 102 "PS_ST_Parser.yacc"
     { printf("Valid Program\n");
                   exit(0);  }
     break;
 
   case 3:
-#line 103 "PS_ST_Parser.yacc"
+#line 105 "PS_ST_Parser.yacc"
     {newSymbol('V');}
     break;
 
   case 5:
-#line 107 "PS_ST_Parser.yacc"
-    {newSymbol('F');}
-    break;
-
-  case 6:
-#line 108 "PS_ST_Parser.yacc"
-    {newSymbol('D');}
-    break;
-
-  case 7:
 #line 109 "PS_ST_Parser.yacc"
     {newSymbol('F');}
     break;
 
-  case 8:
+  case 6:
 #line 110 "PS_ST_Parser.yacc"
     {newSymbol('D');}
     break;
 
+  case 7:
+#line 111 "PS_ST_Parser.yacc"
+    {newSymbol('F');}
+    break;
+
+  case 8:
+#line 112 "PS_ST_Parser.yacc"
+    {newSymbol('D');}
+    break;
+
   case 9:
-#line 115 "PS_ST_Parser.yacc"
+#line 116 "PS_ST_Parser.yacc"
     {newSymbol('D');}
     break;
 
   case 10:
-#line 115 "PS_ST_Parser.yacc"
+#line 116 "PS_ST_Parser.yacc"
     {newSymbol('V');}
     break;
 
@@ -1683,135 +1685,183 @@ yyreduce:
     break;
 
   case 18:
-#line 124 "PS_ST_Parser.yacc"
+#line 123 "PS_ST_Parser.yacc"
     {newSymbol('F');}
     break;
 
   case 19:
-#line 124 "PS_ST_Parser.yacc"
+#line 123 "PS_ST_Parser.yacc"
     {newSymbol('V');}
     break;
 
+  case 22:
+#line 131 "PS_ST_Parser.yacc"
+    {printf("!");}
+    break;
+
+  case 23:
+#line 133 "PS_ST_Parser.yacc"
+    {printf("!");}
+    break;
+
+  case 24:
+#line 135 "PS_ST_Parser.yacc"
+    {printf("!");}
+    break;
+
+  case 25:
+#line 137 "PS_ST_Parser.yacc"
+    {printf("!");}
+    break;
+
+  case 26:
+#line 139 "PS_ST_Parser.yacc"
+    {printf("!");}
+    break;
+
+  case 27:
+#line 141 "PS_ST_Parser.yacc"
+    {printf("!");}
+    break;
+
   case 28:
-#line 146 "PS_ST_Parser.yacc"
+#line 145 "PS_ST_Parser.yacc"
     {newSymbol('C');}
     break;
 
   case 30:
-#line 149 "PS_ST_Parser.yacc"
+#line 146 "PS_ST_Parser.yacc"
     {newSymbol('C');}
     break;
 
   case 32:
-#line 151 "PS_ST_Parser.yacc"
+#line 147 "PS_ST_Parser.yacc"
     {newSymbol('C');}
     break;
 
   case 34:
-#line 153 "PS_ST_Parser.yacc"
+#line 148 "PS_ST_Parser.yacc"
     {newSymbol('V');}
     break;
 
   case 36:
-#line 155 "PS_ST_Parser.yacc"
+#line 149 "PS_ST_Parser.yacc"
     {newSymbol('V');}
     break;
 
   case 38:
-#line 157 "PS_ST_Parser.yacc"
+#line 150 "PS_ST_Parser.yacc"
     {newSymbol('V');}
+    break;
+
+  case 40:
+#line 152 "PS_ST_Parser.yacc"
+    {printf("!");}
     break;
 
   case 41:
-#line 164 "PS_ST_Parser.yacc"
+#line 156 "PS_ST_Parser.yacc"
     {newSymbol('V');}
     break;
 
+  case 43:
+#line 158 "PS_ST_Parser.yacc"
+    {printf("!");}
+    break;
+
   case 44:
-#line 171 "PS_ST_Parser.yacc"
+#line 162 "PS_ST_Parser.yacc"
     {newSymbol('V');}
     break;
 
   case 45:
-#line 171 "PS_ST_Parser.yacc"
+#line 162 "PS_ST_Parser.yacc"
     {newSymbol('C');}
     break;
 
   case 47:
-#line 174 "PS_ST_Parser.yacc"
+#line 163 "PS_ST_Parser.yacc"
     {newSymbol('V');}
     break;
 
   case 48:
-#line 174 "PS_ST_Parser.yacc"
+#line 163 "PS_ST_Parser.yacc"
     {newSymbol('C');}
     break;
 
-  case 49:
-#line 175 "PS_ST_Parser.yacc"
-    {
-        //printf("yeah Booooooi %f\n", $3);
-    }
-    break;
-
   case 50:
-#line 178 "PS_ST_Parser.yacc"
+#line 164 "PS_ST_Parser.yacc"
     {newSymbol('V');}
     break;
 
   case 51:
-#line 178 "PS_ST_Parser.yacc"
+#line 164 "PS_ST_Parser.yacc"
     {newSymbol('C');}
     break;
 
   case 53:
-#line 179 "PS_ST_Parser.yacc"
+#line 165 "PS_ST_Parser.yacc"
     {newSymbol('V');}
     break;
 
   case 55:
-#line 185 "PS_ST_Parser.yacc"
+#line 170 "PS_ST_Parser.yacc"
     {insert();}
     break;
 
   case 56:
-#line 186 "PS_ST_Parser.yacc"
+#line 171 "PS_ST_Parser.yacc"
     {insert();}
     break;
 
   case 57:
-#line 187 "PS_ST_Parser.yacc"
+#line 172 "PS_ST_Parser.yacc"
     {insert();}
     break;
 
   case 58:
-#line 191 "PS_ST_Parser.yacc"
+#line 176 "PS_ST_Parser.yacc"
     {newSymbol('C');}
     break;
 
   case 59:
-#line 192 "PS_ST_Parser.yacc"
+#line 177 "PS_ST_Parser.yacc"
     {newSymbol('C');}
     break;
 
   case 60:
-#line 194 "PS_ST_Parser.yacc"
+#line 178 "PS_ST_Parser.yacc"
     {newSymbol('V');}
     break;
 
+  case 61:
+#line 180 "PS_ST_Parser.yacc"
+    {printf("!");}
+    break;
+
+  case 62:
+#line 182 "PS_ST_Parser.yacc"
+    {printf("!");}
+    break;
+
+  case 63:
+#line 184 "PS_ST_Parser.yacc"
+    {printf("!");}
+    break;
+
   case 64:
-#line 205 "PS_ST_Parser.yacc"
+#line 189 "PS_ST_Parser.yacc"
     {newSymbol('V');}
     break;
 
   case 65:
-#line 207 "PS_ST_Parser.yacc"
+#line 190 "PS_ST_Parser.yacc"
     {newSymbol('V');}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1815 "y.tab.c"
+#line 1865 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2025,10 +2075,9 @@ yyreturn:
 }
 
 
-#line 213 "PS_ST_Parser.yacc"
+#line 195 "PS_ST_Parser.yacc"
 
-extern FILE* yyin;
-extern int line;
+
 int main(int argc ,char** argv){
     do {
         /* printf("++++++++++++++++++++++++++++++++++++++++++++++++\n");

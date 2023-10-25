@@ -158,7 +158,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 82 "PS_ST_Parser.yacc"
+#line 84 "PS_ST_Parser.yacc"
 {
     int iVal;
     double dVal;

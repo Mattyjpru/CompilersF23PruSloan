@@ -8,6 +8,8 @@
     }
     int yylex();
     extern char* yytext;
+    extern int line;
+    extern FILE* yyin;
     int nodeCount = 0;
     int st_loc=0;
     char use[16];
@@ -85,7 +87,7 @@
     char  *sVal;
 }
 
-%type<sVal> IDENTIFIER SCONSTANT expr param_list block d_type var assignment task function procedure print
+%type<sVal> IDENTIFIER SCONSTANT //expr param_list block d_type var assignment task function procedure print
 %type<iVal> ICONSTANT
 %type<dVal> DCONSTANT
 
@@ -108,19 +110,16 @@ task: function
     | procedure{newSymbol('D');}
     | task function{newSymbol('F');}
     | task procedure{newSymbol('D');}
-    
     ;
 
 procedure:
     K_PROCEDURE{newSymbol('D');} IDENTIFIER{newSymbol('V');} LPAREN param_list RPAREN LCURLY block RCURLY
-    
     | K_PROCEDURE{newSymbol('D');} IDENTIFIER{newSymbol('V');} LPAREN RPAREN LCURLY block RCURLY
     
     ;
 
 function: 
     K_FUNCTION{newSymbol('F');} d_type IDENTIFIER{newSymbol('V');} LPAREN param_list RPAREN LCURLY block RCURLY
-    
     | K_FUNCTION{newSymbol('F');} d_type IDENTIFIER{newSymbol('V');} LPAREN RPAREN LCURLY block RCURLY
     
     ;
@@ -129,55 +128,41 @@ block:
     print           
     
     | var             
-    
+    {printf("!");}
     | assignment             
-    
+    {printf("!");}
     | print block     
-    
+    {printf("!");}
     | var block       
-    
+    {printf("!");}
     | assignment block       
-    
+    {printf("!");}
     | epsilon     
-   
+   {printf("!");}
     ;
 
 print:
     K_PRINT_INTEGER LPAREN ICONSTANT{newSymbol('C');} RPAREN SEMI
-    
-    |
-    K_PRINT_DOUBLE LPAREN DCONSTANT{newSymbol('C');} RPAREN SEMI
-    
+    |K_PRINT_DOUBLE LPAREN DCONSTANT{newSymbol('C');} RPAREN SEMI
     | K_PRINT_STRING LPAREN SCONSTANT{newSymbol('C');} RPAREN SEMI
-    
     | K_PRINT_INTEGER LPAREN IDENTIFIER{newSymbol('V');} RPAREN SEMI
-    
     | K_PRINT_DOUBLE LPAREN IDENTIFIER{newSymbol('V');} RPAREN SEMI
-    
     | K_PRINT_STRING LPAREN IDENTIFIER{newSymbol('V');} RPAREN SEMI
-    
     | K_PRINT_INTEGER LPAREN expr RPAREN SEMI
-    
+    {printf("!");}
     ;
 
 var:
     d_type IDENTIFIER{newSymbol('V');} SEMI
-    
     | d_type assignment
-    
+    {printf("!");}
     ;
 
 assignment:
     IDENTIFIER{newSymbol('V');} ASSIGN ICONSTANT{newSymbol('C');} SEMI
-    
-    |
-    IDENTIFIER{newSymbol('V');} ASSIGN DCONSTANT{newSymbol('C');} SEMI
-    {
-        //printf("yeah Booooooi %f\n", $3);
-    }
+    |IDENTIFIER{newSymbol('V');} ASSIGN DCONSTANT{newSymbol('C');} SEMI
     | IDENTIFIER{newSymbol('V');} ASSIGN SCONSTANT{newSymbol('C');} SEMI
     | IDENTIFIER{newSymbol('V');} ASSIGN expr SEMI
-    
     ;
     
 
@@ -190,29 +175,25 @@ d_type:
 expr:
     ICONSTANT{newSymbol('C');}
     | DCONSTANT{newSymbol('C');}
-    
     | IDENTIFIER{newSymbol('V');}
     | expr MINUS expr             
-    
+    {printf("!");}
     | expr PLUS expr              
-    
+    {printf("!");}
     | LPAREN expr RPAREN          
-    
+    {printf("!");}
     ;
 
 
 param_list:
     d_type IDENTIFIER{newSymbol('V');}                       
-    
     | d_type IDENTIFIER{newSymbol('V');} COMMA param_list      
-    
     ;
 
 epsilon: ;
 
 %%
-extern FILE* yyin;
-extern int line;
+
 int main(int argc ,char** argv){
     do {
         /* printf("++++++++++++++++++++++++++++++++++++++++++++++++\n");
