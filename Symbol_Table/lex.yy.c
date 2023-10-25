@@ -601,7 +601,7 @@ int line=0;
 char* repD(char* str, char target){
     char* here=strchr(str,target);
     while(here){
-        *here='e';
+        *here="e";
         here=strchr(here, target);
     }
     return str;
@@ -993,7 +993,7 @@ return K_WHILE;
 case 22:
 YY_RULE_SETUP
 #line 37 "PSlexer.l"
-{yylval.dVal = atof(repD(repD(yytext, 'd'),'D')); return DCONSTANT;}
+{yylval.dval = atof(repD(repD("d"),"D")); return DCONSTANT;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP

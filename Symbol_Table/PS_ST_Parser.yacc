@@ -41,35 +41,35 @@
                 case 'V':
                     symbolTable[st_loc].name=strdup(yytext);
                     symbolTable[st_loc].d_type=strdup(use);
-                    symbolTable[st_loc].line_no=n;
+                    symbolTable[st_loc].line_no=line;
                     symbolTable[st_loc].use=strdup("Variable");
                     st_loc++;
                     break;
                 case 'D':
                     symbolTable[st_loc].name=strdup(yytext);        
                     symbolTable[st_loc].d_type=strdup(use);     
-                    symbolTable[st_loc].line_no=n;    
+                    symbolTable[st_loc].line_no=line;    
                     symbolTable[st_loc].use=strdup("Procedure");
                     st_loc++;
                     break;
                 case 'C':
                     symbolTable[st_loc].name=strdup(yytext);
                     symbolTable[st_loc].d_type=strdup("CONST");
-                    symbolTable[st_loc].line_no=n;
+                    symbolTable[st_loc].line_no=line;
                     symbolTable[st_loc].use=strdup("Constant");
                     st_loc++;
                     break;
                 case 'K':
                     symbolTable[st_loc].name=strdup(yytext);
                     symbolTable[st_loc].d_type=strdup("None");
-                    symbolTable[st_loc].line_no=n;
+                    symbolTable[st_loc].line_no=line;
                     symbolTable[st_loc].use=strdup("Keyword");
                     st_loc++;
                     break;
                 case 'F':
                     symbolTable[st_loc].name=strdup(yytext);
                     symbolTable[st_loc].d_type=strdup(use);
-                    symbolTable[st_loc].line_no=n;
+                    symbolTable[st_loc].line_no=line;
                     symbolTable[st_loc].use=strdup("Function");
                     st_loc++;
                     break;
@@ -212,7 +212,7 @@ epsilon: ;
 
 %%
 extern FILE* yyin;
-extern int n;
+extern int line;
 int main(int argc ,char** argv){
     do {
         /* printf("++++++++++++++++++++++++++++++++++++++++++++++++\n");
