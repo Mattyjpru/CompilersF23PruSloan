@@ -27,7 +27,7 @@
         strcpy(useBuff, yytext);
     }
 
-    int search(char* in){
+    int searchS(char* in){
         for(int i=0; i<st_loc; i++){
             if(strcmp(symbolTable[i].name, in)==0){
                 return -1;
@@ -36,47 +36,81 @@
         return 0;
     }
 
-    void newSymbol(char c){
-        int q=search(yytext);
-        if(q==0){
-            switch(c){
-                case 'V':
-                    symbolTable[st_loc].name=strdup(yytext);
-                    symbolTable[st_loc].d_type=strdup(useBuff);
-                    symbolTable[st_loc].line_no=line;
-                    symbolTable[st_loc].use=strdup("Variable");
-                    st_loc++;
+    int searchI(int in){
+        for(int i=0; i<st_loc; i++){
+            if(strcmp(symbolTable[i].use, "ICONSTANT")==0)
+            {
+                if(symbolTable[i].val==in){
+                    return -1;
                     break;
-                case 'D':
-                    symbolTable[st_loc].name=strdup(yytext);        
-                    symbolTable[st_loc].d_type=strdup(useBuff);     
-                    symbolTable[st_loc].line_no=line;    
-                    symbolTable[st_loc].use=strdup("Procedure");
-                    st_loc++;
-                    break;
-                case 'C':
-                    symbolTable[st_loc].name=strdup(yytext);
-                    symbolTable[st_loc].d_type=strdup("CONST");
-                    symbolTable[st_loc].line_no=line;
-                    symbolTable[st_loc].use=strdup("Constant");
-                    st_loc++;
-                    break;
-                case 'K':
-                    symbolTable[st_loc].name=strdup(yytext);
-                    symbolTable[st_loc].d_type=strdup("None");
-                    symbolTable[st_loc].line_no=line;
-                    symbolTable[st_loc].use=strdup("Keyword");
-                    st_loc++;
-                    break;
-                case 'F':
-                    symbolTable[st_loc].name=strdup(yytext);
-                    symbolTable[st_loc].d_type=strdup(useBuff);
-                    symbolTable[st_loc].line_no=line;
-                    symbolTable[st_loc].use=strdup("Function");
-                    st_loc++;
-                    break;
-
+                }
             }
+        }
+        return 0;
+    }
+
+    int searchD(double in){
+         for(int i=0; i<st_loc; i++){
+            if(strcmp(symbolTable[i].use, "DCONSTANT")==0)
+            {
+                if(symbolTable[i].val==in){
+                    return -1;
+                    break;
+                }
+            }
+        }
+        return 0;
+    }
+
+
+
+
+    void newSymbol(char c){
+        switch(c){
+            case 'V':
+
+                symbolTable[st_loc].name=yylval.sVal;
+                symbolTable[st_loc].d_type=strdup(useBuff);
+                symbolTable[st_loc].line_no=line;
+                symbolTable[st_loc].use=strdup("IDENTIFIER");
+                st_loc++;
+                break;
+            case 'P':
+                symbolTable[st_loc].name=strdup(yytext);        
+                symbolTable[st_loc].d_type=strdup(useBuff);    
+                symbolTable[st_loc].line_no=line;    
+                symbolTable[st_loc].use=strdup("PROCEDURE");
+                st_loc++;
+                break;
+            case 'I':
+                symbolTable[st_loc].name=strdup(yytext);
+                symbolTable[st_loc].d_type=strdup("CONST");
+                symbolTable[st_loc].line_no=line;
+                symbolTable[st_loc].use=strdup("ICONSTANT");
+                st_loc++;
+                break;
+            case 'D':
+                symbolTable[st_loc].name=strdup(yytext);
+                symbolTable[st_loc].d_type=strdup("CONST");
+                symbolTable[st_loc].line_no=line;
+                symbolTable[st_loc].use=strdup("DCONSTANT");
+                st_loc++;
+                break;
+            case 'S':
+                symbolTable[st_loc].name=strdup(yytext);
+                symbolTable[st_loc].d_type=strdup("CONST");
+                symbolTable[st_loc].line_no=line;
+                symbolTable[st_loc].use=strdup("SCONSTANT");
+                st_loc++;
+                break;
+            case 'F':
+                symbolTable[st_loc].name=strdup(yytext);
+                symbolTable[st_loc].d_type=strdup(useBuff);
+                symbolTable[st_loc].line_no=line;
+                symbolTable[st_loc].use=strdup("FUNCTION");
+                st_loc++;
+                break;
+
         }
     }
 %}
@@ -107,14 +141,14 @@ program: K_PROGRAM  IDENTIFIER{newSymbol('V');} LCURLY task RCURLY
 
 task: function
     {newSymbol('F');}
-    | procedure{newSymbol('D');}
+    | procedure{newSymbol('P');}
     | task function{newSymbol('F');}
-    | task procedure{newSymbol('D');}
+    | task procedure{newSymbol('P');}
     ;
 
 procedure:
-    K_PROCEDURE{newSymbol('D');} IDENTIFIER{newSymbol('V');} LPAREN param_list RPAREN LCURLY block RCURLY
-    | K_PROCEDURE{newSymbol('D');} IDENTIFIER{newSymbol('V');} LPAREN RPAREN LCURLY block RCURLY///////////////////////////////////////////////////////////////////////
+    K_PROCEDURE IDENTIFIER{newSymbol('V');} LPAREN param_list RPAREN LCURLY block RCURLY
+    | K_PROCEDURE{newSymbol('P');} IDENTIFIER{newSymbol('V');} LPAREN RPAREN LCURLY block RCURLY///////////////////////////////////////////////////////////////////////
     ;
 
 function: 
