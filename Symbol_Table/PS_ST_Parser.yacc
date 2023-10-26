@@ -325,4 +325,5 @@ int main(int argc ,char** argv){
         }
     }
     // code generator goes here
+    return 0;
 }
