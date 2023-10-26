@@ -6,6 +6,7 @@
         printf("Invalid Program: %s\n", msg);
         exit(0);
     }
+    // extern yylval
     int yylex();
     extern char* yytext;
     extern int line;
@@ -162,8 +163,7 @@ statement:
 program: K_PROGRAM  IDENTIFIER{newSymbol('V');} LCURLY task RCURLY
     ;
 
-task: function
-    {newSymbol('F');}
+task: function{newSymbol('F');}
     | procedure{newSymbol('P');}
     | task function{newSymbol('F');}
     | task procedure{newSymbol('P');}
