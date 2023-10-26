@@ -171,6 +171,7 @@ int main(){
         yyparse();
         printf("fucking anything\n");
     }while(!feof(yyin));
+    
     return 0;
 }
     /* do{
