@@ -165,28 +165,21 @@ epsilon: ;
 extern FILE* yyin;
 
 int main(){
-    /* do{
-        yyparse();
-        printf("fucking anything\n");
-    }while(!feof(yyin));
-
-    return 0;
-} */
     do{
         yyparse();
         printf("\n\n");
-        printf("SYMBOL\t\t\t\tDATATYPE\tTYPE\t\tLINE NUMBER \n");
+        printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
         printf("___________________________________________________________________________\n\n");
         int i = 0;
         for(i=0; i<st_count; i++) {
             if(strcmp(symbolTable[i].use, "ICONSTANT") == 0){
-                printf("%-25d\t%-15s\t%-15s\t%-15d\n", symbolTable[i].intval, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
+                printf("%-25d %-15s %-15s %-15d\n", symbolTable[i].intval, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
             }
             else if(strcmp(symbolTable[i].use, "DCONSTANT") == 0){
-                printf("%-25f\t%-15s\t%-15s\t%-15d\n", symbolTable[i].dubval, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
+                printf("%-25f %-15s %-15s %-15d\n", symbolTable[i].dubval, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
             }
             else{
-                printf("%-25s\t%-15s\t%-15s\t%-15d\n", symbolTable[i].name, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
+                printf("%-25s %-15s %-15s %-15d\n", symbolTable[i].name, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
             }
         }
         for(i=0;i<st_count;i++) {
