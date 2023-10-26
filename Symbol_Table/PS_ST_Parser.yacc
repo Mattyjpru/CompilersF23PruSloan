@@ -20,6 +20,8 @@
         char* d_type;
         char* use;
         char* val;
+        int intval;
+        float dubval;
         int line_no;
     } symbolTable[48];
 
@@ -29,8 +31,11 @@
 
     int searchS(char* in){
         for(int i=0; i<st_loc; i++){
-            if(strcmp(symbolTable[i].name, in)==0){
-                return -1;
+            if((strcmp(symbolTable[i].use, "ICONSTANT") != 0) && (strcmp(symbolTable[i].use, "DCONSTANT") != 0)){
+                if(strcmp(symbolTable[i].name, in)==0){
+                    return -1;
+                    break;
+                }
             }
         }
         return 0;
@@ -40,7 +45,7 @@
         for(int i=0; i<st_loc; i++){
             if(strcmp(symbolTable[i].use, "ICONSTANT")==0)
             {
-                if(symbolTable[i].val==in){
+                if(symbolTable[i].intval==in){
                     return -1;
                     break;
                 }
@@ -53,7 +58,7 @@
          for(int i=0; i<st_loc; i++){
             if(strcmp(symbolTable[i].use, "DCONSTANT")==0)
             {
-                if(symbolTable[i].val==in){
+                if(symbolTable[i].dubval==in){
                     return -1;
                     break;
                 }
@@ -66,50 +71,68 @@
 
 
     void newSymbol(char c){
+        int q;
         switch(c){
             case 'V':
-
-                symbolTable[st_loc].name=yylval.sVal;
-                symbolTable[st_loc].d_type=strdup(useBuff);
-                symbolTable[st_loc].line_no=line;
-                symbolTable[st_loc].use=strdup("IDENTIFIER");
-                st_loc++;
-                break;
+                q=searchS(yylval.sVal);
+                if(!q){
+                    symbolTable[st_loc].name=yylval.sVal;
+                    symbolTable[st_loc].d_type=strdup(useBuff);
+                    symbolTable[st_loc].line_no=line;
+                    symbolTable[st_loc].use=strdup("IDENTIFIER");
+                    st_loc++;
+                    break;
+                }
             case 'P':
-                symbolTable[st_loc].name=strdup(yytext);        
-                symbolTable[st_loc].d_type=strdup(useBuff);    
-                symbolTable[st_loc].line_no=line;    
-                symbolTable[st_loc].use=strdup("PROCEDURE");
-                st_loc++;
-                break;
+                q=searchS(yylval.sVal);
+                if(!q){
+                    symbolTable[st_loc].name=strdup(yytext);        
+                    symbolTable[st_loc].d_type=strdup(useBuff);    
+                    symbolTable[st_loc].line_no=line;    
+                    symbolTable[st_loc].use=strdup("PROCEDURE");
+                    st_loc++;
+                    break;
+                }
             case 'I':
-                symbolTable[st_loc].name=strdup(yytext);
-                symbolTable[st_loc].d_type=strdup("CONST");
-                symbolTable[st_loc].line_no=line;
-                symbolTable[st_loc].use=strdup("ICONSTANT");
-                st_loc++;
-                break;
+                q=searchI(yylval.iVal);
+                if(!q){
+                    symbolTable[st_loc].intval=yylval.iVal;
+                    symbolTable[st_loc].d_type=strdup("CONST");
+                    symbolTable[st_loc].line_no=line;
+                    symbolTable[st_loc].use=strdup("ICONSTANT");
+                    st_loc++;
+                    break;
+                }
             case 'D':
-                symbolTable[st_loc].name=strdup(yytext);
-                symbolTable[st_loc].d_type=strdup("CONST");
-                symbolTable[st_loc].line_no=line;
-                symbolTable[st_loc].use=strdup("DCONSTANT");
-                st_loc++;
-                break;
+                q=searchD(yylval.dVal);
+                if(!q){
+                    symbolTable[st_loc].dubval=yylval.dVal;
+                    symbolTable[st_loc].d_type=strdup("CONST");
+                    symbolTable[st_loc].line_no=line;
+                    symbolTable[st_loc].use=strdup("DCONSTANT");
+                    st_loc++;
+                    break;
+                }
             case 'S':
-                symbolTable[st_loc].name=strdup(yytext);
-                symbolTable[st_loc].d_type=strdup("CONST");
-                symbolTable[st_loc].line_no=line;
-                symbolTable[st_loc].use=strdup("SCONSTANT");
-                st_loc++;
-                break;
+                q=searchS(yylval.sVal);
+                if(!q){
+                    symbolTable[st_loc].name=yylval.sVal;
+                    symbolTable[st_loc].d_type=strdup("CONST");
+                    symbolTable[st_loc].line_no=line;
+                    symbolTable[st_loc].use=strdup("SCONSTANT");
+                    st_loc++;
+                    break;
+                }
             case 'F':
-                symbolTable[st_loc].name=strdup(yytext);
-                symbolTable[st_loc].d_type=strdup(useBuff);
-                symbolTable[st_loc].line_no=line;
-                symbolTable[st_loc].use=strdup("FUNCTION");
-                st_loc++;
-                break;
+                q=searchS(yylval.sVal);
+                if(!q){
+                    symbolTable[st_loc].name=strdup(yytext);
+                    symbolTable[st_loc].d_type=strdup(useBuff);
+                    symbolTable[st_loc].line_no=line;
+                    symbolTable[st_loc].use=strdup("FUNCTION");
+                    st_loc++;
+                    break;
+                }
 
         }
     }
@@ -174,9 +197,9 @@ block:
     ;
 
 print:
-    K_PRINT_INTEGER LPAREN ICONSTANT{newSymbol('C');} RPAREN SEMI
-    | K_PRINT_DOUBLE LPAREN DCONSTANT{newSymbol('C');} RPAREN SEMI
-    | K_PRINT_STRING LPAREN SCONSTANT{newSymbol('C');} RPAREN SEMI
+    K_PRINT_INTEGER LPAREN ICONSTANT{newSymbol('I');} RPAREN SEMI
+    | K_PRINT_DOUBLE LPAREN DCONSTANT{newSymbol('D');} RPAREN SEMI
+    | K_PRINT_STRING LPAREN SCONSTANT{newSymbol('S');} RPAREN SEMI
     | K_PRINT_INTEGER LPAREN IDENTIFIER{newSymbol('V');} RPAREN SEMI
     | K_PRINT_DOUBLE LPAREN IDENTIFIER{newSymbol('V');} RPAREN SEMI
     | K_PRINT_STRING LPAREN IDENTIFIER{newSymbol('V');} RPAREN SEMI
@@ -191,9 +214,9 @@ var:
     ;
 
 assignment:
-    IDENTIFIER{newSymbol('V');} ASSIGN ICONSTANT{newSymbol('C');} SEMI
-    | IDENTIFIER{newSymbol('V');} ASSIGN DCONSTANT{newSymbol('C');} SEMI///////////////////////////////////////////////////////////////////////
-    | IDENTIFIER{newSymbol('V');} ASSIGN SCONSTANT{newSymbol('C');} SEMI///////////////////////////////////////////////////////////////////////
+    IDENTIFIER{newSymbol('V');} ASSIGN ICONSTANT{newSymbol('I');} SEMI
+    | IDENTIFIER{newSymbol('V');} ASSIGN DCONSTANT{newSymbol('D');} SEMI///////////////////////////////////////////////////////////////////////
+    | IDENTIFIER{newSymbol('V');} ASSIGN SCONSTANT{newSymbol('S');} SEMI///////////////////////////////////////////////////////////////////////
     | IDENTIFIER{newSymbol('V');} ASSIGN expr SEMI///////////////////////////////////////////////////////////////////////
     ;
     
@@ -205,8 +228,8 @@ d_type:
     ;
 
 expr:
-    ICONSTANT{newSymbol('C');}
-    | DCONSTANT{newSymbol('C');}
+    ICONSTANT{newSymbol('I');}
+    | DCONSTANT{newSymbol('D');}
     | IDENTIFIER{newSymbol('V');}
     | expr MINUS expr             
     {printf("!");}
@@ -234,6 +257,7 @@ int main(int argc ,char** argv){
         yyparse();
     } while ( !feof( yyin ) );
     for (int i=0;i<st_loc;i++){
+/////////////////////////////////////////////////////name
         if(symbolTable[i].name){
             printf("%s",symbolTable[i].name);
             printf("\t");
@@ -241,7 +265,7 @@ int main(int argc ,char** argv){
         else{
             printf("\t\t");
         }
-
+/////////////////////////////////////////////////////data type
         if(symbolTable[i].d_type){
             printf("%s",symbolTable[i].d_type);
             printf("\t");
@@ -249,7 +273,7 @@ int main(int argc ,char** argv){
         else{
             printf("\t\t");
         }
-
+/////////////////////////////////////////////////////use
         if(symbolTable[i].use){
             printf("%s",symbolTable[i].use);
             printf("\t");
@@ -257,15 +281,23 @@ int main(int argc ,char** argv){
         else{
             printf("\t\t");
         }
-
+/////////////////////////////////////////////////////value
         if(symbolTable[i].val){
             printf("%s",symbolTable[i].val);
+            printf("\t");
+        }
+        else if(symbolTable[i].intval){
+            printf("%d",symbolTable[i].intval);
+            printf("\t");
+        }
+        else if(symbolTable[i].dubval){
+            printf("%f",symbolTable[i].dubval);
             printf("\t");
         }
         else{
             printf("\t\t");
         }
-
+/////////////////////////////////////////////////////line number
         if(symbolTable[i].line_no){
             printf("%d",symbolTable[i].line_no);
             printf("\t");
