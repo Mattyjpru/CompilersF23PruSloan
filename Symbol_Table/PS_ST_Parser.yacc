@@ -6,12 +6,12 @@
         printf("Invalid Program: %s\n", msg);
         exit(0);
     }
-    // extern yylval
     int yylex();
+
+    extern FILE* yyin;
     extern char* yytext;
     extern int line;
-    extern FILE* yyin;
-    int nodeCount = 0;
+    // int nodeCount = 0;
     int st_loc=0;
     char useBuff[16];
     //Symbol Table stuff
@@ -30,7 +30,7 @@
         strcpy(useBuff, yytext);
     }
 
-    int searchS(char* in){
+    int search_S(char* in){
         for(int i=0; i<st_loc; i++){
             if((strcmp(symbolTable[i].use, "ICONSTANT") != 0) && (strcmp(symbolTable[i].use, "DCONSTANT") != 0)){
                 if(strcmp(symbolTable[i].name, in)==0){
@@ -42,7 +42,7 @@
         return 0;
     }
 
-    int searchI(int in){
+    int search_I(int in){
         for(int i=0; i<st_loc; i++){
             if(strcmp(symbolTable[i].use, "ICONSTANT")==0)
             {
@@ -55,7 +55,7 @@
         return 0;
     }
 
-    int searchD(double in){
+    int search_D(double in){
          for(int i=0; i<st_loc; i++){
             if(strcmp(symbolTable[i].use, "DCONSTANT")==0)
             {
@@ -71,70 +71,65 @@
 
 
 
-    void newSymbol(char c){
-        int q;
-        switch(c){
-            case 'V':
-                q=searchS(yylval.sVal);
-                if(!q){
-                    symbolTable[st_loc].name=yylval.sVal;
+    void newSymbol_S(char c, char* stringVal){
+        if(!search_S(stringVal)){
+            switch(c){
+                case 'V':
+                    symbolTable[st_loc].name=strdup(stringVal);
                     symbolTable[st_loc].d_type=strdup(useBuff);
                     symbolTable[st_loc].line_no=line;
                     symbolTable[st_loc].use=strdup("IDENTIFIER");
                     st_loc++;
                     break;
-                }
-            case 'P':
-                q=searchS(yylval.sVal);
-                if(!q){
-                    symbolTable[st_loc].name=strdup(yytext);        
-                    symbolTable[st_loc].d_type=strdup(useBuff);    
+                case 'P':
+                    symbolTable[st_loc].name=strdup(stringVal);        
+                    symbolTable[st_loc].d_type=strdup("void");    
                     symbolTable[st_loc].line_no=line;    
                     symbolTable[st_loc].use=strdup("PROCEDURE");
                     st_loc++;
                     break;
-                }
-            case 'I':
-                q=searchI(yylval.iVal);
-                if(!q){
-                    symbolTable[st_loc].intval=yylval.iVal;
-                    symbolTable[st_loc].d_type=strdup("CONST");
-                    symbolTable[st_loc].line_no=line;
-                    symbolTable[st_loc].use=strdup("ICONSTANT");
-                    st_loc++;
-                    break;
-                }
-            case 'D':
-                q=searchD(yylval.dVal);
-                if(!q){
-                    symbolTable[st_loc].dubval=yylval.dVal;
-                    symbolTable[st_loc].d_type=strdup("CONST");
-                    symbolTable[st_loc].line_no=line;
-                    symbolTable[st_loc].use=strdup("DCONSTANT");
-                    st_loc++;
-                    break;
-                }
-            case 'S':
-                q=searchS(yylval.sVal);
-                if(!q){
-                    symbolTable[st_loc].name=yylval.sVal;
+                case 'S':
+                    symbolTable[st_loc].name=strdup(stringVal); 
                     symbolTable[st_loc].d_type=strdup("CONST");
                     symbolTable[st_loc].line_no=line;
                     symbolTable[st_loc].use=strdup("SCONSTANT");
                     st_loc++;
                     break;
-                }
-            case 'F':
-                q=searchS(yylval.sVal);
-                if(!q){
-                    symbolTable[st_loc].name=strdup(yytext);
+                case 'F':
+                    symbolTable[st_loc].name=strdup(stringVal); 
                     symbolTable[st_loc].d_type=strdup(useBuff);
                     symbolTable[st_loc].line_no=line;
                     symbolTable[st_loc].use=strdup("FUNCTION");
                     st_loc++;
                     break;
-                }
+                case 'M':
+                    symbolTable[st_loc].name=strdup(stringVal); 
+                    symbolTable[st_loc].d_type=strdup("N/A");
+                    symbolTable[st_loc].line_no=line;
+                    symbolTable[st_loc].use=strdup("PROGRAM");
+                    st_loc++;
+                    break;
+            }
+        }
+    }
 
+    void newSymbol_I(int iconstVal){
+        if(!search_I(iconstVal)){
+            symbolTable[st_loc].intval=iconstVal;
+            symbolTable[st_loc].d_type=strdup("CONST");
+            symbolTable[st_loc].line_no=line;
+            symbolTable[st_loc].use=strdup("ICONSTANT");
+            st_loc++;
+        }
+    }
+
+    void newSymbol_D(double dconstVal){
+        if(!search_D(dconstVal)){
+            symbolTable[st_loc].dubval=dconstVal;
+            symbolTable[st_loc].d_type=strdup("CONST");
+            symbolTable[st_loc].line_no=line;
+            symbolTable[st_loc].use=strdup("DCONSTANT");
+            st_loc++;
         }
     }
 %}
@@ -143,7 +138,7 @@
     int iVal;
     double dVal;
     char  *sVal;
-}
+};
 
 %type<sVal> IDENTIFIER SCONSTANT 
 %type<iVal> ICONSTANT
@@ -160,92 +155,115 @@ statement:
     program { printf("Valid Program\n");
                   exit(0);  };
 
-program: K_PROGRAM  IDENTIFIER{newSymbol('V');} LCURLY task RCURLY
+program: K_PROGRAM IDENTIFIER LCURLY task RCURLY
+    {
+        newSymbol_S('M', $2); // Added the M symbol for program. Didn't know what else to put, P was already taken
+    }
     ;
 
-task: function{newSymbol('F');}
-    | procedure{newSymbol('P');}
-    | task function{newSymbol('F');}
-    | task procedure{newSymbol('P');}
+task: function
+    | procedure
+    | task function
+    | task procedure
     ;
 
 procedure:
-    K_PROCEDURE IDENTIFIER{newSymbol('V');} LPAREN param_list RPAREN LCURLY block RCURLY
-    | K_PROCEDURE{newSymbol('P');} IDENTIFIER{newSymbol('V');} LPAREN RPAREN LCURLY block RCURLY///////////////////////////////////////////////////////////////////////
+    K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+    {
+        newSymbol_S('P', $2);
+    }
+    | K_PROCEDURE IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
+    {
+        newSymbol_S('P', $2);
+    }
     ;
 
 function: 
-    K_FUNCTION{newSymbol('F');} d_type IDENTIFIER{newSymbol('V');} LPAREN param_list RPAREN LCURLY block RCURLY
-    | K_FUNCTION{newSymbol('F');} d_type IDENTIFIER{newSymbol('V');} LPAREN RPAREN LCURLY block RCURLY///////////////////////////////////////////////////////////////////////
+    K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+    {
+        newSymbol_S('F', $3);
+    }
+    | K_FUNCTION d_type IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
+    {
+        newSymbol_S('F', $3);
+    }
     ;
 
 block:
     print           
-    {printf("!");}
+
     | var             
-    {printf("!");}
+
     | assignment             
-    {printf("!");}
+
     | print block     
-    {printf("!");}
+
     | var block       
-    {printf("!");}
+
     | assignment block       
-    {printf("!");}
+
     | epsilon     
-   {printf("!");}
+
     ;
 
 print:
-    K_PRINT_INTEGER LPAREN ICONSTANT{newSymbol('I');} RPAREN SEMI
-    | K_PRINT_DOUBLE LPAREN DCONSTANT{newSymbol('D');} RPAREN SEMI
-    | K_PRINT_STRING LPAREN SCONSTANT{newSymbol('S');} RPAREN SEMI
-    | K_PRINT_INTEGER LPAREN IDENTIFIER{newSymbol('V');} RPAREN SEMI
-    | K_PRINT_DOUBLE LPAREN IDENTIFIER{newSymbol('V');} RPAREN SEMI
-    | K_PRINT_STRING LPAREN IDENTIFIER{newSymbol('V');} RPAREN SEMI
+    K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI { newSymbol_I($3); }
+    | K_PRINT_DOUBLE LPAREN DCONSTANT RPAREN SEMI { newSymbol_D($3); }
+    | K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI { newSymbol_S('S', $3); }
+    | K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI { newSymbol_S('V', $3); }
+    | K_PRINT_DOUBLE LPAREN IDENTIFIER RPAREN SEMI { newSymbol_S('V', $3); }
+    | K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI { newSymbol_S('V', $3); }
     | K_PRINT_INTEGER LPAREN expr RPAREN SEMI
-    {printf("!");}
     ;
 
 var:
-    d_type IDENTIFIER{newSymbol('V');} SEMI
-    |d_type assignment
-    {printf("!");}
+    d_type IDENTIFIER SEMI {newSymbol_S('V', $2);}
+    | d_type assignment
     ;
 
 assignment:
-    IDENTIFIER{newSymbol('V');} ASSIGN ICONSTANT{newSymbol('I');} SEMI
-    | IDENTIFIER{newSymbol('V');} ASSIGN DCONSTANT{newSymbol('D');} SEMI///////////////////////////////////////////////////////////////////////
-    | IDENTIFIER{newSymbol('V');} ASSIGN SCONSTANT{newSymbol('S');} SEMI///////////////////////////////////////////////////////////////////////
-    | IDENTIFIER{newSymbol('V');} ASSIGN expr SEMI///////////////////////////////////////////////////////////////////////
+    IDENTIFIER ASSIGN ICONSTANT SEMI
+    {
+        newSymbol_S('V', $1);
+        newSymbol_I($3);
+    }
+    | IDENTIFIER ASSIGN DCONSTANT SEMI
+    {
+        newSymbol_S('V', $1);
+        newSymbol_D($3);
+    }
+    | IDENTIFIER ASSIGN SCONSTANT SEMI
+    {
+        newSymbol_S('V', $1);
+        newSymbol_S('S', $3);
+    }
+    | IDENTIFIER ASSIGN expr SEMI { newSymbol_S('V', $1); }
     ;
     
 
 d_type:
-    K_INTEGER{insert();}
-    |K_STRING{insert();}
-    |K_DOUBLE{insert();}
+    K_INTEGER { insert(); }
+    |K_STRING { insert(); }
+    |K_DOUBLE { insert(); }
     ;
 
 expr:
-    ICONSTANT{newSymbol('I');}
-    | DCONSTANT{newSymbol('D');}
-    | IDENTIFIER{newSymbol('V');}
+    ICONSTANT { newSymbol_I($1); }
+    | DCONSTANT { newSymbol_D($1); }
+    | IDENTIFIER { newSymbol_S('V', $1); }
     | expr MINUS expr             
-    {printf("!");}
     | expr PLUS expr              
-    {printf("!");}
     | LPAREN expr RPAREN          
-    {printf("!");}
+    /* {printf("!");} */
     ;
 
 
 param_list:
-    d_type IDENTIFIER{newSymbol('V');}                       
-    | d_type IDENTIFIER{newSymbol('V');} COMMA param_list      
+    d_type IDENTIFIER { newSymbol_S('V', $2); }                       
+    | d_type IDENTIFIER COMMA param_list { newSymbol_S('V', $2); }  
     ;
 
-epsilon: {printf("!");};
+epsilon: ;
 
 %%
 
