@@ -7,8 +7,7 @@ BUILD=PruSloanSymbolTable
 OUTPUT=PS_ST_Parser_Out.txt
 
 all: $(BUILD)
-	@./$(BUILD) < simple1.f23 | tee -a $(OUTPUT)
-
+	./$(BUILD) < simple1.f23 | tee $(OUTPUT)
 
 
 #Old rule
