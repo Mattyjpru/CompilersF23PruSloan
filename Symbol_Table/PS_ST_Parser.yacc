@@ -7,8 +7,6 @@
         exit(0);
     }
     int yylex();
-
-    extern FILE* yyin;
     extern char* yytext;
     extern int line;
     // int nodeCount = 0;
@@ -51,8 +49,7 @@
 
 %%
 statement: 
-    program { printf("Valid Program\n");
-                  exit(0);  };
+    program { printf("Valid Program\n"); };
 
 program: K_PROGRAM IDENTIFIER LCURLY task RCURLY
     {
@@ -165,16 +162,17 @@ param_list:
 epsilon: ;
 
 %%
+extern FILE* yyin;
 
 int main(){
-    do{
+    /* do{
         yyparse();
         printf("fucking anything\n");
     }while(!feof(yyin));
-    
+
     return 0;
-}
-    /* do{
+} */
+    do{
         yyparse();
         printf("\n\n");
         printf("SYMBOL\t\t\t\tDATATYPE\tTYPE\t\tLINE NUMBER \n");
@@ -197,14 +195,15 @@ int main(){
             free(symbolTable[i].use);
         }
         printf("\n\n");
-    }while(!feof(yyin)); */
+    }while(!feof(yyin));
+    return 0;
+}
 
 
     /* do {
         yyparse();
         printf("what the heck?");
     } while ( !feof( yyin ) );
-    printf("Why?\n");
     for (int i=0;i<st_count;i++){
 /////////////////////////////////////////////////////name
         if(symbolTable[i].name){

@@ -1,1 +1,16 @@
 Valid Program
+
+
+SYMBOL				DATATYPE	TYPE		LINE NUMBER 
+___________________________________________________________________________
+
+D                        	double         	IDENTIFIER     	8              
+0.010100                 	CONST          	DCONSTANT      	8              
+d                        	double         	IDENTIFIER     	10             
+105.000000               	CONST          	DCONSTANT      	10             
+i                        	integer        	IDENTIFIER     	12             
+441                      	CONST          	ICONSTANT      	14             
+main                     	integer        	FUNCTION       	18             
+tiny_example_1           	N/A            	PROGRAM        	20             
+
+
