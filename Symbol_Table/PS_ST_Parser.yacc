@@ -65,16 +65,14 @@ task: function
     ;
 
 procedure:
-    K_PROCEDURE IDENTIFIER {newSymbol_S('P', $2);} LPAREN RPAREN LCURLY block RCURLY
+
     |K_PROCEDURE IDENTIFIER {newSymbol_S('P', $2);} LPAREN param_list RPAREN LCURLY block RCURLY
-    
-    | K_PROCEDURE IDENTIFIER{newSymbol_S('P', $2);} LPAREN RPAREN LCURLY block RCURLY
     
     ;
 
 function: 
     K_FUNCTION d_type IDENTIFIER {newSymbol_S('F', $3);} LPAREN param_list RPAREN LCURLY block RCURLY
-    | K_FUNCTION d_type IDENTIFIER {newSymbol_S('F', $3);} LPAREN RPAREN LCURLY block RCURLY
+
     ;
 
 block:
@@ -133,6 +131,7 @@ expr:
 param_list:
     d_type IDENTIFIER { newSymbol_S('V', $2); }                       
     | d_type IDENTIFIER{ newSymbol_S('V', $2); }  COMMA param_list  
+    |epsilon
     ;
 
 epsilon: ;
