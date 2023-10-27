@@ -143,7 +143,7 @@ int main(){
         printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
         printf("___________________________________________________________________________\n\n");
 
-        for(int i=st_count-1; i>=0; i--) {
+        for(int i=0; i<st_count; i++) {
             if(strcmp(symbolTable[i].use, "ICONSTANT") == 0){
                 printf("%-25d %-15s %-15s %-15d\n", symbolTable[i].intval, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
             }

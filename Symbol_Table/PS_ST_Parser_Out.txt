@@ -4,11 +4,11 @@ Valid Program
 SYMBOL                    DATATYPE        TYPE            LINE NUMBER    
 ___________________________________________________________________________
 
-441                       CONST           ICONSTANT       8              
-i                         integer         IDENTIFIER      7              
-105.000000                CONST           DCONSTANT       6              
-d                         double          IDENTIFIER      6              
-0.010100                  CONST           DCONSTANT       5              
-D                         double          IDENTIFIER      5              
-main                      void            PROCEDURE       3              
 tiny_example_1            N/A             PROGRAM         1              
+main                      void            PROCEDURE       3              
+D                         double          IDENTIFIER      5              
+0.010100                  CONST           DCONSTANT       5              
+d                         double          IDENTIFIER      6              
+105.000000                CONST           DCONSTANT       6              
+i                         integer         IDENTIFIER      7              
+441                       CONST           ICONSTANT       8              
