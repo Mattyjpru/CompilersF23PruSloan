@@ -53,9 +53,6 @@ statement:
     program { printf("Valid Program\n"); };
 
 program: K_PROGRAM IDENTIFIER{newSymbol_S('M', $2);}  LCURLY task RCURLY
-    /* {
-         // Added the M symbol for program. Didn't know what else to put, P was already taken
-    } */
     ;
 
 task: function
