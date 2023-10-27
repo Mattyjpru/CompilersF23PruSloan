@@ -52,10 +52,10 @@
 statement: 
     program { printf("Valid Program\n"); };
 
-program: K_PROGRAM IDENTIFIER LCURLY task RCURLY
-    {
-        newSymbol_S('M', $2); // Added the M symbol for program. Didn't know what else to put, P was already taken
-    }
+program: K_PROGRAM IDENTIFIER{newSymbol_S('M', $2);}  LCURLY task RCURLY
+    /* {
+         // Added the M symbol for program. Didn't know what else to put, P was already taken
+    } */
     ;
 
 task: function
@@ -65,21 +65,16 @@ task: function
     ;
 
 procedure:
- K_PROCEDURE IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
-    {
-        newSymbol_S('P', $2);
-    }
+    K_PROCEDURE IDENTIFIER {newSymbol_S('P', $2);} LPAREN RPAREN LCURLY block RCURLY
+    |K_PROCEDURE IDENTIFIER {newSymbol_S('P', $2);} LPAREN param_list RPAREN LCURLY block RCURLY
+    
+    | K_PROCEDURE IDENTIFIER{newSymbol_S('P', $2);} LPAREN RPAREN LCURLY block RCURLY
+    
     ;
 
 function: 
-    K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
-    {
-        newSymbol_S('F', $3);
-    }
-    | K_FUNCTION d_type IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
-    {
-        newSymbol_S('F', $3);
-    }
+    K_FUNCTION d_type IDENTIFIER {newSymbol_S('F', $3);} LPAREN param_list RPAREN LCURLY block RCURLY
+    | K_FUNCTION d_type IDENTIFIER {newSymbol_S('F', $3);} LPAREN RPAREN LCURLY block RCURLY
     ;
 
 block:
@@ -100,37 +95,22 @@ block:
     ;
 
 print:
-    K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI { newSymbol_I($3); }
-    | K_PRINT_DOUBLE LPAREN DCONSTANT RPAREN SEMI { newSymbol_D($3); }
-    | K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI { newSymbol_S('S', $3); }
-    | K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI { newSymbol_S('V', $3); }
-    | K_PRINT_DOUBLE LPAREN IDENTIFIER RPAREN SEMI { newSymbol_S('V', $3); }
-    | K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI { newSymbol_S('V', $3); }
+    K_PRINT_INTEGER LPAREN ICONSTANT { newSymbol_I($3); } RPAREN SEMI 
+    | K_PRINT_DOUBLE LPAREN DCONSTANT { newSymbol_D($3); } RPAREN SEMI 
+    | K_PRINT_STRING LPAREN SCONSTANT { newSymbol_S('S', $3); } RPAREN SEMI 
+    | K_PRINT_INTEGER LPAREN IDENTIFIER { newSymbol_S('V', $3); } RPAREN SEMI 
+    | K_PRINT_DOUBLE LPAREN IDENTIFIER { newSymbol_S('V', $3); } RPAREN SEMI 
+    | K_PRINT_STRING LPAREN IDENTIFIER { newSymbol_S('V', $3); } RPAREN SEMI 
     | K_PRINT_INTEGER LPAREN expr RPAREN SEMI
     ;
 
 var:
-    d_type IDENTIFIER SEMI {newSymbol_S('V', $2);}
+    d_type IDENTIFIER{newSymbol_S('V', $2);} SEMI 
     | d_type assignment
     ;
 
 assignment:
-    IDENTIFIER ASSIGN ICONSTANT SEMI
-    {
-        newSymbol_S('V', $1);
-        newSymbol_I($3);
-    }
-    | IDENTIFIER ASSIGN DCONSTANT SEMI
-    {
-        newSymbol_S('V', $1);
-        newSymbol_D($3);
-    }
-    | IDENTIFIER ASSIGN SCONSTANT SEMI
-    {
-        newSymbol_S('V', $1);
-        newSymbol_S('S', $3);
-    }
-    | IDENTIFIER ASSIGN expr SEMI { newSymbol_S('V', $1); }
+    IDENTIFIER {newSymbol_S('V', $1);} ASSIGN expr SEMI
     ;
     
 
@@ -146,14 +126,13 @@ expr:
     | IDENTIFIER { newSymbol_S('V', $1);}
     | expr MINUS expr             
     | expr PLUS expr              
-    | LPAREN expr RPAREN          
-    /* {printf("!");} */
+    | LPAREN expr RPAREN   
     ;
 
 
 param_list:
     d_type IDENTIFIER { newSymbol_S('V', $2); }                       
-    | d_type IDENTIFIER COMMA param_list { newSymbol_S('V', $2); }  
+    | d_type IDENTIFIER{ newSymbol_S('V', $2); }  COMMA param_list  
     ;
 
 epsilon: ;
@@ -187,64 +166,6 @@ int main(){
     }while(!feof(yyin));
     return 0;
 }
-
-
-    /* do {
-        yyparse();
-        printf("what the heck?");
-    } while ( !feof( yyin ) );
-    for (int i=0;i<st_count;i++){
-/////////////////////////////////////////////////////name
-        if(symbolTable[i].name){
-            printf("%s",symbolTable[i].name);
-            printf("\t");
-        }
-        else{
-            printf("\t\t");
-        }
-/////////////////////////////////////////////////////data type
-        if(symbolTable[i].d_type){
-            printf("%s",symbolTable[i].d_type);
-            printf("\t");
-        }
-        else{
-            printf("\t\t");
-        }
-/////////////////////////////////////////////////////use
-        if(symbolTable[i].use){
-            printf("%s",symbolTable[i].use);
-            printf("\t");
-        }
-        else{
-            printf("\t\t");
-        }
-/////////////////////////////////////////////////////value
-        if(symbolTable[i].val){
-            printf("%s",symbolTable[i].val);
-            printf("\t");
-        }
-        else if(symbolTable[i].intval){
-            printf("%d",symbolTable[i].intval);
-            printf("\t");
-        }
-        else if(symbolTable[i].dubval){
-            printf("%f",symbolTable[i].dubval);
-            printf("\t");
-        }
-        else{
-            printf("\t\t");
-        }
-/////////////////////////////////////////////////////line number
-        if(symbolTable[i].line_no){
-            printf("%d",symbolTable[i].line_no);
-            printf("\t");
-        }
-        else{
-            printf("\t\t");
-        }
-    } */
-    // code generator goes here
-
     void insert(){
         strcpy(useBuff, yytext);
     }
