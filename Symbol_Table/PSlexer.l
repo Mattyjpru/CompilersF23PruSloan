@@ -1,6 +1,6 @@
 %{
 #include "y.tab.h"
-int line=0;
+int line=1;
 char* repD(char* str, char target){
     char* here=strchr(str,target);
     while(here){
@@ -13,8 +13,8 @@ char* repD(char* str, char target){
 %}
 
 %%
-[\n\r]                                                      {line++;}
 [ \t]                                                       ;
+\/\/[^\r\n]*                                                ; // Comment
 "do"                                                        return K_DO;
 "double"                                                    return K_DOUBLE;
 "else"                                                      return K_ELSE;
@@ -70,6 +70,7 @@ char* repD(char* str, char target){
 \}                                                          return RCURLY;
 \)                                                          return RPAREN;
 ;                                                           return SEMI;
+[\n]                                                        {line++;}
 %%
 
 int yywrap(){

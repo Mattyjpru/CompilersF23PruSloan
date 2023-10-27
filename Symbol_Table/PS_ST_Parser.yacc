@@ -9,6 +9,7 @@
     int yylex();
     extern char* yytext;
     extern int line;
+    extern int yylineno;
     // int nodeCount = 0;
     int st_count=0;
     char useBuff[16];
@@ -64,11 +65,7 @@ task: function
     ;
 
 procedure:
-    K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
-    {
-        newSymbol_S('P', $2);
-    }
-    | K_PROCEDURE IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
+ K_PROCEDURE IDENTIFIER LPAREN RPAREN LCURLY block RCURLY
     {
         newSymbol_S('P', $2);
     }
@@ -170,8 +167,8 @@ int main(){
         printf("\n\n");
         printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
         printf("___________________________________________________________________________\n\n");
-        int i = 0;
-        for(i=0; i<st_count; i++) {
+
+        for(int i=st_count-1; i>=0; i--) {
             if(strcmp(symbolTable[i].use, "ICONSTANT") == 0){
                 printf("%-25d %-15s %-15s %-15d\n", symbolTable[i].intval, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
             }
@@ -182,12 +179,11 @@ int main(){
                 printf("%-25s %-15s %-15s %-15d\n", symbolTable[i].name, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
             }
         }
-        for(i=0;i<st_count;i++) {
+        for(int i=0;i<st_count;i++) {
             free(symbolTable[i].name);
             free(symbolTable[i].d_type);
             free(symbolTable[i].use);
         }
-        printf("\n\n");
     }while(!feof(yyin));
     return 0;
 }
