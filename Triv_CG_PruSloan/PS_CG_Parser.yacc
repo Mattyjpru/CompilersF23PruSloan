@@ -84,17 +84,11 @@ function:
 
 block:
     print           
-
     | var             
-
     | assignment             
-
     | print block     
-
     | var block       
-
     | assignment block       
-
     | epsilon     
 
     ;
@@ -146,7 +140,7 @@ epsilon: ;
 %%
 extern FILE* yyin;
 
-int main(){
+/* int main(){
     do{
         yyparse();
         printf("\n\n");
@@ -171,7 +165,7 @@ int main(){
         }
     }while(!feof(yyin));
     return 0;
-}
+} */
     void insert(){
         strcpy(useBuff, yytext);
     }
