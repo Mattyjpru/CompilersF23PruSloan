@@ -115,13 +115,13 @@ print:
     ;
 
 var:
-    d_type IDENTIFIER{newSymbol('V', $2);} SEMI
-    { $1.nd = buildNode(NULL, NULL, $1.name); $$.nd = buildNode($1.nd, $3.nd, "="); }
+    d_type IDENTIFIER {newSymbol('V', $2);} SEMI
     | d_type assignment
     ;
 
 assignment:
     IDENTIFIER {newSymbol('V', $1);} ASSIGN expr SEMI
+        { $1.nd = buildNode(NULL, NULL, $1.name); $$.nd = buildNode($1.nd, $3.nd, "="); }
     ;
     
 
@@ -160,7 +160,7 @@ epsilon: ;
 %%
 extern FILE* yyin;
 
-/* int main(){
+int main(){
     do{
         yyparse();
         printf("\n\n");
@@ -185,7 +185,7 @@ extern FILE* yyin;
         }
     }while(!feof(yyin));
     return 0;
-} */
+}
     void insert(){
         strcpy(useBuff, yytext);
     }
@@ -360,7 +360,7 @@ void newSymbol(char c, char* stringVal){
 
 
 ////////////////////////////below may need tweaking/////////////////////////////////
-    node* buildNode( node* leftchild, node* rightchild, char* token){
+    struct node* buildNode( struct node* leftchild, struct node* rightchild, char* token){
         struct node *newnode = (struct node*) malloc(sizeof(struct node));
         char *newstr = (char*) malloc(strlen(token)+1);
         strcpy(newstr, token);
@@ -378,11 +378,11 @@ void newSymbol(char c, char* stringVal){
 
     void printInorder(struct node *tree) {
         int i;
-        if (tree->left) {
-            printInorder(tree->left);
+        if (tree->leftchild) {
+            printInorder(tree->leftchild);
         }
         printf("%s, ", tree->token);
-        if (tree->right) {
-            printInorder(tree->right);
+        if (tree->rightchild) {
+            printInorder(tree->rightchild);
         }
     }
