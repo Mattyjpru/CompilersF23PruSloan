@@ -274,6 +274,9 @@ extern FILE* yyin;
         }
     }
 
+
+    
+////////////////////////////below may need tweaking/////////////////////////////////
     node* buildNode(char*token, node* leftchild, node* rightchild, char* dataType){
         struct node *newnode = (struct node*) malloc(sizeof(struct node));
         char *newstr = (char*) malloc(strlen(token)+1);
