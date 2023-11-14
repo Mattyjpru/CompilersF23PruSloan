@@ -59,7 +59,7 @@
 %token<nd_obj> K_READ_STRING K_RETURN K_STRING K_THEN K_WHILE ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY
 %token<nd_obj> ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
 %token<nd_obj> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
-%type<nd_obj> statement program task function procedure param_list block d_type print var assignment epsilon expr
+%type<nd_obj> statement program task function procedure param_list block d_type print epsilon expr val init
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
@@ -92,14 +92,14 @@ function:
     K_FUNCTION d_type IDENTIFIER {newSymbol('F', $3);} LPAREN param_list RPAREN LCURLY block RCURLY
 
     ;
-
+init: ASSIGN val
+    |
+    ;
 block:
     print                   { $$.nd = buildNode(NULL, NULL, "printf"); } 
-    | var             
-    | assignment            { $$.nd = $1.nd; }
-    | print block     
-    | var block       
-    | assignment block       
+    | d_type IDENTIFIER {newSymbol('V', $2);} init SEMI          
+    | block block  
+    | IDENTIFIER ASSIGN expr
     | epsilon     
 
     ;
@@ -114,15 +114,12 @@ print:
     | K_PRINT_INTEGER LPAREN expr RPAREN SEMI
     ;
 
-var:
-    d_type IDENTIFIER {newSymbol('V', $2);} SEMI
-    | d_type assignment
-    ;
 
-assignment:
-    IDENTIFIER {newSymbol('V', $1);} ASSIGN expr SEMI
+
+/* assignment:
+    IDENTIFIER {newSymbol('V', $1);} init SEMI
         { $1.nd = buildNode(NULL, NULL, $1.name); $$.nd = buildNode($1.nd, $3.nd, "="); }
-    ;
+    ; */
     
 
 d_type:
@@ -132,18 +129,20 @@ d_type:
     ;
 
 expr:
-    ICONSTANT               { newSymbol('I',$1); $$.nd = buildNode(NULL, NULL, $1.name); }
-    | DCONSTANT             { newSymbol('D', $1);  $$.nd = buildNode(NULL, NULL, $1.name); }
-    | IDENTIFIER            { newSymbol('V', $1); $$.nd = buildNode(NULL, NULL, $1.name); }
+    val
     | expr MINUS expr       { $$.nd = buildNode($1.nd, $3.nd, $2.name); }  
     | expr PLUS expr        { $$.nd = buildNode($1.nd, $3.nd, $2.name); }      
     | LPAREN expr RPAREN   
     ;
 
+val:
+    ICONSTANT               { newSymbol('I',$1); $$.nd = buildNode(NULL, NULL, $1.name); }
+    | DCONSTANT             { newSymbol('D', $1);  $$.nd = buildNode(NULL, NULL, $1.name); }
+    | IDENTIFIER            { newSymbol('V', $1); $$.nd = buildNode(NULL, NULL, $1.name); };
 
 param_list:
-    var                   
-    | var COMMA param_list  
+    d_type IDENTIFIER {newSymbol('V', $2);} init SEMI                   
+    | d_type IDENTIFIER {newSymbol('V', $2);} init SEMI COMMA param_list  
     |epsilon
     ;
 
