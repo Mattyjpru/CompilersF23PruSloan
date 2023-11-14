@@ -33,17 +33,13 @@
         int line_no;
     } symbolTable[48];
 
-
-    node* buildNode( node*, node*, char*);
-    void printtree(struct node* );
-    void printInorder(struct node *);
     void insert();
-    int search_S(char*);
-    int search_I(int);
-    int search_D(double);
-    void newSymbol_S(char, char*);
-    void newSymbol_I(int);
-    void newSymbol_D(double);
+    int search(char*);
+    // int search_I(int);
+    // int search_D(double);
+    void newSymbol(char, char*);
+    // void newSymbol_I(int);
+    // void newSymbol_D(double);
 %}
 
 %union {
@@ -69,8 +65,10 @@
 statement: 
     program { printf("Valid Program\n"); };
 
-program: K_PROGRAM IDENTIFIER{newSymbol_S('M', $2);}  LCURLY task RCURLY{$$.nd=buildNode($2,$4,$2); head=$$.nd}
-    
+program: K_PROGRAM IDENTIFIER{newSymbol('M', $2);}  LCURLY task RCURLY
+    {
+        $2.nd = buildNode("main", $6.nd, $7.nd); $$.nd = mknode("program", $1.nd, $2.nd); head = $$.nd; 
+    }
     ;
 
 task: function
@@ -81,19 +79,19 @@ task: function
 
 procedure:
 
-    |K_PROCEDURE IDENTIFIER {newSymbol_S('P', $2);} LPAREN param_list RPAREN LCURLY block RCURLY
+    |K_PROCEDURE IDENTIFIER {newSymbol('P', $2);} LPAREN param_list RPAREN LCURLY block RCURLY
     
     ;
 
 function: 
-    K_FUNCTION d_type IDENTIFIER {newSymbol_S('F', $3);} LPAREN param_list RPAREN LCURLY block RCURLY
+    K_FUNCTION d_type IDENTIFIER {newSymbol('F', $3);} LPAREN param_list RPAREN LCURLY block RCURLY
 
     ;
 
 block:
-    print    { $$.nd = buildNode(NULL, NULL, "printf"); }       
+    print           
     | var             
-    | assignment         { $$.nd = $1.nd; }    
+    | assignment             
     | print block     
     | var block       
     | assignment block       
@@ -102,22 +100,22 @@ block:
     ;
 
 print:
-    K_PRINT_INTEGER LPAREN ICONSTANT { newSymbol_I($3); } RPAREN SEMI 
-    | K_PRINT_DOUBLE LPAREN DCONSTANT { newSymbol_D($3); } RPAREN SEMI 
-    | K_PRINT_STRING LPAREN SCONSTANT { newSymbol_S('S', $3); } RPAREN SEMI 
-    | K_PRINT_INTEGER LPAREN IDENTIFIER { newSymbol_S('V', $3); } RPAREN SEMI 
-    | K_PRINT_DOUBLE LPAREN IDENTIFIER { newSymbol_S('V', $3); } RPAREN SEMI 
-    | K_PRINT_STRING LPAREN IDENTIFIER { newSymbol_S('V', $3); } RPAREN SEMI 
+    K_PRINT_INTEGER LPAREN ICONSTANT { newSymbol('I',$3); } RPAREN SEMI 
+    | K_PRINT_DOUBLE LPAREN DCONSTANT { newSymbol('D', $3); } RPAREN SEMI 
+    | K_PRINT_STRING LPAREN SCONSTANT { newSymbol('S', $3); } RPAREN SEMI 
+    | K_PRINT_INTEGER LPAREN IDENTIFIER { newSymbol('V', $3); } RPAREN SEMI 
+    | K_PRINT_DOUBLE LPAREN IDENTIFIER { newSymbol('V', $3); } RPAREN SEMI 
+    | K_PRINT_STRING LPAREN IDENTIFIER { newSymbol('V', $3); } RPAREN SEMI 
     | K_PRINT_INTEGER LPAREN expr RPAREN SEMI
     ;
 
 var:
-    d_type IDENTIFIER{newSymbol_S('V', $2);} SEMI 
+    d_type IDENTIFIER{newSymbol('V', $2);} SEMI 
     | d_type assignment
     ;
 
 assignment:
-    IDENTIFIER {newSymbol_S('V', $1);} ASSIGN expr SEMI { $1.nd = buildNode(NULL, NULL, $1.name); $$.nd = buildNode($1.nd, $3.nd, "="); }
+    IDENTIFIER {newSymbol('V', $1);} ASSIGN expr SEMI
     ;
     
 
@@ -128,30 +126,22 @@ d_type:
     ;
 
 expr:
-    ICONSTANT { newSymbol_I($1); $$.nd = buildNode(NULL, NULL, $1.name); }
-    | DCONSTANT { newSymbol_D($1); $$.nd = buildNode(NULL, NULL, $1.name);}
-    | IDENTIFIER { newSymbol_S('V', $1);$$.nd = buildNode(NULL, NULL, $1.name);}
-    | expr MINUS expr   {$$.nd = buildNode($1.nd, $3.nd, $2.name);}          
-    | expr PLUS expr    {$$.nd = buildNode($1.nd, $3.nd, $2.name);}         
+    ICONSTANT { newSymbol('I',$1); }
+    | DCONSTANT { newSymbol('D', $1); }
+    | IDENTIFIER { newSymbol('V', $1);}
+    | expr MINUS expr             
+    | expr PLUS expr              
     | LPAREN expr RPAREN   
     ;
 
 
 param_list:
-    var                      
-    | var  COMMA param_list  
+    d_type IDENTIFIER { newSymbol('V', $2); }                       
+    | d_type IDENTIFIER{ newSymbol('V', $2); }  COMMA param_list  
     |epsilon
     ;
 
 epsilon: ;
-
-/* relop: LT
-| GT
-| LEQ
-| GEQ
-| DEQ
-| NE
-; */
 
 %%
 extern FILE* yyin;
@@ -186,7 +176,7 @@ extern FILE* yyin;
         strcpy(useBuff, yytext);
     }
 
-    int search_S(char* in){
+    /* int search_S(char* in){
         for(int i=0; i<st_count; i++){
             if((strcmp(symbolTable[i].use, "ICONSTANT") != 0) && (strcmp(symbolTable[i].use, "DCONSTANT") != 0)){
                 if(strcmp(symbolTable[i].name, in)==0){
@@ -222,9 +212,9 @@ extern FILE* yyin;
             }
         }
         return 0;
-    }
+    } */
 
-    void newSymbol_S(char c, char* stringVal){
+    /* void newSymbol_S(char c, char* stringVal){
         if(!search_S(stringVal)){
             switch(c){
                 case 'V':
@@ -284,12 +274,79 @@ extern FILE* yyin;
             symbolTable[st_count].use=strdup("DCONSTANT");
             st_count++;
         }
+    } */
+
+
+////////////////////////// New Symbol Table Stuff ///////////////////////////////////////////////
+void newSymbol(char c, char* stringVal){
+        if(!search_S(stringVal)){
+            switch(c){
+                case 'I':
+                    symbolTable[st_count].name=strdup(stringVal);        
+                    symbolTable[st_count].d_type=strdup("CONST");
+                    symbolTable[st_count].line_no=line;    
+                    symbolTable[st_count].use=strdup("PROCEDURE");
+                    st_count++;
+                    break;
+                case 'D':
+                    symbolTable[st_count].name=strdup(stringVal);   
+                    symbolTable[st_count].d_type=strdup("CONST");
+                    symbolTable[st_count].line_no=line;
+                    symbolTable[st_count].use=strdup("DCONSTANT");
+                    st_count++;
+                    break;
+                case 'V':
+                    symbolTable[st_count].name=strdup(stringVal);
+                    symbolTable[st_count].d_type=strdup(useBuff);
+                    symbolTable[st_count].line_no=line;
+                    symbolTable[st_count].use=strdup("IDENTIFIER");
+                    st_count++;
+                    break;
+                case 'P':
+                    symbolTable[st_count].name=strdup(stringVal);        
+                    symbolTable[st_count].d_type=strdup("void");    
+                    symbolTable[st_count].line_no=line;    
+                    symbolTable[st_count].use=strdup("PROCEDURE");
+                    st_count++;
+                    break;
+                case 'S':
+                    symbolTable[st_count].name=strdup(stringVal); 
+                    symbolTable[st_count].d_type=strdup("CONST");
+                    symbolTable[st_count].line_no=line;
+                    symbolTable[st_count].use=strdup("SCONSTANT");
+                    st_count++;
+                    break;
+                case 'F':
+                    symbolTable[st_count].name=strdup(stringVal); 
+                    symbolTable[st_count].d_type=strdup(useBuff);
+                    symbolTable[st_count].line_no=line;
+                    symbolTable[st_count].use=strdup("FUNCTION");
+                    st_count++;
+                    break;
+                case 'M':
+                    symbolTable[st_count].name=strdup(stringVal); 
+                    symbolTable[st_count].d_type=strdup("N/A");
+                    symbolTable[st_count].line_no=line;
+                    symbolTable[st_count].use=strdup("PROGRAM");
+                    st_count++;
+                    break;
+            }
+        }
+    }
+
+    int search(char* in){
+        for(int i=0; i<st_count; i++){
+            if(strcmp(symbolTable[i].name, in)==0){
+                return -1;
+                break;
+            }
+        }
+        return 0;
     }
 
 
-
 ////////////////////////////below may need tweaking/////////////////////////////////
-    node* buildNode( node* leftchild, node* rightchild, char* token){
+    node* buildNode(char*token, node* leftchild, node* rightchild){
         struct node *newnode = (struct node*) malloc(sizeof(struct node));
         char *newstr = (char*) malloc(strlen(token)+1);
         strcpy(newstr, token);
