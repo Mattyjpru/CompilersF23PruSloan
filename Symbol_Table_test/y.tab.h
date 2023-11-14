@@ -56,8 +56,8 @@ extern int yydebug;
     YYUNDEF = 257,                 /* "invalid token"  */
     IDENTIFIER = 258,              /* IDENTIFIER  */
     SCONSTANT = 259,               /* SCONSTANT  */
-    ICONSTANT = 260,               /* ICONSTANT  */
-    DCONSTANT = 261,               /* DCONSTANT  */
+    DCONSTANT = 260,               /* DCONSTANT  */
+    ICONSTANT = 261,               /* ICONSTANT  */
     K_DO = 262,                    /* K_DO  */
     K_DOUBLE = 263,                /* K_DOUBLE  */
     K_ELSE = 264,                  /* K_ELSE  */
@@ -119,8 +119,8 @@ extern int yydebug;
 #define YYUNDEF 257
 #define IDENTIFIER 258
 #define SCONSTANT 259
-#define ICONSTANT 260
-#define DCONSTANT 261
+#define DCONSTANT 260
+#define ICONSTANT 261
 #define K_DO 262
 #define K_DOUBLE 263
 #define K_ELSE 264

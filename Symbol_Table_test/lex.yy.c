@@ -993,23 +993,23 @@ return K_WHILE;
 case 22:
 YY_RULE_SETUP
 #line 37 "PSlexer.l"
-{yylval.dVal = atof(repD(repD(yytext,'d'),'D')); return DCONSTANT;}
+{ return DCONSTANT;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 38 "PSlexer.l"
-{yylval.iVal = atoi(yytext); return ICONSTANT;}
+{return ICONSTANT;}
 	YY_BREAK
 case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
 #line 39 "PSlexer.l"
-{yylval.sVal = strdup(yytext); return SCONSTANT;}
+{ return SCONSTANT;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 40 "PSlexer.l"
-{yylval.sVal = strdup(yytext); return IDENTIFIER;}
+{ return IDENTIFIER;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP

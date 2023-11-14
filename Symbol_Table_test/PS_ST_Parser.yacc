@@ -24,11 +24,11 @@
 
     void insert();
     int search_S(char*);
-    int search_I(char*);
-    int search_D(char*);
+    // int search_I(char*);
+    // int search_D(char*);
     void newSymbol_S(char);
-    void newSymbol_I();
-    void newSymbol_D();
+    // void newSymbol_I();
+    // void newSymbol_D();
 %}
 
 %union {
@@ -37,11 +37,9 @@
     char  *sVal;
 }
 
-%token<sVal> IDENTIFIER SCONSTANT 
-%token<iVal> ICONSTANT
-%token<dVal> DCONSTANT
 
-%token K_DO K_DOUBLE K_ELSE K_EXIT K_FUNCTION K_IF K_INTEGER K_PRINT_DOUBLE K_PRINT_INTEGER K_PRINT_STRING K_PROCEDURE K_PROGRAM K_READ_DOUBLE K_READ_INTEGER K_READ_STRING K_RETURN K_STRING K_THEN K_WHILE ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
+
+%token IDENTIFIER SCONSTANT DCONSTANT ICONSTANT K_DO K_DOUBLE K_ELSE K_EXIT K_FUNCTION K_IF K_INTEGER K_PRINT_DOUBLE K_PRINT_INTEGER K_PRINT_STRING K_PROCEDURE K_PROGRAM K_READ_DOUBLE K_READ_INTEGER K_READ_STRING K_RETURN K_STRING K_THEN K_WHILE ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
 %start statement
@@ -50,7 +48,7 @@
 statement: 
     program { printf("Valid Program\n"); };
 
-program: K_PROGRAM IDENTIFIER{newSymbol_S('M');}  LCURLY task RCURLY
+program: K_PROGRAM IDENTIFIER{newSymbol_S('M');} LCURLY task RCURLY
     ;
 
 task: function
@@ -76,20 +74,18 @@ block:
     | var             
 
     | assignment             
-
+/* 
     | print block     
 
     | var block       
 
-    | assignment block       
-
-    | epsilon     
+    | assignment block        */
 
     ;
 
 print:
-    K_PRINT_INTEGER LPAREN ICONSTANT { newSymbol_I(); } RPAREN SEMI 
-    | K_PRINT_DOUBLE LPAREN DCONSTANT { newSymbol_D(); } RPAREN SEMI 
+    K_PRINT_INTEGER LPAREN ICONSTANT { newSymbol_S('I'); } RPAREN SEMI 
+    | K_PRINT_DOUBLE LPAREN DCONSTANT { newSymbol_S('D'); } RPAREN SEMI 
     | K_PRINT_STRING LPAREN SCONSTANT { newSymbol_S('S'); } RPAREN SEMI 
     | K_PRINT_INTEGER LPAREN IDENTIFIER { newSymbol_S('V'); } RPAREN SEMI 
     | K_PRINT_DOUBLE LPAREN IDENTIFIER { newSymbol_S('V'); } RPAREN SEMI 
@@ -98,11 +94,12 @@ print:
     ;
 
 var:
-    d_type IDENTIFIER{newSymbol_S('V');} SEMI 
-    | d_type assignment
+    d_type {newSymbol_S('V');} IDENTIFIER  SEMI 
     ;
 
 assignment:
+    d_type IDENTIFIER {newSymbol_S('V');} ASSIGN expr SEMI
+    |
     IDENTIFIER {newSymbol_S('V');} ASSIGN expr SEMI
     ;
     
@@ -114,12 +111,13 @@ d_type:
     ;
 
 expr:
-    ICONSTANT { newSymbol_I(); }
-    | DCONSTANT { newSymbol_D(); }
+    ICONSTANT { newSymbol_S('I'); }
+    | DCONSTANT { newSymbol_S('D'); }
     | IDENTIFIER { newSymbol_S('V');}
     | expr MINUS expr             
     | expr PLUS expr              
-    | LPAREN expr RPAREN   
+    | LPAREN expr RPAREN
+    | epsilon
     ;
 
 
@@ -166,7 +164,7 @@ int main(){
         return 0;
     }
 
-    int search_I(char* in){
+    /* int search_I(char* in){
         for(int i=0; i<st_count; i++){
             
         }
@@ -184,9 +182,10 @@ int main(){
             }
         }
         return 0;
-    }
+    } */
 
     void newSymbol_S(char c){
+        printf("%s\n", yytext);
         if(!search_S(yytext)){
             switch(c){
                 case 'I':
@@ -241,7 +240,7 @@ int main(){
         }
     }
 
-    void newSymbol_I(){
+    /* void newSymbol_I(){
         if(!search_I(yytext)){
             symbolTable[st_count].name=strdup(yytext);
             symbolTable[st_count].d_type=strdup("CONST");
@@ -255,5 +254,5 @@ int main(){
         if(!search_D(yytext)){
             
         }
-    }
+    } */
 
