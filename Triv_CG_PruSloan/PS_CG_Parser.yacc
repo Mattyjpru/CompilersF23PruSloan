@@ -8,6 +8,7 @@
         struct node* rightchild;
         // char* dataType;
     }node;
+    struct node *head;
 
     int yyerror(char *msg){
         printf("Invalid Program: %s\n", msg);
@@ -44,7 +45,7 @@
 %}
 
 %union {
-    struct var_name { 
+    struct nt1 { 
 		char name[100];
         char dt[100];
 		struct node* nd;
@@ -67,6 +68,7 @@ statement:
     program { printf("Valid Program\n"); };
 
 program: K_PROGRAM IDENTIFIER{newSymbol_S('M', $2);}  LCURLY task RCURLY
+    {}
     ;
 
 task: function
@@ -277,7 +279,7 @@ extern FILE* yyin;
 
 
 ////////////////////////////below may need tweaking/////////////////////////////////
-    node* buildNode(char*token, node* leftchild, node* rightchild, char* dataType){
+    node* buildNode(char*token, node* leftchild, node* rightchild){
         struct node *newnode = (struct node*) malloc(sizeof(struct node));
         char *newstr = (char*) malloc(strlen(token)+1);
         strcpy(newstr, token);
