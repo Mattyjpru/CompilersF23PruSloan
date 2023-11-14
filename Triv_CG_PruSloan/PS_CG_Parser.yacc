@@ -34,7 +34,9 @@
     } symbolTable[48];
 
 
-
+    node* buildNode( node*, node*, char*);
+    void printtree(struct node* );
+    void printInorder(struct node *);
     void insert();
     int search_S(char*);
     int search_I(int);
@@ -67,8 +69,8 @@
 statement: 
     program { printf("Valid Program\n"); };
 
-program: K_PROGRAM IDENTIFIER{newSymbol_S('M', $2);}  LCURLY task RCURLY
-    {}
+program: K_PROGRAM IDENTIFIER{newSymbol_S('M', $2);}  LCURLY task RCURLY{$$.nd=buildNode($2,$4,$2); head=$$.nd}
+    
     ;
 
 task: function
@@ -89,9 +91,9 @@ function:
     ;
 
 block:
-    print           
+    print    { $$.nd = buildNode(NULL, NULL, "printf"); }       
     | var             
-    | assignment             
+    | assignment         { $$.nd = $1.nd; }    
     | print block     
     | var block       
     | assignment block       
@@ -115,7 +117,7 @@ var:
     ;
 
 assignment:
-    IDENTIFIER {newSymbol_S('V', $1);} ASSIGN expr SEMI
+    IDENTIFIER {newSymbol_S('V', $1);} ASSIGN expr SEMI { $1.nd = buildNode(NULL, NULL, $1.name); $$.nd = buildNode($1.nd, $3.nd, "="); }
     ;
     
 
@@ -126,22 +128,30 @@ d_type:
     ;
 
 expr:
-    ICONSTANT { newSymbol_I($1); }
-    | DCONSTANT { newSymbol_D($1); }
-    | IDENTIFIER { newSymbol_S('V', $1);}
-    | expr MINUS expr             
-    | expr PLUS expr              
+    ICONSTANT { newSymbol_I($1); $$.nd = buildNode(NULL, NULL, $1.name); }
+    | DCONSTANT { newSymbol_D($1); $$.nd = buildNode(NULL, NULL, $1.name);}
+    | IDENTIFIER { newSymbol_S('V', $1);$$.nd = buildNode(NULL, NULL, $1.name);}
+    | expr MINUS expr   {$$.nd = buildNode($1.nd, $3.nd, $2.name);}          
+    | expr PLUS expr    {$$.nd = buildNode($1.nd, $3.nd, $2.name);}         
     | LPAREN expr RPAREN   
     ;
 
 
 param_list:
-    d_type IDENTIFIER { newSymbol_S('V', $2); }                       
-    | d_type IDENTIFIER{ newSymbol_S('V', $2); }  COMMA param_list  
+    var                      
+    | var  COMMA param_list  
     |epsilon
     ;
 
 epsilon: ;
+
+/* relop: LT
+| GT
+| LEQ
+| GEQ
+| DEQ
+| NE
+; */
 
 %%
 extern FILE* yyin;
@@ -279,7 +289,7 @@ extern FILE* yyin;
 
 
 ////////////////////////////below may need tweaking/////////////////////////////////
-    node* buildNode(char*token, node* leftchild, node* rightchild){
+    node* buildNode( node* leftchild, node* rightchild, char* token){
         struct node *newnode = (struct node*) malloc(sizeof(struct node));
         char *newstr = (char*) malloc(strlen(token)+1);
         strcpy(newstr, token);
