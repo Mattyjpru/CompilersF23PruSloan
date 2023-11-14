@@ -2,22 +2,18 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    typedef struct node{
+    struct node{
         char* token;
         struct node* leftchild;
         struct node* rightchild;
         // char* dataType;
-
     }node;
-    typedef struct nodeobj {
-        char name[100];
-        char dt[100];
-        struct node* nd;
-        } nd_obj;
+
     int yyerror(char *msg){
         printf("Invalid Program: %s\n", msg);
         exit(0);
     }
+
     int yylex();
     extern char* yytext;
     extern int line;
@@ -48,9 +44,11 @@
 %}
 
 %union {
-    int iVal;
-    double dVal;
-    char  *sVal;
+    struct var_name { 
+		char name[100];
+        char dt[100];
+		struct node* nd;
+	} nd_obj; 
 }
 
 %token<sVal> IDENTIFIER SCONSTANT 
