@@ -33,6 +33,10 @@
         int line_no;
     } symbolTable[48];
 
+    node* buildNode( node*, node*, char*);
+    void printtree(struct node* );
+    void printInorder(struct node *);
+
     void insert();
     int search(char*);
     // int search_I(int);
@@ -67,7 +71,8 @@ statement:
 
 program: K_PROGRAM IDENTIFIER{newSymbol('M', $2);}  LCURLY task RCURLY
     {
-        $2.nd = buildNode("main", $6.nd, $7.nd); $$.nd = mknode("program", $1.nd, $2.nd); head = $$.nd; 
+        $$.nd=buildNode($2,$4,$2); 
+        head=$$.nd;
     }
     ;
 
@@ -89,9 +94,9 @@ function:
     ;
 
 block:
-    print           
+    print                   { $$.nd = buildNode(NULL, NULL, "printf"); } 
     | var             
-    | assignment             
+    | assignment            { $$.nd = $1.nd; }
     | print block     
     | var block       
     | assignment block       
@@ -110,7 +115,8 @@ print:
     ;
 
 var:
-    d_type IDENTIFIER{newSymbol('V', $2);} SEMI 
+    d_type IDENTIFIER{newSymbol('V', $2);} SEMI
+    { $1.nd = buildNode(NULL, NULL, $1.name); $$.nd = buildNode($1.nd, $3.nd, "="); }
     | d_type assignment
     ;
 
@@ -126,22 +132,30 @@ d_type:
     ;
 
 expr:
-    ICONSTANT { newSymbol('I',$1); }
-    | DCONSTANT { newSymbol('D', $1); }
-    | IDENTIFIER { newSymbol('V', $1);}
-    | expr MINUS expr             
-    | expr PLUS expr              
+    ICONSTANT               { newSymbol('I',$1); $$.nd = buildNode(NULL, NULL, $1.name); }
+    | DCONSTANT             { newSymbol('D', $1);  $$.nd = buildNode(NULL, NULL, $1.name); }
+    | IDENTIFIER            { newSymbol('V', $1); $$.nd = buildNode(NULL, NULL, $1.name); }
+    | expr MINUS expr       { $$.nd = buildNode($1.nd, $3.nd, $2.name); }  
+    | expr PLUS expr        { $$.nd = buildNode($1.nd, $3.nd, $2.name); }      
     | LPAREN expr RPAREN   
     ;
 
 
 param_list:
-    d_type IDENTIFIER { newSymbol('V', $2); }                       
-    | d_type IDENTIFIER{ newSymbol('V', $2); }  COMMA param_list  
+    var                   
+    | var COMMA param_list  
     |epsilon
     ;
 
 epsilon: ;
+
+/* relop: LT
+| GT
+| LEQ
+| GEQ
+| DEQ
+| NE
+; */
 
 %%
 extern FILE* yyin;
@@ -346,7 +360,7 @@ void newSymbol(char c, char* stringVal){
 
 
 ////////////////////////////below may need tweaking/////////////////////////////////
-    node* buildNode(char*token, node* leftchild, node* rightchild){
+    node* buildNode( node* leftchild, node* rightchild, char* token){
         struct node *newnode = (struct node*) malloc(sizeof(struct node));
         char *newstr = (char*) malloc(strlen(token)+1);
         strcpy(newstr, token);
@@ -372,5 +386,3 @@ void newSymbol(char c, char* stringVal){
             printInorder(tree->right);
         }
     }
-
-
