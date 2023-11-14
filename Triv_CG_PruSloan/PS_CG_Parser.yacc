@@ -284,8 +284,21 @@ extern FILE* yyin;
         return(newnode);
     }
 
-    void printTree(node* thisTree){
+    void printtree(struct node* tree) {
+        printf("\n\n Inorder traversal of the Parse Tree: \n\n");
+        printInorder(tree);
+        printf("\n\n");
+    }
 
+    void printInorder(struct node *tree) {
+        int i;
+        if (tree->left) {
+            printInorder(tree->left);
+        }
+        printf("%s, ", tree->token);
+        if (tree->right) {
+            printInorder(tree->right);
+        }
     }
 
 
