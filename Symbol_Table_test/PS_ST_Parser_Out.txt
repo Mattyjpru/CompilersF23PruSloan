@@ -1,0 +1,13 @@
+Valid Program
+
+
+SYMBOL                    DATATYPE        TYPE            LINE NUMBER    
+___________________________________________________________________________
+
+tiny_example_1            N/A             PROGRAM         1              
+main                      void            PROCEDURE       3              
+:=                        double          IDENTIFIER      5              
+;                         integer         IDENTIFIER      7              
+i                         integer         IDENTIFIER      8              
+441                       CONST           ICONSTANT       8              
+)                         integer         IDENTIFIER      9              
