@@ -1,5 +1,5 @@
-Valid Program
-
+Valid Program
+
 
 SYMBOL                    DATATYPE        TYPE            LINE NUMBER    
 ___________________________________________________________________________
