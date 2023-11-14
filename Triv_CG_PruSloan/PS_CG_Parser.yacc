@@ -11,6 +11,7 @@
     }node;
     typedef struct var_name {
         char name[100];
+        char dt[100];
         struct node* nd;
         } nd_obj;
     int yyerror(char *msg){
@@ -35,15 +36,7 @@
         int line_no;
     } symbolTable[48];
 
-    struct AST{
-        struct* AST left;
-        struct* AST right;
-        int valint;
-        double valdub;
-        string valstr;
-        rune op;
-        
-    };
+
 
     void insert();
     int search_S(char*);
