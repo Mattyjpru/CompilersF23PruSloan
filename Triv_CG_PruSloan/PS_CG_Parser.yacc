@@ -6,10 +6,10 @@
         char* token;
         struct node* leftchild;
         struct node* rightchild;
-        char* dataType;
+        // char* dataType;
 
     }node;
-    typedef struct var_name {
+    typedef struct nodeobj {
         char name[100];
         char dt[100];
         struct node* nd;
@@ -275,7 +275,7 @@ extern FILE* yyin;
     }
 
 
-    
+
 ////////////////////////////below may need tweaking/////////////////////////////////
     node* buildNode(char*token, node* leftchild, node* rightchild, char* dataType){
         struct node *newnode = (struct node*) malloc(sizeof(struct node));
