@@ -7,7 +7,7 @@
         struct node* leftchild;
         struct node* rightchild;
         // char* dataType;
-    }node;
+    };
     struct node *head;
 
     int yyerror(char *msg){
@@ -33,7 +33,7 @@
         int line_no;
     } symbolTable[48];
 
-    node* buildNode( node*, node*, char*);
+    struct node* buildNode(struct node*, struct node*, char*);
     void printtree(struct node* );
     void printInorder(struct node *);
 
@@ -44,6 +44,7 @@
     void newSymbol(char, char*);
     // void newSymbol_I(int);
     // void newSymbol_D(double);
+    char temp[32];
 %}
 
 %union {
@@ -59,7 +60,7 @@
 %token<nd_obj> K_READ_STRING K_RETURN K_STRING K_THEN K_WHILE ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY
 %token<nd_obj> ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
 %token<nd_obj> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
-%type<nd_obj> statement program task function procedure param_list block d_type print epsilon expr val init
+%type<nd_obj> statement program task function procedure param_list block d_type print expr val init
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
@@ -69,11 +70,8 @@
 statement: 
     program { printf("Valid Program\n"); };
 
-program: K_PROGRAM IDENTIFIER{newSymbol('M', $2);}  LCURLY task RCURLY
-    {
-        $$.nd=buildNode($2,$4,$2); 
-        head=$$.nd;
-    }
+program: K_PROGRAM IDENTIFIER LCURLY task RCURLY
+
     ;
 
 task: function
@@ -83,34 +81,29 @@ task: function
     ;
 
 procedure:
-
-    |K_PROCEDURE IDENTIFIER {newSymbol('P', $2);} LPAREN param_list RPAREN LCURLY block RCURLY
-    
+    |K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
     ;
 
 function: 
-    K_FUNCTION d_type IDENTIFIER {newSymbol('F', $3);} LPAREN param_list RPAREN LCURLY block RCURLY
-
+    K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
     ;
 init: ASSIGN val
     |
     ;
 block:
-    print                   { $$.nd = buildNode(NULL, NULL, "printf"); } 
-    | d_type IDENTIFIER {newSymbol('V', $2);} init SEMI          
+    print                  
+    | d_type IDENTIFIER  init SEMI          
     | block block  
-    | IDENTIFIER ASSIGN expr
-    | epsilon     
-
+    | IDENTIFIER ASSIGN expr  
     ;
 
 print:
-    K_PRINT_INTEGER LPAREN ICONSTANT { newSymbol('I',$3); } RPAREN SEMI 
-    | K_PRINT_DOUBLE LPAREN DCONSTANT { newSymbol('D', $3); } RPAREN SEMI 
-    | K_PRINT_STRING LPAREN SCONSTANT { newSymbol('S', $3); } RPAREN SEMI 
-    | K_PRINT_INTEGER LPAREN IDENTIFIER { newSymbol('V', $3); } RPAREN SEMI 
-    | K_PRINT_DOUBLE LPAREN IDENTIFIER { newSymbol('V', $3); } RPAREN SEMI 
-    | K_PRINT_STRING LPAREN IDENTIFIER { newSymbol('V', $3); } RPAREN SEMI 
+    K_PRINT_INTEGER LPAREN ICONSTANT  RPAREN SEMI 
+    | K_PRINT_DOUBLE LPAREN DCONSTANT  RPAREN SEMI 
+    | K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI 
+    | K_PRINT_INTEGER LPAREN IDENTIFIER  RPAREN SEMI 
+    | K_PRINT_DOUBLE LPAREN IDENTIFIER  RPAREN SEMI 
+    | K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI 
     | K_PRINT_INTEGER LPAREN expr RPAREN SEMI
     ;
 
@@ -123,30 +116,28 @@ print:
     
 
 d_type:
-    K_INTEGER { insert(); }
-    |K_STRING { insert(); }
-    |K_DOUBLE { insert(); }
+    K_INTEGER 
+    |K_STRING 
+    |K_DOUBLE 
     ;
 
 expr:
     val
-    | expr MINUS expr       { $$.nd = buildNode($1.nd, $3.nd, $2.name); }  
-    | expr PLUS expr        { $$.nd = buildNode($1.nd, $3.nd, $2.name); }      
+    | expr MINUS expr        
+    | expr PLUS expr              
     | LPAREN expr RPAREN   
     ;
 
 val:
-    ICONSTANT               { newSymbol('I',$1); $$.nd = buildNode(NULL, NULL, $1.name); }
-    | DCONSTANT             { newSymbol('D', $1);  $$.nd = buildNode(NULL, NULL, $1.name); }
-    | IDENTIFIER            { newSymbol('V', $1); $$.nd = buildNode(NULL, NULL, $1.name); };
+    ICONSTANT               
+    | DCONSTANT             
+    | IDENTIFIER            
 
 param_list:
-    d_type IDENTIFIER {newSymbol('V', $2);} init SEMI                   
-    | d_type IDENTIFIER {newSymbol('V', $2);} init SEMI COMMA param_list  
-    |epsilon
+    d_type IDENTIFIER  init SEMI                   
+    | d_type IDENTIFIER  init SEMI COMMA param_list  
+    |
     ;
-
-epsilon: ;
 
 /* relop: LT
 | GT
@@ -290,9 +281,9 @@ int main(){
     } */
 
 
-////////////////////////// New Symbol Table Stuff ///////////////////////////////////////////////
-void newSymbol(char c, char* stringVal){
-        if(!search_S(stringVal)){
+////////////////////////////////// New Symbol Table Stuff //////////////////////////////////////////
+    void newSymbol(char c, char* stringVal){
+        if(!search(stringVal)){
             switch(c){
                 case 'I':
                     symbolTable[st_count].name=strdup(stringVal);        
@@ -363,8 +354,8 @@ void newSymbol(char c, char* stringVal){
         struct node *newnode = (struct node*) malloc(sizeof(struct node));
         char *newstr = (char*) malloc(strlen(token)+1);
         strcpy(newstr, token);
-        newnode->left = left;
-        newnode->right = right;
+        newnode->leftchild = leftchild;
+        newnode->rightchild = rightchild;
         newnode->token = newstr;
         return(newnode);
     }
