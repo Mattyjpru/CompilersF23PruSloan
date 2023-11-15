@@ -162,7 +162,7 @@ typedef union YYSTYPE
 {
     struct nt1 { 
 		char name[100];
-        // char name[100];
+        // char dt[100];
 		struct node* nd;
 	} nd_obj; 
 }

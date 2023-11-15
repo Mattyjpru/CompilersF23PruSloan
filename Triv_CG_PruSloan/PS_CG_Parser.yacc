@@ -124,9 +124,7 @@ d_type:
     ;
 
 expr:
-    ICONSTANT { newSymbol('I', $1.name); }
-    | DCONSTANT { newSymbol('D', $1.name); }
-    | IDENTIFIER { newSymbol('V', $1.name);}
+    value
     | expr MINUS expr             
     | expr PLUS expr              
     | LPAREN expr RPAREN   
@@ -195,14 +193,14 @@ int main(){
                     symbolTable[st_count].name=strdup(stringVal);        
                     symbolTable[st_count].d_type=strdup("CONST");
                     symbolTable[st_count].line_no=line;    
-                    symbolTable[st_count].use=strdup("PROCEDURE");//this should be iconstant but if i change it, it sets the 441 to 0?
+                    symbolTable[st_count].use=strdup("ICONST");//this should be ICONSTANT but if i change it to that, it sets the 441 to 0?
                     st_count++;
                     break;
                 case 'D':
                     symbolTable[st_count].name=strdup(stringVal);   
                     symbolTable[st_count].d_type=strdup("CONST");
                     symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("DCONSTANT");
+                    symbolTable[st_count].use=strdup("DCONST");
                     st_count++;
                     break;
                 case 'V':
@@ -223,7 +221,7 @@ int main(){
                     symbolTable[st_count].name=strdup(stringVal); 
                     symbolTable[st_count].d_type=strdup("CONST");
                     symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("SCONSTANT");
+                    symbolTable[st_count].use=strdup("SCONST");
                     st_count++;
                     break;
                 case 'F':
