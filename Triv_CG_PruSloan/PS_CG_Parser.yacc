@@ -59,7 +59,7 @@
 %token<nd_obj> K_READ_STRING K_RETURN K_STRING K_THEN K_WHILE ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY
 %token<nd_obj> ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
 %token<nd_obj> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
-%type<nd_obj> statement program task function procedure param_list block d_type print var assignment epsilon expr value
+%type<nd_obj> statement program task function procedure param_list block d_type print var assignment expr value
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
@@ -96,7 +96,6 @@ block:
     | var block       
     | assignment block       
     |   
-
     ;
 
 print:
