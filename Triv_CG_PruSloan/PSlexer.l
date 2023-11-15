@@ -1,14 +1,6 @@
 %{
 #include "y.tab.h"
 int line=1;
-char* repD(char* str, char target){
-    char* here=strchr(str,target);
-    while(here){
-        *here='e';
-        here=strchr(here, target);
-    }
-    return str;
-}
 
 %}
 

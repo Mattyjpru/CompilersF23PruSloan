@@ -184,107 +184,117 @@ int main(){
     }while(!feof(yyin));
     return 0;
 }
-    void insert(){
-        strcpy(useBuff, yytext);
+void insert(){
+    strcpy(useBuff, yytext);
+}
+
+////////////////////////// Function to replace the d to e in double strings /////////////////////////
+char* repD(char* str, char target){
+    char* here=strchr(str,target);
+    while(here){
+        *here='e';
+        here=strchr(here, target);
     }
-
-    
-
+    return str;
+}
 
 ////////////////////////////////// New Symbol Table Stuff //////////////////////////////////////////
-    void newSymbol(char c, char* stringVal){
-        if(!search(stringVal)){
-            switch(c){
-                case 'I':
-                    symbolTable[st_count].name=strdup(stringVal);        
-                    symbolTable[st_count].d_type=strdup("CONST");
-                    symbolTable[st_count].line_no=line;    
-                    symbolTable[st_count].use=strdup("ICONST");//this should be ICONSTANT but if i change it to that, it sets the 441 to 0?
-                    st_count++;
-                    break;
-                case 'D':
-                    symbolTable[st_count].name=strdup(stringVal);   
-                    symbolTable[st_count].d_type=strdup("CONST");
-                    symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("DCONST");
-                    st_count++;
-                    break;
-                case 'V':
-                    symbolTable[st_count].name=strdup(stringVal);
-                    symbolTable[st_count].d_type=strdup(useBuff);
-                    symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("IDENTIFIER");
-                    st_count++;
-                    break;
-                case 'P':
-                    symbolTable[st_count].name=strdup(stringVal);        
-                    symbolTable[st_count].d_type=strdup("void");    
-                    symbolTable[st_count].line_no=line;    
-                    symbolTable[st_count].use=strdup("PROCEDURE");
-                    st_count++;
-                    break;
-                case 'S':
-                    symbolTable[st_count].name=strdup(stringVal); 
-                    symbolTable[st_count].d_type=strdup("CONST");
-                    symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("SCONST");
-                    st_count++;
-                    break;
-                case 'F':
-                    symbolTable[st_count].name=strdup(stringVal); 
-                    symbolTable[st_count].d_type=strdup(useBuff);
-                    symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("FUNCTION");
-                    st_count++;
-                    break;
-                case 'M':
-                    symbolTable[st_count].name=strdup(stringVal); 
-                    symbolTable[st_count].d_type=strdup("N/A");
-                    symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("PROGRAM");
-                    st_count++;
-                    break;
-            }
-        }
-    }
-
-    int search(char* in){
-        for(int i=0; i<st_count; i++){
-            if(strcmp(symbolTable[i].name, in)==0){
-                return -1;
+void newSymbol(char c, char* stringVal){
+    if(!search(stringVal)){
+        switch(c){
+            case 'I':
+                symbolTable[st_count].name=strdup(stringVal);
+                symbolTable[st_count].intval = atoi(stringVal);
+                symbolTable[st_count].d_type=strdup("CONST");
+                symbolTable[st_count].line_no=line;    
+                symbolTable[st_count].use=strdup("ICONSTANT");//this should be ICONSTANT but if i change it to that, it sets the 441 to 0?
+                st_count++;
                 break;
-            }
+            case 'D':
+                stringVal = strdup(repD(repD(stringVal,'d'),'D'));
+                symbolTable[st_count].name=strdup(stringVal);
+                symbolTable[st_count].dubval = atof(stringVal);
+                symbolTable[st_count].d_type=strdup("CONST");
+                symbolTable[st_count].line_no=line;
+                symbolTable[st_count].use=strdup("DCONSTANT");
+                st_count++;
+                break;
+            case 'V':
+                symbolTable[st_count].name=strdup(stringVal);
+                symbolTable[st_count].d_type=strdup(useBuff);
+                symbolTable[st_count].line_no=line;
+                symbolTable[st_count].use=strdup("IDENTIFIER");
+                st_count++;
+                break;
+            case 'P':
+                symbolTable[st_count].name=strdup(stringVal);        
+                symbolTable[st_count].d_type=strdup("void");    
+                symbolTable[st_count].line_no=line;    
+                symbolTable[st_count].use=strdup("PROCEDURE");
+                st_count++;
+                break;
+            case 'S':
+                symbolTable[st_count].name=strdup(stringVal); 
+                symbolTable[st_count].d_type=strdup("CONST");
+                symbolTable[st_count].line_no=line;
+                symbolTable[st_count].use=strdup("SCONSTANT");
+                st_count++;
+                break;
+            case 'F':
+                symbolTable[st_count].name=strdup(stringVal); 
+                symbolTable[st_count].d_type=strdup(useBuff);
+                symbolTable[st_count].line_no=line;
+                symbolTable[st_count].use=strdup("FUNCTION");
+                st_count++;
+                break;
+            case 'M':
+                symbolTable[st_count].name=strdup(stringVal); 
+                symbolTable[st_count].d_type=strdup("N/A");
+                symbolTable[st_count].line_no=line;
+                symbolTable[st_count].use=strdup("PROGRAM");
+                st_count++;
+                break;
         }
-        return 0;
     }
+}
+
+int search(char* in){
+    for(int i=0; i<st_count; i++){
+        if(strcmp(symbolTable[i].name, in)==0){
+            return -1;
+            break;
+        }
+    }
+    return 0;
+}
 
 
 ////////////////////////////below may need tweaking/////////////////////////////////
-    struct node* buildNode( struct node* leftchild, struct node* rightchild, char* token){
-        struct node *newnode = (struct node*) malloc(sizeof(struct node));
-        char *newstr = (char*) malloc(strlen(token)+1);
-        strcpy(newstr, token);
-        newnode->leftchild = leftchild;
-        newnode->rightchild = rightchild;
-        newnode->token = newstr;
-        return(newnode);
-    }
+struct node* buildNode( struct node* leftchild, struct node* rightchild, char* token){
+    struct node *newnode = (struct node*) malloc(sizeof(struct node));
+    char *newstr = (char*) malloc(strlen(token)+1);
+    strcpy(newstr, token);
+    newnode->leftchild = leftchild;
+    newnode->rightchild = rightchild;
+    newnode->token = newstr;
+    return(newnode);
+}
 
-    void printtree(struct node* tree) {
-        printf("\n\n Inorder traversal of the Parse Tree: \n\n");
-        printInorder(tree);
-        printf("\n\n");
-    }
+void printtree(struct node* tree) {
+    printf("\n\n Inorder traversal of the Parse Tree: \n\n");
+    printInorder(tree);
+    printf("\n\n");
+}
 
-    void printInorder(struct node *tree) {
-        int i;
-        if (tree->leftchild) {
-            printInorder(tree->leftchild);
-        }
-        printf("%s, ", tree->token);
-        if (tree->rightchild) {
-            printInorder(tree->rightchild);
-        }
+void printInorder(struct node *tree) {
+    int i;
+    if (tree->leftchild) {
+        printInorder(tree->leftchild);
     }
+    printf("%s, ", tree->token);
+    if (tree->rightchild) {
+        printInorder(tree->rightchild);
+    }
+}
 
 
