@@ -226,11 +226,9 @@
 
     void insert();
     int search(char*);
-    // int search_I(int);
-    // int search_D(double);
+
     void newSymbol(char, char*);
-    // void newSymbol_I(int);
-    // void newSymbol_D(double);
+
 
 
 /* Enabling traces.  */
@@ -253,16 +251,15 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 49 "PS_CG_Parser.yacc"
+#line 47 "PS_CG_Parser.yacc"
 {
     struct nt1 { 
 		char name[100];
-        char dt[100];
 		struct node* nd;
 	} nd_obj; 
 }
 /* Line 193 of yacc.c.  */
-#line 266 "y.tab.c"
+#line 263 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -275,7 +272,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 279 "y.tab.c"
+#line 276 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -581,11 +578,11 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    70,    70,    72,    72,    78,    79,    80,    81,    84,
-      88,    92,    93,    94,    95,    96,    97,    98,   102,   103,
-     104,   105,   106,   107,   108,   112,   112,   113,   117,   117,
-     123,   124,   125,   129,   130,   131,   132,   133,   134,   143,
-     144,   144,   145
+       0,    67,    67,    69,    69,    75,    76,    77,    78,    81,
+      85,    89,    90,    91,    92,    93,    94,    95,    99,   100,
+     101,   102,   103,   104,   105,   109,   109,   110,   114,   114,
+     120,   121,   122,   126,   127,   128,   129,   130,   131,   140,
+     141,   141,   142
 };
 #endif
 
@@ -1555,80 +1552,80 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 70 "PS_CG_Parser.yacc"
+#line 67 "PS_CG_Parser.yacc"
     { printf("Valid Program\n"); }
     break;
 
   case 3:
-#line 72 "PS_CG_Parser.yacc"
-    {newSymbol('M', (yyvsp[(2) - (2)].nd_obj).dt);}
+#line 69 "PS_CG_Parser.yacc"
+    {newSymbol('M', (yyvsp[(2) - (2)].nd_obj).name);}
     break;
 
   case 4:
-#line 73 "PS_CG_Parser.yacc"
+#line 70 "PS_CG_Parser.yacc"
     {
-        (yyval.nd_obj).nd=buildNode((yyvsp[(2) - (6)].nd_obj).nd,(yyvsp[(4) - (6)].nd_obj).nd,(yyvsp[(2) - (6)].nd_obj).dt); head = (yyval.nd_obj).nd; 
+        (yyval.nd_obj).nd=buildNode((yyvsp[(2) - (6)].nd_obj).nd,(yyvsp[(4) - (6)].nd_obj).nd,(yyvsp[(2) - (6)].nd_obj).name); head = (yyval.nd_obj).nd; 
     }
     break;
 
   case 25:
-#line 112 "PS_CG_Parser.yacc"
-    {newSymbol('V', (yyvsp[(2) - (2)].nd_obj).dt);}
+#line 109 "PS_CG_Parser.yacc"
+    {newSymbol('V', (yyvsp[(2) - (2)].nd_obj).name);}
     break;
 
   case 28:
-#line 117 "PS_CG_Parser.yacc"
-    {newSymbol('V', (yyvsp[(1) - (1)].nd_obj).dt);}
+#line 114 "PS_CG_Parser.yacc"
+    {newSymbol('V', (yyvsp[(1) - (1)].nd_obj).name);}
     break;
 
   case 29:
-#line 118 "PS_CG_Parser.yacc"
-    { (yyvsp[(1) - (5)].nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (5)].nd_obj).dt); (yyval.nd_obj).nd = buildNode((yyvsp[(1) - (5)].nd_obj).nd, (yyvsp[(3) - (5)].nd_obj).nd, "="); }
+#line 115 "PS_CG_Parser.yacc"
+    { (yyvsp[(1) - (5)].nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (5)].nd_obj).name); (yyval.nd_obj).nd = buildNode((yyvsp[(1) - (5)].nd_obj).nd, (yyvsp[(3) - (5)].nd_obj).nd, "="); }
     break;
 
   case 30:
-#line 123 "PS_CG_Parser.yacc"
+#line 120 "PS_CG_Parser.yacc"
     {insert();}
     break;
 
   case 31:
-#line 124 "PS_CG_Parser.yacc"
+#line 121 "PS_CG_Parser.yacc"
     {insert();}
     break;
 
   case 32:
-#line 125 "PS_CG_Parser.yacc"
+#line 122 "PS_CG_Parser.yacc"
     {insert();}
     break;
 
   case 33:
-#line 129 "PS_CG_Parser.yacc"
-    { newSymbol('I', (yyvsp[(1) - (1)].nd_obj).dt); }
+#line 126 "PS_CG_Parser.yacc"
+    { newSymbol('I', (yyvsp[(1) - (1)].nd_obj).name); }
     break;
 
   case 34:
-#line 130 "PS_CG_Parser.yacc"
-    { newSymbol('D', (yyvsp[(1) - (1)].nd_obj).dt); }
+#line 127 "PS_CG_Parser.yacc"
+    { newSymbol('D', (yyvsp[(1) - (1)].nd_obj).name); }
     break;
 
   case 35:
-#line 131 "PS_CG_Parser.yacc"
-    { newSymbol('V', (yyvsp[(1) - (1)].nd_obj).dt);}
+#line 128 "PS_CG_Parser.yacc"
+    { newSymbol('V', (yyvsp[(1) - (1)].nd_obj).name);}
     break;
 
   case 39:
-#line 143 "PS_CG_Parser.yacc"
-    { newSymbol('V', (yyvsp[(2) - (2)].nd_obj).dt); }
+#line 140 "PS_CG_Parser.yacc"
+    { newSymbol('V', (yyvsp[(2) - (2)].nd_obj).name); }
     break;
 
   case 40:
-#line 144 "PS_CG_Parser.yacc"
-    { newSymbol('V', (yyvsp[(2) - (2)].nd_obj).dt); }
+#line 141 "PS_CG_Parser.yacc"
+    { newSymbol('V', (yyvsp[(2) - (2)].nd_obj).name); }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1632 "y.tab.c"
+#line 1629 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1842,7 +1839,7 @@ yyreturn:
 }
 
 
-#line 156 "PS_CG_Parser.yacc"
+#line 153 "PS_CG_Parser.yacc"
 
 extern FILE* yyin;
 
@@ -1876,106 +1873,7 @@ int main(){
         strcpy(useBuff, yytext);
     }
 
-    /* int search_S(char* in){
-        for(int i=0; i<st_count; i++){
-            if((strcmp(symbolTable[i].use, "ICONSTANT") != 0) && (strcmp(symbolTable[i].use, "DCONSTANT") != 0)){
-                if(strcmp(symbolTable[i].name, in)==0){
-                    return -1;
-                    break;
-                }
-            }
-        }
-        return 0;
-    }
-
-    int search_I(int in){
-        for(int i=0; i<st_count; i++){
-            if(strcmp(symbolTable[i].use, "ICONSTANT")==0)
-            {
-                if(symbolTable[i].intval==in){
-                    return -1;
-                    break;
-                }
-            }
-        }
-        return 0;
-    }
-
-    int search_D(double in){
-         for(int i=0; i<st_count; i++){
-            if(strcmp(symbolTable[i].use, "DCONSTANT")==0)
-            {
-                if(symbolTable[i].dubval==in){
-                    return -1;
-                    break;
-                }
-            }
-        }
-        return 0;
-    } */
-
-    /* void newSymbol_S(char c, char* stringVal){
-        if(!search_S(stringVal)){
-            switch(c){
-                case 'V':
-                    symbolTable[st_count].name=strdup(stringVal);
-                    symbolTable[st_count].d_type=strdup(useBuff);
-                    symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("IDENTIFIER");
-                    st_count++;
-                    break;
-                case 'P':
-                    symbolTable[st_count].name=strdup(stringVal);        
-                    symbolTable[st_count].d_type=strdup("void");    
-                    symbolTable[st_count].line_no=line;    
-                    symbolTable[st_count].use=strdup("PROCEDURE");
-                    st_count++;
-                    break;
-                case 'S':
-                    symbolTable[st_count].name=strdup(stringVal); 
-                    symbolTable[st_count].d_type=strdup("CONST");
-                    symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("SCONSTANT");
-                    st_count++;
-                    break;
-                case 'F':
-                    symbolTable[st_count].name=strdup(stringVal); 
-                    symbolTable[st_count].d_type=strdup(useBuff);
-                    symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("FUNCTION");
-                    st_count++;
-                    break;
-                case 'M':
-                    symbolTable[st_count].name=strdup(stringVal); 
-                    symbolTable[st_count].d_type=strdup("N/A");
-                    symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("PROGRAM");
-                    st_count++;
-                    break;
-            }
-        }
-    }
-
-    void newSymbol_I(int iconstVal){
-        if(!search_I(iconstVal)){
-            symbolTable[st_count].intval=iconstVal;
-            symbolTable[st_count].d_type=strdup("CONST");
-            symbolTable[st_count].line_no=line;
-            symbolTable[st_count].use=strdup("ICONSTANT");
-            st_count++;
-        }
-    }
-
-    void newSymbol_D(double dconstVal){
-        if(!search_D(dconstVal)){
-            symbolTable[st_count].dubval=dconstVal;
-            symbolTable[st_count].d_type=strdup("CONST");
-            symbolTable[st_count].line_no=line;
-            symbolTable[st_count].use=strdup("DCONSTANT");
-            st_count++;
-        }
-    } */
-
+    
 
 ////////////////////////////////// New Symbol Table Stuff //////////////////////////////////////////
     void newSymbol(char c, char* stringVal){
@@ -1985,7 +1883,7 @@ int main(){
                     symbolTable[st_count].name=strdup(stringVal);        
                     symbolTable[st_count].d_type=strdup("CONST");
                     symbolTable[st_count].line_no=line;    
-                    symbolTable[st_count].use=strdup("PROCEDURE");
+                    symbolTable[st_count].use=strdup("ICONSTANT");
                     st_count++;
                     break;
                 case 'D':

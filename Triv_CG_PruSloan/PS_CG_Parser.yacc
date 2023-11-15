@@ -39,17 +39,14 @@
 
     void insert();
     int search(char*);
-    // int search_I(int);
-    // int search_D(double);
+
     void newSymbol(char, char*);
-    // void newSymbol_I(int);
-    // void newSymbol_D(double);
+
 %}
 
 %union {
     struct nt1 { 
 		char name[100];
-        char dt[100];
 		struct node* nd;
 	} nd_obj; 
 }
@@ -69,9 +66,9 @@
 statement: 
     program { printf("Valid Program\n"); };
 
-program: K_PROGRAM IDENTIFIER{newSymbol('M', $2.dt);}  LCURLY task RCURLY
+program: K_PROGRAM IDENTIFIER{newSymbol('M', $2.name);}  LCURLY task RCURLY
     {
-        $$.nd=buildNode($2.nd,$4.nd,$2.dt); head = $$.nd; 
+        $$.nd=buildNode($2.nd,$4.nd,$2.name); head = $$.nd; 
     }
     ;
 
@@ -109,13 +106,13 @@ print:
     ;
 
 var:
-    d_type IDENTIFIER{newSymbol('V', $2.dt);} SEMI 
+    d_type IDENTIFIER{newSymbol('V', $2.name);} SEMI 
     | d_type assignment
     ;
 
 assignment:
-    IDENTIFIER {newSymbol('V', $1.dt);} ASSIGN expr SEMI
-        { $1.nd = buildNode(NULL, NULL, $1.dt); $$.nd = buildNode($1.nd, $3.nd, "="); }
+    IDENTIFIER {newSymbol('V', $1.name);} ASSIGN expr SEMI
+        { $1.nd = buildNode(NULL, NULL, $1.name); $$.nd = buildNode($1.nd, $3.nd, "="); }
     ;
     
 
@@ -126,22 +123,22 @@ d_type:
     ;
 
 expr:
-    ICONSTANT { newSymbol('I', $1.dt); }
-    | DCONSTANT { newSymbol('D', $1.dt); }
-    | IDENTIFIER { newSymbol('V', $1.dt);}
+    ICONSTANT { newSymbol('I', $1.name); }
+    | DCONSTANT { newSymbol('D', $1.name); }
+    | IDENTIFIER { newSymbol('V', $1.name);}
     | expr MINUS expr             
     | expr PLUS expr              
     | LPAREN expr RPAREN   
     ;
     
 value:
-    ICONSTANT               { newSymbol('I', $1.dt); $$.nd = buildNode(NULL, NULL, $1.dt); }
-    | DCONSTANT             { newSymbol('D', $1.dt);  $$.nd = buildNode(NULL, NULL, $1.dt); }
-    | IDENTIFIER            { newSymbol('V', $1.dt); $$.nd = buildNode(NULL, NULL, $1.dt); };
+    ICONSTANT               { newSymbol('I', $1.name); $$.nd = buildNode(NULL, NULL, $1.name); }
+    | DCONSTANT             { newSymbol('D', $1.name);  $$.nd = buildNode(NULL, NULL, $1.name); }
+    | IDENTIFIER            { newSymbol('V', $1.name); $$.nd = buildNode(NULL, NULL, $1.name); };
 
 param_list:
-    d_type IDENTIFIER { newSymbol('V', $2.dt); }                       
-    | d_type IDENTIFIER{ newSymbol('V', $2.dt); } COMMA param_list  
+    d_type IDENTIFIER { newSymbol('V', $2.name); }                       
+    | d_type IDENTIFIER{ newSymbol('V', $2.name); } COMMA param_list  
     |
     ;
 
@@ -186,106 +183,7 @@ int main(){
         strcpy(useBuff, yytext);
     }
 
-    /* int search_S(char* in){
-        for(int i=0; i<st_count; i++){
-            if((strcmp(symbolTable[i].use, "ICONSTANT") != 0) && (strcmp(symbolTable[i].use, "DCONSTANT") != 0)){
-                if(strcmp(symbolTable[i].name, in)==0){
-                    return -1;
-                    break;
-                }
-            }
-        }
-        return 0;
-    }
-
-    int search_I(int in){
-        for(int i=0; i<st_count; i++){
-            if(strcmp(symbolTable[i].use, "ICONSTANT")==0)
-            {
-                if(symbolTable[i].intval==in){
-                    return -1;
-                    break;
-                }
-            }
-        }
-        return 0;
-    }
-
-    int search_D(double in){
-         for(int i=0; i<st_count; i++){
-            if(strcmp(symbolTable[i].use, "DCONSTANT")==0)
-            {
-                if(symbolTable[i].dubval==in){
-                    return -1;
-                    break;
-                }
-            }
-        }
-        return 0;
-    } */
-
-    /* void newSymbol_S(char c, char* stringVal){
-        if(!search_S(stringVal)){
-            switch(c){
-                case 'V':
-                    symbolTable[st_count].name=strdup(stringVal);
-                    symbolTable[st_count].d_type=strdup(useBuff);
-                    symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("IDENTIFIER");
-                    st_count++;
-                    break;
-                case 'P':
-                    symbolTable[st_count].name=strdup(stringVal);        
-                    symbolTable[st_count].d_type=strdup("void");    
-                    symbolTable[st_count].line_no=line;    
-                    symbolTable[st_count].use=strdup("PROCEDURE");
-                    st_count++;
-                    break;
-                case 'S':
-                    symbolTable[st_count].name=strdup(stringVal); 
-                    symbolTable[st_count].d_type=strdup("CONST");
-                    symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("SCONSTANT");
-                    st_count++;
-                    break;
-                case 'F':
-                    symbolTable[st_count].name=strdup(stringVal); 
-                    symbolTable[st_count].d_type=strdup(useBuff);
-                    symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("FUNCTION");
-                    st_count++;
-                    break;
-                case 'M':
-                    symbolTable[st_count].name=strdup(stringVal); 
-                    symbolTable[st_count].d_type=strdup("N/A");
-                    symbolTable[st_count].line_no=line;
-                    symbolTable[st_count].use=strdup("PROGRAM");
-                    st_count++;
-                    break;
-            }
-        }
-    }
-
-    void newSymbol_I(int iconstVal){
-        if(!search_I(iconstVal)){
-            symbolTable[st_count].intval=iconstVal;
-            symbolTable[st_count].d_type=strdup("CONST");
-            symbolTable[st_count].line_no=line;
-            symbolTable[st_count].use=strdup("ICONSTANT");
-            st_count++;
-        }
-    }
-
-    void newSymbol_D(double dconstVal){
-        if(!search_D(dconstVal)){
-            symbolTable[st_count].dubval=dconstVal;
-            symbolTable[st_count].d_type=strdup("CONST");
-            symbolTable[st_count].line_no=line;
-            symbolTable[st_count].use=strdup("DCONSTANT");
-            st_count++;
-        }
-    } */
-
+    
 
 ////////////////////////////////// New Symbol Table Stuff //////////////////////////////////////////
     void newSymbol(char c, char* stringVal){
@@ -295,7 +193,7 @@ int main(){
                     symbolTable[st_count].name=strdup(stringVal);        
                     symbolTable[st_count].d_type=strdup("CONST");
                     symbolTable[st_count].line_no=line;    
-                    symbolTable[st_count].use=strdup("PROCEDURE");
+                    symbolTable[st_count].use=strdup("ICONSTANT");
                     st_count++;
                     break;
                 case 'D':

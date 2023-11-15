@@ -34,10 +34,10 @@ char* repD(char* str, char target){
 "string"                                                    {strcpy(yylval.nd_obj.name,(yytext)); return K_STRING;}
 "then"                                                      {strcpy(yylval.nd_obj.name,(yytext)); return K_THEN;}
 "while"                                                     {strcpy(yylval.nd_obj.name,(yytext)); return K_WHILE;}
--?((([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*))([dD][-+]?[0-9]+)?)   {strcpy(yylval.nd_obj.dt,(yytext)); return DCONSTANT;}
-[0-9]+                                                      {strcpy(yylval.nd_obj.dt,(yytext)); return ICONSTANT;}
-\"(\\.|[^"\\])*\"                                           {strcpy(yylval.nd_obj.dt,(yytext)); return SCONSTANT;}
-[A-Za-z0-9$_]{0,32}                                         {strcpy(yylval.nd_obj.dt,(yytext)); return IDENTIFIER;}
+-?((([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*))([dD][-+]?[0-9]+)?)   {strcpy(yylval.nd_obj.name,(yytext)); return DCONSTANT;}
+[0-9]+                                                      {strcpy(yylval.nd_obj.name,(yytext)); return ICONSTANT;}
+\"(\\.|[^"\\])*\"                                           {strcpy(yylval.nd_obj.name,(yytext)); return SCONSTANT;}
+[A-Za-z0-9$_]{0,32}                                         {strcpy(yylval.nd_obj.name,(yytext)); return IDENTIFIER;}
 :=                                                          {strcpy(yylval.nd_obj.name,(yytext)); return ASSIGN;}
 \+=                                                         {strcpy(yylval.nd_obj.name,(yytext)); return ASSIGN_PLUS;}
 \-=                                                         {strcpy(yylval.nd_obj.name,(yytext)); return ASSIGN_MINUS;}

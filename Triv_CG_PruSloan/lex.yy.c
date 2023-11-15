@@ -994,23 +994,23 @@ YY_RULE_SETUP
 case 22:
 YY_RULE_SETUP
 #line 37 "PSlexer.l"
-{strcpy(yylval.nd_obj.dt,(yytext)); return DCONSTANT;}
+{strcpy(yylval.nd_obj.name,(yytext)); return DCONSTANT;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 38 "PSlexer.l"
-{strcpy(yylval.nd_obj.dt,(yytext)); return ICONSTANT;}
+{strcpy(yylval.nd_obj.name,(yytext)); return ICONSTANT;}
 	YY_BREAK
 case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
 #line 39 "PSlexer.l"
-{strcpy(yylval.nd_obj.dt,(yytext)); return SCONSTANT;}
+{strcpy(yylval.nd_obj.name,(yytext)); return SCONSTANT;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 40 "PSlexer.l"
-{strcpy(yylval.nd_obj.dt,(yytext)); return IDENTIFIER;}
+{strcpy(yylval.nd_obj.name,(yytext)); return IDENTIFIER;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
