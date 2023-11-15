@@ -60,11 +60,7 @@
 %token<nd_obj> K_READ_STRING K_RETURN K_STRING K_THEN K_WHILE ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY
 %token<nd_obj> ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
 %token<nd_obj> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
-<<<<<<< HEAD
 %type<nd_obj> statement program task function procedure param_list block d_type print var assignment epsilon expr value
-=======
-%type<nd_obj> statement program task function procedure param_list block d_type print expr val init
->>>>>>> 48eb5a70eb84a287433fa0e2a94a88aa672a0567
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
@@ -93,7 +89,6 @@ function:
     ;
 
 block:
-<<<<<<< HEAD
     print                   { $$.nd = buildNode(NULL, NULL, "printf"); } 
     | var             
     | assignment            { $$.nd = $1.nd; }
@@ -102,12 +97,6 @@ block:
     | assignment block       
     | epsilon     
 
-=======
-    print                  
-    | d_type IDENTIFIER  init SEMI          
-    | block block  
-    | IDENTIFIER ASSIGN expr  
->>>>>>> 48eb5a70eb84a287433fa0e2a94a88aa672a0567
     ;
 
 print:
@@ -138,7 +127,6 @@ d_type:
     ;
 
 expr:
-<<<<<<< HEAD
     value
     | expr MINUS expr       { $$.nd = buildNode($1.nd, $3.nd, $2.name); }  
     | expr PLUS expr        { $$.nd = buildNode($1.nd, $3.nd, $2.name); }      
@@ -154,23 +142,6 @@ param_list:
     var                   
     | var COMMA param_list  
     |epsilon
-=======
-    val
-    | expr MINUS expr        
-    | expr PLUS expr              
-    | LPAREN expr RPAREN   
-    ;
-
-val:
-    ICONSTANT               
-    | DCONSTANT             
-    | IDENTIFIER            
-
-param_list:
-    d_type IDENTIFIER  init SEMI                   
-    | d_type IDENTIFIER  init SEMI COMMA param_list  
-    |
->>>>>>> 48eb5a70eb84a287433fa0e2a94a88aa672a0567
     ;
 
 /* relop: LT
