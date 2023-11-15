@@ -7,3 +7,13 @@ ___________________________________________________________________________
 tiny_example_1            N/A             PROGRAM         1              
 i                         integer         IDENTIFIER      5              
 441                       CONST           ICONST          6              
+
+
+
+
+ Inorder traversal of the Parse Tree: 
+
+tiny_example_1, 
+
+
+

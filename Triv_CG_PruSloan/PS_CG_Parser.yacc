@@ -125,15 +125,18 @@ d_type:
 
 expr:
     value
-    | expr MINUS expr             
-    | expr PLUS expr              
-    | LPAREN expr RPAREN   
+    | expr MINUS expr    { $$.nd = buildNode($1.nd, $3.nd, $2.name); }
+         
+    | expr PLUS expr         { $$.nd = buildNode($1.nd, $3.nd, $2.name); }
+     
+    | LPAREN expr RPAREN   { $$.nd = buildNode(NULL, NULL, $2.name); }
+
     ;
     
 value:
-    ICONSTANT               { newSymbol('I', $1.name); $$.nd = buildNode(NULL, NULL, $1.name); }
-    | DCONSTANT             { newSymbol('D', $1.name);  $$.nd = buildNode(NULL, NULL, $1.name); }
-    | IDENTIFIER            { newSymbol('V', $1.name); $$.nd = buildNode(NULL, NULL, $1.name); };
+    ICONSTANT           { newSymbol('I', $1.name); $$.nd = buildNode(NULL, NULL, $1.name); }
+    | DCONSTANT         { newSymbol('D', $1.name);  $$.nd = buildNode(NULL, NULL, $1.name); }
+    | IDENTIFIER        { newSymbol('V', $1.name); $$.nd = buildNode(NULL, NULL, $1.name); };
 
 param_list:
     d_type IDENTIFIER { newSymbol('V', $2.name); }                       
@@ -175,6 +178,9 @@ int main(){
             free(symbolTable[i].d_type);
             free(symbolTable[i].use);
         }
+        printf("\n\n");
+        printtree(head); 
+        printf("\n\n");
     }while(!feof(yyin));
     return 0;
 }

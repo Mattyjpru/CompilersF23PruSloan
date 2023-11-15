@@ -582,8 +582,8 @@ static const yytype_uint8 yyrline[] =
        0,    68,    68,    70,    70,    76,    77,    78,    79,    82,
       86,    90,    91,    92,    93,    94,    95,    96,   100,   101,
      102,   103,   104,   105,   106,   110,   110,   111,   115,   115,
-     121,   122,   123,   127,   128,   129,   130,   134,   135,   136,
-     139,   140,   140,   141
+     121,   122,   123,   127,   128,   130,   132,   137,   138,   139,
+     142,   143,   143,   144
 };
 #endif
 
@@ -1597,34 +1597,49 @@ yyreduce:
     {insert();}
     break;
 
+  case 34:
+#line 128 "PS_CG_Parser.yacc"
+    { (yyval.nd_obj).nd = buildNode((yyvsp[(1) - (3)].nd_obj).nd, (yyvsp[(3) - (3)].nd_obj).nd, (yyvsp[(2) - (3)].nd_obj).name); }
+    break;
+
+  case 35:
+#line 130 "PS_CG_Parser.yacc"
+    { (yyval.nd_obj).nd = buildNode((yyvsp[(1) - (3)].nd_obj).nd, (yyvsp[(3) - (3)].nd_obj).nd, (yyvsp[(2) - (3)].nd_obj).name); }
+    break;
+
+  case 36:
+#line 132 "PS_CG_Parser.yacc"
+    { (yyval.nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(2) - (3)].nd_obj).name); }
+    break;
+
   case 37:
-#line 134 "PS_CG_Parser.yacc"
+#line 137 "PS_CG_Parser.yacc"
     { newSymbol('I', (yyvsp[(1) - (1)].nd_obj).name); (yyval.nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (1)].nd_obj).name); }
     break;
 
   case 38:
-#line 135 "PS_CG_Parser.yacc"
+#line 138 "PS_CG_Parser.yacc"
     { newSymbol('D', (yyvsp[(1) - (1)].nd_obj).name);  (yyval.nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (1)].nd_obj).name); }
     break;
 
   case 39:
-#line 136 "PS_CG_Parser.yacc"
+#line 139 "PS_CG_Parser.yacc"
     { newSymbol('V', (yyvsp[(1) - (1)].nd_obj).name); (yyval.nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (1)].nd_obj).name); }
     break;
 
   case 40:
-#line 139 "PS_CG_Parser.yacc"
+#line 142 "PS_CG_Parser.yacc"
     { newSymbol('V', (yyvsp[(2) - (2)].nd_obj).name); }
     break;
 
   case 41:
-#line 140 "PS_CG_Parser.yacc"
+#line 143 "PS_CG_Parser.yacc"
     { newSymbol('V', (yyvsp[(2) - (2)].nd_obj).name); }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1628 "y.tab.c"
+#line 1643 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1838,7 +1853,7 @@ yyreturn:
 }
 
 
-#line 152 "PS_CG_Parser.yacc"
+#line 155 "PS_CG_Parser.yacc"
 
 extern FILE* yyin;
 
@@ -1865,6 +1880,9 @@ int main(){
             free(symbolTable[i].d_type);
             free(symbolTable[i].use);
         }
+        printf("\n\n");
+        printtree(head); 
+        printf("\n\n");
     }while(!feof(yyin));
     return 0;
 }
