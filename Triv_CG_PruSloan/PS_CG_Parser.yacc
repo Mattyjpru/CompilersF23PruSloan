@@ -82,7 +82,7 @@ task: function
     ;
 
 procedure:
-    |K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+    | K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
     ;
 
 function: 
@@ -122,9 +122,9 @@ assignment:
     
 
 d_type:
-    K_INTEGER 
-    |K_STRING 
-    |K_DOUBLE 
+    K_INTEGER {insert();}
+    |K_STRING {insert();}
+    |K_DOUBLE {insert();}
     ;
 
 expr:

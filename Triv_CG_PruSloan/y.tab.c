@@ -1442,38 +1442,56 @@ yyreduce:
 #line 1443 "y.tab.c"
     break;
 
+  case 31: /* d_type: K_INTEGER  */
+#line 125 "PS_CG_Parser.yacc"
+              {insert();}
+#line 1449 "y.tab.c"
+    break;
+
+  case 32: /* d_type: K_STRING  */
+#line 126 "PS_CG_Parser.yacc"
+              {insert();}
+#line 1455 "y.tab.c"
+    break;
+
+  case 33: /* d_type: K_DOUBLE  */
+#line 127 "PS_CG_Parser.yacc"
+              {insert();}
+#line 1461 "y.tab.c"
+    break;
+
   case 34: /* expr: ICONSTANT  */
 #line 131 "PS_CG_Parser.yacc"
               { newSymbol('I', (yyvsp[0].nd_obj).dt); }
-#line 1449 "y.tab.c"
+#line 1467 "y.tab.c"
     break;
 
   case 35: /* expr: DCONSTANT  */
 #line 132 "PS_CG_Parser.yacc"
                 { newSymbol('D', (yyvsp[0].nd_obj).dt); }
-#line 1455 "y.tab.c"
+#line 1473 "y.tab.c"
     break;
 
   case 36: /* expr: IDENTIFIER  */
 #line 133 "PS_CG_Parser.yacc"
                  { newSymbol('V', (yyvsp[0].nd_obj).dt);}
-#line 1461 "y.tab.c"
+#line 1479 "y.tab.c"
     break;
 
   case 40: /* param_list: d_type IDENTIFIER  */
 #line 145 "PS_CG_Parser.yacc"
                       { newSymbol('V', (yyvsp[0].nd_obj).dt); }
-#line 1467 "y.tab.c"
+#line 1485 "y.tab.c"
     break;
 
   case 41: /* $@4: %empty  */
 #line 146 "PS_CG_Parser.yacc"
                        { newSymbol('V', (yyvsp[0].nd_obj).dt); }
-#line 1473 "y.tab.c"
+#line 1491 "y.tab.c"
     break;
 
 
-#line 1477 "y.tab.c"
+#line 1495 "y.tab.c"
 
       default: break;
     }
