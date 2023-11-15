@@ -67,53 +67,82 @@
 statement: 
     program { printf("Valid Program\n"); };
 
-program: K_PROGRAM IDENTIFIER{newSymbol('M', $2.name);}  LCURLY task RCURLY
+program: K_PROGRAM IDENTIFIER{newSymbol('M', $2.name);} LCURLY task RCURLY
     {
-        $$.nd=buildNode($2.nd,$4.nd,$2.name); head = $$.nd; 
+        $$.nd=buildNode(NULL, $4.nd, $2.name);
+        head = $$.nd; 
     }
     ;
 
-task: function
-    | procedure
-    | task function
-    | task procedure
+task: function {$$.nd = buildNode($1.nd, NULL, "task");}
+    | procedure {$$.nd = buildNode($1.nd, NULL, "task");}
+    | function task {$$.nd = buildNode($1.nd, $2.nd, "task");}
+    | procedure task  {$$.nd = buildNode($1.nd, $2.nd, "task");}
     ;
 
 procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
-    ;
+    {
+        $$.nd = buildNode($4.nd, $7.nd, $3.name);
+    };
 
-function: 
-    K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
-    ;
+function: K_FUNCTION d_type IDENTIFIER {newSymbol('V', $3.name);} LPAREN param_list RPAREN LCURLY block RCURLY
+    {
+        $$.nd = buildNode($5.nd, $8.nd, $3.name);
+    };
 
 block:
-    print           
-    | var             
-    | assignment             
-    | print block     
-    | var block       
-    | assignment block       
-    |   
+    print               {$$.nd = buildNode($1.nd, NULL, "block");}
+    | var               {$$.nd = buildNode($1.nd, NULL, "block");}
+    | assignment        {$$.nd = buildNode($1.nd, NULL, "block");}    
+    | print block       {$$.nd = buildNode($1.nd, $2.nd, "block");}
+    | var block         {$$.nd = buildNode($1.nd, $2.nd, "block");}
+    | assignment block  {$$.nd = buildNode($1.nd, $2.nd, "block");}  
     ;
 
 print:
-    K_PRINT_INTEGER LPAREN ICONSTANT  RPAREN SEMI 
-    | K_PRINT_DOUBLE LPAREN DCONSTANT  RPAREN SEMI 
-    | K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI 
-    | K_PRINT_INTEGER LPAREN IDENTIFIER  RPAREN SEMI 
-    | K_PRINT_DOUBLE LPAREN IDENTIFIER  RPAREN SEMI 
-    | K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI 
+    K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI 
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
+    }
+    | K_PRINT_DOUBLE LPAREN DCONSTANT  RPAREN SEMI
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
+    }
+    | K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
+    }
+    | K_PRINT_INTEGER LPAREN IDENTIFIER  RPAREN SEMI
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
+    }
+    | K_PRINT_DOUBLE LPAREN IDENTIFIER  RPAREN SEMI
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
+    }
+    | K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
+    }
     | K_PRINT_INTEGER LPAREN expr RPAREN SEMI
+    {
+       $$.nd = buildNode(buildNode(NULL, NULL, $1.name), $3.nd, "print statement");
+    }
     ;
 
 var:
-    d_type IDENTIFIER{newSymbol('V', $2.name);} SEMI 
-    | d_type assignment
+    d_type IDENTIFIER {newSymbol('V', $2.name);} SEMI 
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $2.name), NULL, "variable declaration");
+    }
+    | d_type assignment {$$.nd = $2.nd;}
     ;
 
 assignment:
     IDENTIFIER {newSymbol('V', $1.name);} ASSIGN expr SEMI
-        { $1.nd = buildNode(NULL, NULL, $1.name); $$.nd = buildNode($1.nd, $3.nd, "="); }
+    { 
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), $3.nd, "="); 
+    }
     ;
     
 
@@ -129,19 +158,23 @@ expr:
          
     | expr PLUS expr         { $$.nd = buildNode($1.nd, $3.nd, $2.name); }
      
-    | LPAREN expr RPAREN   { $$.nd = buildNode(NULL, NULL, $2.name); }
+    | LPAREN expr RPAREN   { $$.nd = $2.nd; }
 
     ;
     
 value:
     ICONSTANT           { newSymbol('I', $1.name); $$.nd = buildNode(NULL, NULL, $1.name); }
-    | DCONSTANT         { newSymbol('D', $1.name);  $$.nd = buildNode(NULL, NULL, $1.name); }
-    | IDENTIFIER        { newSymbol('V', $1.name); $$.nd = buildNode(NULL, NULL, $1.name); };
+    | DCONSTANT         { newSymbol('D', $1.name); $$.nd = buildNode(NULL, NULL, $1.name); }
+    | IDENTIFIER        { newSymbol('V', $1.name); $$.nd = buildNode(NULL, NULL, $1.name); }
+    ;
 
 param_list:
-    d_type IDENTIFIER { newSymbol('V', $2.name); }                       
-    | d_type IDENTIFIER{ newSymbol('V', $2.name); } COMMA param_list  
-    |
+    d_type IDENTIFIER{ newSymbol('V', $2.name); } COMMA param_list
+    { 
+        newSymbol('V', $2.name);
+        $$.nd = buildNode(buildNode(NULL, NULL, $2.name), $4.nd, "Parameter List");
+    } 
+    | {$$.nd = NULL;}
     ;
 
 /* relop: LT
@@ -178,10 +211,10 @@ int main(){
             free(symbolTable[i].d_type);
             free(symbolTable[i].use);
         }
-        printf("\n\n");
-        printtree(head); 
-        printf("\n\n");
     }while(!feof(yyin));
+    printf("\n\n");
+    printtree(head); 
+    printf("\n\n");
     return 0;
 }
 void insert(){
@@ -277,6 +310,7 @@ struct node* buildNode( struct node* leftchild, struct node* rightchild, char* t
     newnode->leftchild = leftchild;
     newnode->rightchild = rightchild;
     newnode->token = newstr;
+    printf("Built a node: %s\n", newstr);
     return(newnode);
 }
 
