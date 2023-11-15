@@ -162,11 +162,12 @@ typedef union YYSTYPE
 {
     struct nt1 { 
 		char name[100];
+        // char name[100];
 		struct node* nd;
 	} nd_obj; 
 }
 /* Line 1529 of yacc.c.  */
-#line 170 "y.tab.h"
+#line 171 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

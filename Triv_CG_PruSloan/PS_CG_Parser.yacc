@@ -47,6 +47,7 @@
 %union {
     struct nt1 { 
 		char name[100];
+        // char dt[100];
 		struct node* nd;
 	} nd_obj; 
 }
@@ -185,6 +186,7 @@ int main(){
 
     
 
+
 ////////////////////////////////// New Symbol Table Stuff //////////////////////////////////////////
     void newSymbol(char c, char* stringVal){
         if(!search(stringVal)){
@@ -193,7 +195,7 @@ int main(){
                     symbolTable[st_count].name=strdup(stringVal);        
                     symbolTable[st_count].d_type=strdup("CONST");
                     symbolTable[st_count].line_no=line;    
-                    symbolTable[st_count].use=strdup("ICONSTANT");
+                    symbolTable[st_count].use=strdup("PROCEDURE");//this should be iconstant but if i change it, it sets the 441 to 0?
                     st_count++;
                     break;
                 case 'D':
