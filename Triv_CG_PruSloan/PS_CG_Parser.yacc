@@ -44,7 +44,6 @@
     void newSymbol(char, char*);
     // void newSymbol_I(int);
     // void newSymbol_D(double);
-    char temp[32];
 %}
 
 %union {
