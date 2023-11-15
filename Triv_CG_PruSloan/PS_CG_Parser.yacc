@@ -143,7 +143,7 @@ value:
 
 param_list:
     d_type IDENTIFIER { newSymbol('V', $2.dt); }                       
-    | d_type IDENTIFIER{ newSymbol('V', $2.dt); }  COMMA param_list  
+    | d_type IDENTIFIER{ newSymbol('V', $2.dt); } COMMA param_list  
     |
     ;
 
