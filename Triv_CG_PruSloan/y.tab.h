@@ -177,7 +177,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 50 "PS_CG_Parser.yacc"
+#line 49 "PS_CG_Parser.yacc"
 
     struct nt1 { 
 		char name[100];

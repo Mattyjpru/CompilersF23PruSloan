@@ -69,9 +69,9 @@
 statement: 
     program { printf("Valid Program\n"); };
 
-program: K_PROGRAM IDENTIFIER{newSymbol('M', $2);}  LCURLY task RCURLY
+program: K_PROGRAM IDENTIFIER{newSymbol('M', $2.dt);}  LCURLY task RCURLY
     {
-        $2.nd = buildNode("main", $6.nd, $7.nd); $$.nd = mknode("program", $1.nd, $2.nd); head = $$.nd; 
+        $$.nd=buildNode($2.nd,$4.nd,$2.dt); head = $$.nd; 
     }
     ;
 
@@ -96,7 +96,7 @@ block:
     | print block     
     | var block       
     | assignment block       
-    | epsilon     
+    |   
 
     ;
 
@@ -111,13 +111,13 @@ print:
     ;
 
 var:
-    d_type IDENTIFIER{newSymbol('V', $2);} SEMI 
+    d_type IDENTIFIER{newSymbol('V', $2.dt);} SEMI 
     | d_type assignment
     ;
 
 assignment:
-    IDENTIFIER {newSymbol('V', $1);} ASSIGN expr SEMI
-        { $1.nd = buildNode(NULL, NULL, $1.name); $$.nd = buildNode($1.nd, $3.nd, "="); }
+    IDENTIFIER {newSymbol('V', $1.dt);} ASSIGN expr SEMI
+        { $1.nd = buildNode(NULL, NULL, $1.dt); $$.nd = buildNode($1.nd, $3.nd, "="); }
     ;
     
 
@@ -128,23 +128,23 @@ d_type:
     ;
 
 expr:
-    ICONSTANT { newSymbol('I',$1); }
-    | DCONSTANT { newSymbol('D', $1); }
-    | IDENTIFIER { newSymbol('V', $1);}
+    ICONSTANT { newSymbol('I', $1.dt); }
+    | DCONSTANT { newSymbol('D', $1.dt); }
+    | IDENTIFIER { newSymbol('V', $1.dt);}
     | expr MINUS expr             
     | expr PLUS expr              
     | LPAREN expr RPAREN   
     ;
     
 value:
-    ICONSTANT               { newSymbol('I',$1); $$.nd = buildNode(NULL, NULL, $1.name); }
-    | DCONSTANT             { newSymbol('D', $1);  $$.nd = buildNode(NULL, NULL, $1.name); }
-    | IDENTIFIER            { newSymbol('V', $1); $$.nd = buildNode(NULL, NULL, $1.name); };
+    ICONSTANT               { newSymbol('I', $1.dt); $$.nd = buildNode(NULL, NULL, $1.dt); }
+    | DCONSTANT             { newSymbol('D', $1.dt);  $$.nd = buildNode(NULL, NULL, $1.dt); }
+    | IDENTIFIER            { newSymbol('V', $1.dt); $$.nd = buildNode(NULL, NULL, $1.dt); };
 
 param_list:
-    d_type IDENTIFIER { newSymbol('V', $2); }                       
-    | d_type IDENTIFIER{ newSymbol('V', $2); }  COMMA param_list  
-    |epsilon
+    d_type IDENTIFIER { newSymbol('V', $2.dt); }                       
+    | d_type IDENTIFIER{ newSymbol('V', $2.dt); }  COMMA param_list  
+    |
     ;
 
 /* relop: LT
