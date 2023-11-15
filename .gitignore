@@ -12,3 +12,8 @@ Symbol_Table/PruSloanSymbolTable
 Symbol_Table/y.tab.c
 Symbol_Table/y.tab.h
 Symbol_Table/lex.yy.c
+Triv_CG_PruSloan/PS_Parser_Out.txt
+Triv_CG_PruSloan/PruSloanTrivCodeGen
+Triv_CG_PruSloan/y.tab.c
+Triv_CG_PruSloan/y.tab.h
+Triv_CG_PruSloan/lex.yy.c
