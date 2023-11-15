@@ -81,8 +81,7 @@ task: function
     | task procedure
     ;
 
-procedure:
-    | K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
     ;
 
 function: 
