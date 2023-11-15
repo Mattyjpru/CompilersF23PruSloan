@@ -3,8 +3,8 @@
 # Written By Matthew Pru and Cody Sloan
 ##############################################################################
 CC=gcc
-BUILD=PruSloanSymbolTable
-OUTPUT=PS_ST_Parser_Out.txt
+BUILD=PruSloanTrivCodeGen
+OUTPUT=PS_CG_Parser_Out.txt
 
 all: $(BUILD)
 	./$(BUILD) < te1.f23 | tee $(OUTPUT)

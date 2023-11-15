@@ -1,0 +1,9 @@
+Valid Program
+
+
+SYMBOL                    DATATYPE        TYPE            LINE NUMBER    
+___________________________________________________________________________
+
+tiny_example_1            N/A             PROGRAM         1              
+i                         integer         IDENTIFIER      5              
+441                       CONST           PROCEDURE       6              
