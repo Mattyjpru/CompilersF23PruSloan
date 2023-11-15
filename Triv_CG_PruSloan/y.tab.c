@@ -1584,17 +1584,22 @@ yyreduce:
 
   case 30:
 #line 121 "PS_CG_Parser.yacc"
-    {insert();}
+    {insert(); (yyval.nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (1)].nd_obj).name); }
     break;
 
   case 31:
 #line 122 "PS_CG_Parser.yacc"
-    {insert();}
+    {insert(); (yyval.nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (1)].nd_obj).name); }
     break;
 
   case 32:
 #line 123 "PS_CG_Parser.yacc"
-    {insert();}
+    {insert(); (yyval.nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (1)].nd_obj).name); }
+    break;
+
+  case 33:
+#line 127 "PS_CG_Parser.yacc"
+    { (yyval.nd_obj).nd = (yyvsp[(1) - (1)].nd_obj).nd;}
     break;
 
   case 34:
@@ -1639,7 +1644,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 1643 "y.tab.c"
+#line 1648 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);

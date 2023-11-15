@@ -118,13 +118,13 @@ assignment:
     
 
 d_type:
-    K_INTEGER {insert();}
-    |K_STRING {insert();}
-    |K_DOUBLE {insert();}
+    K_INTEGER {insert(); $$.nd = buildNode(NULL, NULL, $1.name); }
+    |K_STRING {insert(); $$.nd = buildNode(NULL, NULL, $1.name); }
+    |K_DOUBLE {insert(); $$.nd = buildNode(NULL, NULL, $1.name); }
     ;
 
 expr:
-    value
+    value              { $$.nd = $1.nd;} 
     | expr MINUS expr    { $$.nd = buildNode($1.nd, $3.nd, $2.name); }
          
     | expr PLUS expr         { $$.nd = buildNode($1.nd, $3.nd, $2.name); }
