@@ -69,8 +69,10 @@
 statement: 
     program { printf("Valid Program\n"); };
 
-program: K_PROGRAM IDENTIFIER LCURLY task RCURLY
-
+program: K_PROGRAM IDENTIFIER{newSymbol('M', $2);}  LCURLY task RCURLY
+    {
+        $2.nd = buildNode("main", $6.nd, $7.nd); $$.nd = mknode("program", $1.nd, $2.nd); head = $$.nd; 
+    }
     ;
 
 task: function
@@ -88,9 +90,9 @@ function:
     ;
 
 block:
-    print                   { $$.nd = buildNode(NULL, NULL, "printf"); } 
+    print           
     | var             
-    | assignment            { $$.nd = $1.nd; }
+    | assignment             
     | print block     
     | var block       
     | assignment block       
@@ -109,7 +111,7 @@ print:
     ;
 
 var:
-    d_type IDENTIFIER {newSymbol('V', $2);} SEMI
+    d_type IDENTIFIER{newSymbol('V', $2);} SEMI 
     | d_type assignment
     ;
 
@@ -126,9 +128,11 @@ d_type:
     ;
 
 expr:
-    value
-    | expr MINUS expr       { $$.nd = buildNode($1.nd, $3.nd, $2.name); }  
-    | expr PLUS expr        { $$.nd = buildNode($1.nd, $3.nd, $2.name); }      
+    ICONSTANT { newSymbol('I',$1); }
+    | DCONSTANT { newSymbol('D', $1); }
+    | IDENTIFIER { newSymbol('V', $1);}
+    | expr MINUS expr             
+    | expr PLUS expr              
     | LPAREN expr RPAREN   
     ;
     
@@ -138,8 +142,8 @@ value:
     | IDENTIFIER            { newSymbol('V', $1); $$.nd = buildNode(NULL, NULL, $1.name); };
 
 param_list:
-    var                   
-    | var COMMA param_list  
+    d_type IDENTIFIER { newSymbol('V', $2); }                       
+    | d_type IDENTIFIER{ newSymbol('V', $2); }  COMMA param_list  
     |epsilon
     ;
 
@@ -380,3 +384,5 @@ int main(){
             printInorder(tree->rightchild);
         }
     }
+
+
