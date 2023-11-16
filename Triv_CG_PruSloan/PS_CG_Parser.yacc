@@ -423,7 +423,7 @@ void setGenerator(scope, name){//************************************
     char *type = symbolTable[index].d_type;
 
     printf("%s\n", type)
-    char* memory_location;
+    char* location;
     if (strcmp(type , "integer")==0) {
         location = intIn(symbolTable[index].intval, SI, IR, file);
         strcpy(symbolTable[index].memLoc, location);
