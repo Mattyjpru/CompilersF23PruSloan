@@ -414,40 +414,36 @@ void walk(node* yesde){
     }
     
 void assign_code(scope, name){//************************************
-    type = SymbolTable.get_type(scope, name)//
-    value = SymbolTable.get_value(scope, name)//
+    int index = ST_get_index(name);
+    if(index == -1){
+        printf("AHHHH WHTATAT THE FUKC SJDINFS\n");
+        exit(0);
+    }
+    char *type = symbolTable[index].d_type;
     // print(type)
     // print(value)
     // print(name)
-    if (strcmp(type , "integer")==0) (
-        memory_location = (value, SI, IR, file))
+    if (strcmp(type , "integer")==0) {
+        memory_location = (symbolTable[index].intval, SI, IR, file);
         //# IR += 1
+    }
+    else if(strcmp(type , "double")==0){
+        
+    }
+    else if(strcmp(type , "string")==0){
 
+    }
     SymbolTable.add_mem(scope, name, memory_location)}//********************************
 
-char* ST_get_type(scope, name){
+char* ST_get_index(name){
     for(int i = 0; i < st_count; i++){
         if(strcmp(symbolTable[i].name, name) == 0){
-           return symbolTable[i].type; 
+            return i;
         }
     }
-    return NULL;
+    return -1;
 }
 
-struct *stRtnValue ST_get_value(index){
-    value = (struct stRtnValue*) malloc(sizeof(struct stRtnValue));
-    if(strcmp(symbolTable[i].type, "integer")){
-        value.intVal = symbolTable[i].intval;
-    }
-    else if(strcmp(symbolTable[i].type, "double")){
-        value.floatVal = symbolTable[i].dubval;
-    }
-    else if(strcmp(symbolTable[i].type, "string")){
-        strcpy(value.strVal, symbolTable[i].name);
-    }
-
-    return value;
-}
 ///////////////////////////////////////////////////////////////////////////////////////
 void print_code(scope, name){//************************************
     if name[0] == '"':
