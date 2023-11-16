@@ -2,6 +2,8 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
+    #include<ctype.h>
+
     struct node{
         char* token;
         struct node* leftchild;
@@ -16,6 +18,7 @@
     }
 
     int yylex();
+    int yywrap();
     extern char* yytext;
     extern int line;
     extern int yylineno;
@@ -87,7 +90,7 @@ procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 
 function: K_FUNCTION d_type IDENTIFIER {newSymbol('V', $3.name);} LPAREN param_list RPAREN LCURLY block RCURLY
     {
-        $$.nd = buildNode($5.nd, $8.nd, $3.name);
+        $$.nd = buildNode($5.nd, $8.nd, $3.name);// $-2 never gets a node
     };
 
 block:
@@ -324,7 +327,6 @@ void printtree(struct node* tree) {
 }
 
 void printInorder(struct node *tree) {
-    int i;
     if (tree->leftchild) {
         printInorder(tree->leftchild);
     }
