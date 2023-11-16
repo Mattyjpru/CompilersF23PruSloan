@@ -426,6 +426,7 @@ void assign_code(scope, name){//************************************
 
     if (strcmp(type , "integer")==0) {
         memory_location = intIn(symbolTable[index].intval, SI, IR, file);
+        strcpy(symbolTable[index].memLoc, memory_location);
         //# IR += 1
         printf("%d\n", symbolTable[index].intval);
     }
@@ -436,7 +437,7 @@ void assign_code(scope, name){//************************************
         printf("%s\n", symbolTable[index].name);
     }
 
-    strcpy(symbolTable[index].memLoc, memory_location);
+    
 }
 
 char* ST_get_index(name){
