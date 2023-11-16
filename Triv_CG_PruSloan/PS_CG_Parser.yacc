@@ -423,7 +423,7 @@ void assign_code(scope, name){//************************************
     char *type = symbolTable[index].d_type;
 
     printf("%s\n", type)
-
+    char* memory_location;
     if (strcmp(type , "integer")==0) {
         memory_location = intIn(symbolTable[index].intval, SI, IR, file);
         strcpy(symbolTable[index].memLoc, memory_location);
