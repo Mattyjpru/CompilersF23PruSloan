@@ -30,6 +30,12 @@
     } symbolTable[48];
     // struct stEntry SymbolTableList[5][48];
 
+    struct stRtnValue{
+        char * strVal;
+        int intVal;
+        double floatVal;
+    }
+
     void insert();
     int search(char*);
     void newSymbol(char, char*);
@@ -46,6 +52,10 @@
     struct node* buildNode(struct node* left, struct node* right, char* token);
     void printtree(struct node* );
     void printInorder(struct node *);
+
+    int SI = 0;
+    int IR = 1;
+    int FR = 1;
 
 %}
 
@@ -306,7 +316,6 @@ int search(char* in){
 }
 
 
-////////////////////////////below may need tweaking/////////////////////////////////
 struct node* buildNode( struct node* left, struct node* right, char* token){
     struct node *newnode = (struct node*) malloc(sizeof(struct node));
     char *newstr = (char*) malloc(strlen(token)+1);
@@ -335,28 +344,25 @@ void printInorder(struct node *tree) {
 }
 
 
-/////////////////////////////////////////code generator because we are bad at linking files//////////////////////////////////////
+/////////////////////////////////////////code generator because we are bad at linking files/////////////////////////////////////
 
 
-
-
-    int SI = 0
-    int IR = 1
-    int FR = 1
 
 void execute(node* start, symbolTable symboltable){//will need to call this in the makefile
     File* urManeDotH=fopen("yourmain.h", 'w');
     /* global SymbolTable//********
     SymbolTable = symboltable//******** */
     
-    
+    // Not sure what the equivalent of "symbolTable.get_symbol_counts()" is, but we are going to try
+    // st_count
     fprintf(urManeDotH, "int yourmain() {\n");
-    fprintf(urManeDotH, "SR -= %d;\n", SymbolTable.get_symbol_counts());//********
+    fprintf(urManeDotH, "SR -= %d;\n", st_count);//********
     walk(start);
-    fprintf(urManeDotH, "SR += %d;\n", SymbolTable.get_symbol_counts());//********
+    fprintf(urManeDotH, "SR += %d;\n", st_count);//********
     fprintf(urManeDotH, "return 0;\n}");
     fclose(urManeDotH);
     }
+
 int times(char* query){
     int out=0;
     switch(query){
@@ -387,9 +393,8 @@ int times(char* query){
     }
     return out;
 }
-void walk(node* yesde){
-        
 
+void walk(node* yesde){
         if (yesde->token == "=":){
             assign_code("statements", yesde->rightchild->token)
         }
@@ -406,8 +411,6 @@ void walk(node* yesde){
                 walk(tree->leftchild);
             }
         }
-            
-        
     }
     
 void assign_code(scope, name){//************************************
@@ -417,11 +420,34 @@ void assign_code(scope, name){//************************************
     // print(value)
     // print(name)
     if (strcmp(type , "integer")==0) (
-        memory_location = assign_int(value, SI, IR, file))
+        memory_location = (value, SI, IR, file))
         //# IR += 1
 
     SymbolTable.add_mem(scope, name, memory_location)}//********************************
-    
+
+char* ST_get_type(scope, name){
+    for(int i = 0; i < st_count; i++){
+        if(strcmp(symbolTable[i].name, name) == 0){
+           return symbolTable[i].type; 
+        }
+    }
+    return NULL;
+}
+
+struct *stRtnValue ST_get_value(index){
+    value = (struct stRtnValue*) malloc(sizeof(struct stRtnValue));
+    if(strcmp(symbolTable[i].type, "integer")){
+        value.intVal = symbolTable[i].intval;
+    }
+    else if(strcmp(symbolTable[i].type, "double")){
+        value.floatVal = symbolTable[i].dubval;
+    }
+    else if(strcmp(symbolTable[i].type, "string")){
+        strcpy(value.strVal, symbolTable[i].name);
+    }
+
+    return value;
+}
 ///////////////////////////////////////////////////////////////////////////////////////
 void print_code(scope, name){//************************************
     if name[0] == '"':
