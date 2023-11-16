@@ -301,14 +301,19 @@ int search(char* in){
 
 
 ////////////////////////////below may need tweaking/////////////////////////////////
-struct node* buildNode( struct node* leftchild, struct node* rightchild, char* token){
+struct node* buildNode( struct node* left, struct node* right, char* token){
     struct node *newnode = (struct node*) malloc(sizeof(struct node));
     char *newstr = (char*) malloc(strlen(token)+1);
+    /* char *leftref=(char*) malloc(strlen(left->token)+1);
+    char *rightref=(char*) malloc(strlen(right->token)+1); */
     strcpy(newstr, token);
-    newnode->leftchild = leftchild;
-    newnode->rightchild = rightchild;
+    /* strcpy(leftref, left->token);
+    strcpy(rightref, right->token); */
+    newnode->leftchild = left;
+    newnode->rightchild = right;
     newnode->token = newstr;
     printf("Built a node: %s\n", newstr);
+    /* printf("Built a node: %s\tleftchild: %s\trightchild: %s", newstr,leftref, rightref); */
     return(newnode);
 }
 
