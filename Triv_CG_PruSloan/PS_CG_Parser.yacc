@@ -192,7 +192,7 @@ param_list:
 extern FILE* yyin;
 
 int main(){
-    do{
+    /* do{
         yyparse();
         printf("\n\n");
         printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
@@ -217,7 +217,7 @@ int main(){
     }while(!feof(yyin));
     printf("\n\n");
     printtree(head); 
-    printf("\n\n");
+    printf("\n\n"); */
     return 0;
 }
 void insert(){
@@ -309,16 +309,11 @@ int search(char* in){
 struct node* buildNode( struct node* left, struct node* right, char* token){
     struct node *newnode = (struct node*) malloc(sizeof(struct node));
     char *newstr = (char*) malloc(strlen(token)+1);
-    /* char *leftref=(char*) malloc(strlen(left->token)+1);
-    char *rightref=(char*) malloc(strlen(right->token)+1); */
     strcpy(newstr, token);
-    /* strcpy(leftref, left->token);
-    strcpy(rightref, right->token); */
     newnode->leftchild = left;
     newnode->rightchild = right;
     newnode->token = newstr;
     printf("Built a node: %s\n", newstr);
-    /* printf("Built a node: %s\tleftchild: %s\trightchild: %s", newstr,leftref, rightref); */
     return(newnode);
 }
 
