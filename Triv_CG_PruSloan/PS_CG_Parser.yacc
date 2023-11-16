@@ -91,12 +91,10 @@ function: K_FUNCTION d_type IDENTIFIER {newSymbol('V', $3.name);} LPAREN param_l
     };
 
 block:
-    print               {$$.nd = buildNode($1.nd, NULL, "block");}
-    | var               {$$.nd = buildNode($1.nd, NULL, "block");}
-    | assignment        {$$.nd = buildNode($1.nd, NULL, "block");}    
-    | print block       {$$.nd = buildNode($1.nd, $2.nd, "block");}
-    | var block         {$$.nd = buildNode($1.nd, $2.nd, "block");}
-    | assignment block  {$$.nd = buildNode($1.nd, $2.nd, "block");}  
+    print               {$$.nd = $1.nd;}//buildNode($1.nd, NULL, "block");}
+    | var               {$$.nd = $1.nd;}//buildNode($1.nd, NULL, "block");}
+    | assignment        {$$.nd = $1.nd;}//buildNode($1.nd, NULL, "block");}    
+    | block block       {$$.nd = buildNode($1.nd, $2.nd, "blocks");}
     ;
 
 print:
