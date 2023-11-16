@@ -4,17 +4,7 @@
     #include <ctype.h>
     #include"lex.yy.c"
 
-access_times = {
-    "R": 1,
-    "F": 2,
-    "Mem": 20,
-    "int /": 19,
-    "int %": 20,
-    "double /": 38,
-    "double %": 40,
-    "Function call": 100,
-    # "Everything else": 1,
-    }
+
     int SI = 0
     int IR = 1
     int FR = 1
@@ -133,20 +123,7 @@ char* printVar(char* memAdress, char* type, File* filename){
     fprintf(filename, "F23_Time += 20 + 1;\n");
 }
 
-int floatIn(char* scope, char* name, int srLoc, int frLoc, file filename){
 
-    // Returns:
-    // fr_index: Current index of next empty float register
-    
-    value = symbol_find(scope, name)
-
-    
-    fprintf(filename, "F[%d] = %d\n", frLoc, value);
-    fprintf(filename,"F23_Time += 1\n");
-    fprintf(filename"*(double*)Mem[SR + %d] = F[%d]\n", srLoc, frLoc)
-    fprintf(filename,"F23_Time += 20 + 1\n");
-    return frLoc;
-}
 
 void strIn(scope, name):
     """Prints generated code for an string assignment to yourmain.h
