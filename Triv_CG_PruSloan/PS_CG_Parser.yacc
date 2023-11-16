@@ -35,11 +35,11 @@
         char * strVal;
         int intVal;
         double floatVal;
-    }
+    };
 
-    void insert();
-    int search(char*);
-    void newSymbol(char, char*);
+
+
+
 
     // Code Gen stuff
     struct node{
@@ -49,10 +49,22 @@
         // char* dataType;
     };
     struct node *head;
-
+////////func protos
     struct node* buildNode(struct node* left, struct node* right, char* token);
     void printtree(struct node* );
     void printInorder(struct node *);
+    void insert();
+    int search(char*);
+    void newSymbol(char, char*);
+    void execute(struct node* start);
+    char* repD(char* str, char target);
+    void walk(node* yesde);
+    char* intIn(int intVal, int sLoc, int irLoc, File* filename);
+    char* ST_get_index(char* name);
+    void printStr(char* str, File* filename);
+
+
+
 
     int SI = 0;
     int IR = 1;
@@ -203,8 +215,8 @@ param_list:
 %%
 extern FILE* yyin;
 
-int main(){
-    /* do{
+/* int main(){
+    do{
         yyparse();
         printf("\n\n");
         printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
@@ -229,9 +241,9 @@ int main(){
     }while(!feof(yyin));
     printf("\n\n");
     printtree(head); 
-    printf("\n\n"); */
+    printf("\n\n");
     return 0;
-}
+} */
 void insert(){
     strcpy(useBuff, yytext);
 }
@@ -349,13 +361,9 @@ void printInorder(struct node *tree) {
 
 
 
-void execute(node* start, symbolTable symboltable){//will need to call this in the makefile
+void execute(struct node* start){//will need to call this in the makefile
     File* urManeDotH=fopen("yourmain.h", 'w');
-    /* global SymbolTable//********
-    SymbolTable = symboltable//******** */
     
-    // Not sure what the equivalent of "symbolTable.get_symbol_counts()" is, but we are going to try
-    // st_count
     fprintf(urManeDotH, "int yourmain() {\n");
     fprintf(urManeDotH, "SR -= %d;\n", st_count);//********
     walk(start);
@@ -364,39 +372,10 @@ void execute(node* start, symbolTable symboltable){//will need to call this in t
     fclose(urManeDotH);
     }
 
-int times(char* query){
-    int out=0;
-    switch(query){
-        case "Function call":
-            out=100;
-            break;
-        case "Mem access":
-            out=20;
-            break;
-        case "int /":
-            out=19;
-            break;
-        case "double /":
-            out=38;
-            break;
-        case "int %":
-            out=20;
-            break;
-        case "double %":
-            out=40;
-            break;
-        case "R":
-            out=1;
-            break;
-        case "F":
-            out=2;
-            break;
-    }
-    return out;
-}
 
-void walk(node* yesde){
-        if (yesde->token == "=":){
+
+void walk(struct node* yesde){
+        if (yesde->token == "="){
             setGenerator("statements", yesde->rightchild->token)
         }
             
@@ -414,7 +393,7 @@ void walk(node* yesde){
         }
     }
     
-void setGenerator(scope, name){//************************************
+void setGenerator(char* name){//************************************
     int index = ST_get_index(name);
     if(index == -1){
         printf("AHHHH WHTATAT THE FUKC SJDINFS\n");
@@ -422,7 +401,7 @@ void setGenerator(scope, name){//************************************
     }
     char *type = symbolTable[index].d_type;
 
-    printf("%s\n", type)
+    printf("%s\n", type);
     char* location;
     if (strcmp(type , "integer")==0) {
         location = intIn(symbolTable[index].intval, SI, IR, file);
@@ -440,7 +419,7 @@ void setGenerator(scope, name){//************************************
     
 }
 
-char* ST_get_index(name){
+char* ST_get_index(char* name){
     for(int i = 0; i < st_count; i++){
         if(strcmp(symbolTable[i].name, name) == 0){
             return i;
@@ -487,7 +466,7 @@ char* printVar(char* memAdress, char* type, File* filename){
 
 
 
-void strIn(scope, name):
+/* void strIn(scope, name):
     """Prints generated code for an string assignment to yourmain.h
 
     Parameters:
@@ -495,5 +474,5 @@ void strIn(scope, name):
     name (string): Name of the symbol
 
     Returns:
-    """
+    """ */
     
