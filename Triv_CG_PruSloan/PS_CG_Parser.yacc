@@ -420,18 +420,19 @@ void assign_code(scope, name){//************************************
         exit(0);
     }
     char *type = symbolTable[index].d_type;
-    // print(type)
-    // print(value)
-    // print(name)
+
+    printf("%s\n", type)
+
     if (strcmp(type , "integer")==0) {
         memory_location = (symbolTable[index].intval, SI, IR, file);
         //# IR += 1
+        printf("%d\n", symbolTable[index].intval);
     }
     else if(strcmp(type , "double")==0){
-        
+        printf("%f.25\n", symbolTable[index].dubval);
     }
     else if(strcmp(type , "string")==0){
-
+        printf("%s\n", symbolTable[index].name);
     }
     SymbolTable.add_mem(scope, name, memory_location)}//********************************
 
