@@ -397,11 +397,11 @@ int times(char* query){
 
 void walk(node* yesde){
         if (yesde->token == "=":){
-            assign_code("statements", yesde->rightchild->token)
+            setGenerator("statements", yesde->rightchild->token)
         }
             
         else if (yesde->token == "print statement":){
-            print_code("statements", yesde->leftchild->token)
+            printGenerator("statements", yesde->leftchild->token)
         }
             
         else{
@@ -414,7 +414,7 @@ void walk(node* yesde){
         }
     }
     
-void assign_code(scope, name){//************************************
+void setGenerator(scope, name){//************************************
     int index = ST_get_index(name);
     if(index == -1){
         printf("AHHHH WHTATAT THE FUKC SJDINFS\n");
@@ -425,8 +425,8 @@ void assign_code(scope, name){//************************************
     printf("%s\n", type)
 
     if (strcmp(type , "integer")==0) {
-        memory_location = intIn(symbolTable[index].intval, SI, IR, file);
-        strcpy(symbolTable[index].memLoc, memory_location);
+        location = intIn(symbolTable[index].intval, SI, IR, file);
+        strcpy(symbolTable[index].memLoc, location);
         //# IR += 1
         printf("%d\n", symbolTable[index].intval);
     }
@@ -450,13 +450,13 @@ char* ST_get_index(name){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-void print_code(scope, name){//************************************
+void printGenerator(scope, name){//************************************
     if name[0] == '"':
-        print_sconstant(name, file)
+        printStr(name, file)
     else:
         type = SymbolTable.get_type(scope, name)
         mem = SymbolTable.get_mem(scope, name)
-        print_variable(mem, type, file)
+        printVar(mem, type, file)
 }
 
 char* intIn(int intVal, int sLoc, int irLoc, File* filename){
