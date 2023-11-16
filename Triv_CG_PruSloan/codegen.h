@@ -32,7 +32,36 @@ void execute(node* start, symbolTable symboltable){//will need to call this in t
     fprintf(urManeDotH, "return 0;\n}");
     fclose(urManeDotH);
     }
-
+int times(char* query){
+    int out=0;
+    switch(query){
+        case "Function call":
+            out=100;
+            break;
+        case "Mem access":
+            out=20;
+            break;
+        case "int /":
+            out=19;
+            break;
+        case "double /":
+            out=38;
+            break;
+        case "int %":
+            out=20;
+            break;
+        case "double %":
+            out=40;
+            break;
+        case "R":
+            out=1;
+            break;
+        case "F":
+            out=2;
+            break;
+    }
+    return out;
+}
 void walk(node* yesde){
         
 
