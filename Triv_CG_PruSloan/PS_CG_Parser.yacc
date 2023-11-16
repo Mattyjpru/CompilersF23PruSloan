@@ -2,16 +2,8 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    #include<ctype.h>
-    #include"lex.yy.c"
-
-    struct node{
-        char* token;
-        struct node* leftchild;
-        struct node* rightchild;
-        // char* dataType;
-    };
-    struct node *head;
+    #include <ctype.h>
+    #include "lex.yy.c"
 
     int yyerror(char *msg){
         printf("Invalid Program: %s\n", msg);
@@ -23,11 +15,11 @@
     extern char* yytext;
     extern int line;
     extern int yylineno;
-    // int nodeCount = 0;
+
+    //Symbol Table stuff
     int st_count=0;
     char useBuff[16];
-    //Symbol Table stuff
-
+    
     struct stEntry{
         char* name;
         char* d_type;
@@ -36,16 +28,24 @@
         float dubval;
         int line_no;
     } symbolTable[48];
-    struct stEntry SymbolTableList[5][48];
+    // struct stEntry SymbolTableList[5][48];
+
+    void insert();
+    int search(char*);
+    void newSymbol(char, char*);
+
+    // Code Gen stuff
+    struct node{
+        char* token;
+        struct node* leftchild;
+        struct node* rightchild;
+        // char* dataType;
+    };
+    struct node *head;
 
     struct node* buildNode(struct node* left, struct node* right, char* token);
     void printtree(struct node* );
     void printInorder(struct node *);
-
-    void insert();
-    int search(char*);
-
-    void newSymbol(char, char*);
 
 %}
 
@@ -346,8 +346,8 @@ void printInorder(struct node *tree) {
 
 void execute(node* start, symbolTable symboltable){//will need to call this in the makefile
     File* urManeDotH=fopen("yourmain.h", 'w');
-    global SymbolTable//********
-    SymbolTable = symboltable//********
+    /* global SymbolTable//********
+    SymbolTable = symboltable//******** */
     
     
     fprintf(urManeDotH, "int yourmain() {\n");
