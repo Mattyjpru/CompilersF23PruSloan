@@ -36,6 +36,7 @@
         float dubval;
         int line_no;
     } symbolTable[48];
+    struct stEntry SymbolTableList[5][48];
 
     struct node* buildNode(struct node* left, struct node* right, char* token);
     void printtree(struct node* );
