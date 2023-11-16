@@ -25,11 +25,11 @@ void execute(node* start, symbolTable symboltable){//will need to call this in t
     SymbolTable = symboltable//********
     
     
-    fputs("int yourmain() {\n", urManeDotH);
-    fputs("SR -= {SymbolTable.get_symbol_counts()};\n", urManeDotH);//********
+    fprintf(urManeDotH, "int yourmain() {\n");
+    fprintf(urManeDotH, "SR -= %d;\n", SymbolTable.get_symbol_counts());//********
     walk(start);
-    fputs("SR += {SymbolTable.get_symbol_counts()};\n", urManeDotH);//********
-    fputs("return 0;\n}", urManeDotH);
+    fprintf(urManeDotH, "SR += %d;\n", SymbolTable.get_symbol_counts());//********
+    fprintf(urManeDotH, "return 0;\n}");
     fclose(urManeDotH);
     }
 
@@ -57,8 +57,8 @@ void walk(node* yesde){
     }
     
 void assign_code(scope, name){//************************************
-    type = SymbolTable.get_type(scope, name)
-    value = SymbolTable.get_value(scope, name)
+    type = SymbolTable.get_type(scope, name)//
+    value = SymbolTable.get_value(scope, name)//
     // print(type)
     // print(value)
     // print(name)
@@ -66,7 +66,7 @@ void assign_code(scope, name){//************************************
         memory_location = assign_int(value, SI, IR, file))
         //# IR += 1
 
-    SymbolTable.add_mem(scope, name, memory_location)}
+    SymbolTable.add_mem(scope, name, memory_location)}//********************************
     
 ///////////////////////////////////////////////////////////////////////////////////////
 void print_code(scope, name){//************************************
@@ -78,32 +78,31 @@ void print_code(scope, name){//************************************
         print_variable(mem, type, file)
 }
 
-char* intIn(int intVal, int srLoc, int irLoc, file filename){
-
-
-    // Returns:
-    // memory (string): Memory address of the variable
+char* intIn(int intVal, int sLoc, int irLoc, File* filename){
+    fprintf(filename,"R[%d] = %d;\n" , irLoc, intval);
+    fprintf(filename, "F23_Time += 1;\n",);
+    fprintf(filename, "Mem[SR + %d] = R[%d];\n", sLoc, irLoc);
     
-
-    filename.write(f"R[{ir_index}] = {value};\n")
-    filename.write(f"F23_Time += 1;\n")
-    filename.write(f"Mem[SR + {stack_index}] = R[{ir_index}];\n")
-    filename.write(f"F23_Time += 20 + 1;\n")
-
-    return f"Mem[SR + {stack_index}]"}//************************************
+    fprintf(filename, "F23_Time += 20 + 1;\n",);
+    char buff[20];
+    sprintf(buff, "Mem[SR + %d]", sLoc)
+    return buff;
+    }//************************************
 
 
-void printStr(char* str, file filename){
+void printStr(char* str, File* filename){
 
-    filename.write(f"print_string({sconstant});\n")
-    filename.write(f"F23_Time += 1;\n")}
+    fprintf(filename, "print_string(%s);\n", str);
+    fprintf(filename, "F23_Time += 1;\n");
+}
+char* printVar(char* memAdress, char* type, File* filename){
 
-char* printVar(char* memAdress, char* type, file filename){
+    (strcmp(type , "integer")==0){
+        fprintf(filename, "print_int(%s);\n", memAddress);
+    }
 
-    if type == "integer":
-        filename.write(f"print_int({mem});\n")
-    filename.write(f"F23_Time += 20 + 1;\n")}
-
+    fprintf(filename, "F23_Time += 20 + 1;\n");
+}
 
 int floatIn(char* scope, char* name, int srLoc, int frLoc, file filename){
 
@@ -112,10 +111,12 @@ int floatIn(char* scope, char* name, int srLoc, int frLoc, file filename){
     
     value = symbol_find(scope, name)
 
-    filename.write(f"F[{fr_index}] = {value}\n")
-    filename.write(f"F23_Time += 1\n")
-    filename.write(f"*(double*)Mem[SR + {stack_index}] = F[{fr_index}]\n")
-    filename.write(f"F23_Time += 20 + 1\n")
+    
+    fprintf(filename, "F[%d] = %d\n", frLoc, value);
+    fprintf(filename,"F23_Time += 1\n");
+    fprintf(filename"*(double*)Mem[SR + %d] = F[%d]\n", srLoc, frLoc)
+    fprintf(filename,"F23_Time += 20 + 1\n");
+    return frLoc;
 }
 
 void strIn(scope, name):
