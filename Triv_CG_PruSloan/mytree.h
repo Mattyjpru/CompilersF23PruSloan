@@ -52,15 +52,6 @@ statement: datatype ID { add('V'); } init { $2.nd = mknode(NULL, NULL, $2.name);
 
 | ID '=' expression { $1.nd = mknode(NULL, NULL, $1.name); $$.nd = mknode($1.nd, $3.nd, "="); }
 
-
-| ID relop expression { $1.nd = mknode(NULL, NULL, $1.name); $$.nd = mknode($1.nd, $3.nd, $2.name); }
-
-
-| ID UNARY { $1.nd = mknode(NULL, NULL, $1.name); 
-$2.nd = mknode(NULL, NULL, $2.name); $$.nd = mknode($1.nd, $2.nd, "ITERATOR"); }
-
-| UNARY ID { $1.nd = mknode(NULL, NULL, $1.name); 
-$2.nd = mknode(NULL, NULL, $2.name); $$.nd = mknode($1.nd, $2.nd, "ITERATOR"); }
 ;
 
 init: '=' value { $$.nd = $2.nd; }

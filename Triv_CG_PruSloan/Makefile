@@ -2,7 +2,7 @@
 # Compilers Project Makefile
 # Written By Matthew Pru and Cody Sloan
 ##############################################################################
-CC=gcc
+CC=gcc -ll
 BUILD=PruSloanTrivCodeGen
 OUTPUT=PS_CG_Parser_Out.txt
 
