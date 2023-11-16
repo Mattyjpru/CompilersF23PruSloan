@@ -27,6 +27,7 @@
         int intval;
         float dubval;
         int line_no;
+        char* memLoc;
     } symbolTable[48];
     // struct stEntry SymbolTableList[5][48];
 
@@ -424,7 +425,7 @@ void assign_code(scope, name){//************************************
     printf("%s\n", type)
 
     if (strcmp(type , "integer")==0) {
-        memory_location = (symbolTable[index].intval, SI, IR, file);
+        memory_location = intIn(symbolTable[index].intval, SI, IR, file);
         //# IR += 1
         printf("%d\n", symbolTable[index].intval);
     }
@@ -434,7 +435,9 @@ void assign_code(scope, name){//************************************
     else if(strcmp(type , "string")==0){
         printf("%s\n", symbolTable[index].name);
     }
-    SymbolTable.add_mem(scope, name, memory_location)}//********************************
+
+    strcpy(symbolTable[index].memLoc, memory_location);
+}
 
 char* ST_get_index(name){
     for(int i = 0; i < st_count; i++){
