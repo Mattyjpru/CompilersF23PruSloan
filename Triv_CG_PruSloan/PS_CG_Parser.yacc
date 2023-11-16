@@ -33,7 +33,7 @@
         int line_no;
     } symbolTable[48];
 
-    struct node* buildNode(struct node*, struct node*, char*);
+    struct node* buildNode(struct node* left, struct node* right, char* token);
     void printtree(struct node* );
     void printInorder(struct node *);
 
@@ -69,7 +69,7 @@ statement:
 
 program: K_PROGRAM IDENTIFIER{newSymbol('M', $2.name);} LCURLY task RCURLY
     {
-        $$.nd=buildNode(NULL, $4.nd, $2.name);
+        $$.nd=buildNode( $4.nd, NULL, $2.name);
         head = $$.nd; 
     }
     ;
