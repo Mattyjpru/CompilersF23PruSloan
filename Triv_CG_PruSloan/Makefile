@@ -14,7 +14,7 @@ all: $(BUILD)
 #	./$(BUILD) < simple1.f23 | tee $(OUTPUT)
 
 $(BUILD): lex.yy.c y.tab.c
-	${CC} lex.yy.c y.tab.c -o $(BUILD)
+	${CC}  y.tab.c -o $(BUILD)
 
 y.tab.c:
 	yacc -d PS_CG_Parser.yacc

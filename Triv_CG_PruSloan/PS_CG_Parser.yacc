@@ -3,6 +3,7 @@
     #include <stdlib.h>
     #include <string.h>
     #include<ctype.h>
+    #include"lex.yy.c"
 
     struct node{
         char* token;
@@ -70,17 +71,19 @@
 statement: 
     program { printf("Valid Program\n"); };
 
-program: K_PROGRAM IDENTIFIER{newSymbol('M', $2.name);} LCURLY task RCURLY
+program: K_PROGRAM IDENTIFIER {newSymbol('M', $2.name);} LCURLY task RCURLY
     {
-        $$.nd=buildNode( $4.nd, NULL, $2.name);
+        $$.nd=buildNode( $5.nd, NULL, $2.name);
         head = $$.nd; 
     }
+    |
     ;
 
 task: function {$$.nd = buildNode($1.nd, NULL, "task");}
     | procedure {$$.nd = buildNode($1.nd, NULL, "task");}
     | function task {$$.nd = buildNode($1.nd, $2.nd, "task");}
     | procedure task  {$$.nd = buildNode($1.nd, $2.nd, "task");}
+    |
     ;
 
 procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
@@ -90,7 +93,7 @@ procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 
 function: K_FUNCTION d_type IDENTIFIER {newSymbol('V', $3.name);} LPAREN param_list RPAREN LCURLY block RCURLY
     {
-        $$.nd = buildNode($5.nd, $8.nd, $3.name);// $-2 never gets a node
+        $$.nd = buildNode($6.nd, $9.nd, $3.name);// $-2 never gets a node
     };
 
 block:
@@ -170,10 +173,9 @@ value:
     ;
 
 param_list:
-    d_type IDENTIFIER{ newSymbol('V', $2.name); } COMMA param_list
+    d_type IDENTIFIER { newSymbol('V', $2.name); } COMMA param_list
     { 
-        newSymbol('V', $2.name);
-        $$.nd = buildNode(buildNode(NULL, NULL, $2.name), $4.nd, "Parameter List");
+        $$.nd = buildNode(buildNode(NULL, NULL, $2.name), $5.nd, "Parameter List");
     } 
     | {$$.nd = NULL;}
     ;
