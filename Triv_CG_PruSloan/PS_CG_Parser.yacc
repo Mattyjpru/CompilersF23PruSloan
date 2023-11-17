@@ -37,10 +37,6 @@
         double floatVal;
     };
 
-
-
-
-
     // Code Gen stuff
     struct node{
         char* token;
@@ -58,10 +54,12 @@
     void newSymbol(char, char*);
     void execute(struct node*);
     char* repD(char*, char);
-    void walk(struct node*);
+    void walk(struct node*, FILE*);
     char* intIn(int, int, int, FILE*);
     char* ST_get_index(char*);
     void printStr(char*, FILE*);
+    void setGenerator(char*, FILE*);
+    void printGenerator(char*, FILE*);
 
 
 
@@ -93,7 +91,7 @@
 
 %%
 statement: 
-    program { printf("Valid Program\n"); execute(head)};
+    program { printf("Valid Program\n"); execute(head);};
 
 program: K_PROGRAM IDENTIFIER {newSymbol('M', $2.name);} LCURLY task RCURLY
     {
@@ -362,11 +360,11 @@ void printInorder(struct node *tree) {
 
 
 void execute(struct node* start){//will need to call this in the makeFILE
-    FILE* urManeDotH=fopen("yourmain.h", 'w');
+    FILE* urManeDotH=fopen("yourmain.h", "w+");
     
     fprintf(urManeDotH, "int yourmain() {\n");
     fprintf(urManeDotH, "SR -= %d;\n", st_count);//********
-    walk(start);
+    walk(start, urManeDotH);
     fprintf(urManeDotH, "SR += %d;\n", st_count);//********
     fprintf(urManeDotH, "return 0;\n}");
     fclose(urManeDotH);
@@ -374,13 +372,13 @@ void execute(struct node* start){//will need to call this in the makeFILE
 
 
 
-void walk(struct node* yesde){
-        if (yesde->token == "="){
-            setGenerator("statements", yesde->rightchild->token)
+void walk(struct node* yesde, FILE* filename){
+        if (strcmp(yesde->token, "=")==0){
+            setGenerator(yesde->rightchild->token);
         }
             
-        else if (yesde->token == "print statement":){
-            printGenerator("statements", yesde->leftchild->token)
+        else if (strcmp(yesde->token, "print statement") == 0){
+            printGenerator(yesde->leftchild->token, filename);
         }
             
         else{
@@ -388,23 +386,24 @@ void walk(struct node* yesde){
                 walk(yesde->leftchild);
             }
             if (yesde->leftchild) {
-                walk(tree->leftchild);
+                walk(yesde->leftchild);
             }
         }
     }
     
-void setGenerator(char* name){//************************************
+void setGenerator(char* name, FILE* filename){//************************************
     int index = ST_get_index(name);
     if(index == -1){
         printf("AHHHH WHTATAT THE FUKC SJDINFS\n");
         exit(0);
     }
-    char *type = symbolTable[index].d_type;
+    char *type
+    strcpy(type, symbolTable[index].d_type);
 
     printf("%s\n", type);
     char* location;
     if (strcmp(type , "integer")==0) {
-        location = intIn(symbolTable[index].intval, SI, IR, file);
+        location = intIn(symbolTable[index].intval, SI, IR, filename);
         strcpy(symbolTable[index].memLoc, location);
         //# IR += 1
         printf("%d\n", symbolTable[index].intval);
@@ -416,7 +415,6 @@ void setGenerator(char* name){//************************************
         printf("%s\n", symbolTable[index].name);
     }
 
-    
 }
 
 char* ST_get_index(char* name){
@@ -429,13 +427,32 @@ char* ST_get_index(char* name){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-void printGenerator(scope, name){//************************************
-    if name[0] == '"':
-        printStr(name, file)
-    else:
-        type = SymbolTable.get_type(scope, name)
-        mem = SymbolTable.get_mem(scope, name)
-        printVar(mem, type, file)
+void printGenerator(char* name, FILE* filename){//************************************
+    // TODO:
+    // Figure out how to get 'file'
+    if(name[0] == '"'){
+        printStr(name, filename);
+    }
+    else{
+        // Gotta do all this shit just to get the location to pass to printVar.
+        int index = ST_get_index(name);
+        char *type = strcpy(type, symbolTable[index].d_type);
+        char* location;
+        if (strcmp(type , "integer")==0) {
+            location = intIn(symbolTable[index].intval, SI, IR, filename);
+            strcpy(symbolTable[index].memLoc, location);
+            //# IR += 1
+            printf("%d\n", symbolTable[index].intval);
+        }
+        else if(strcmp(type , "double")==0){
+            printf("%f.25\n", symbolTable[index].dubval);
+        }
+        else if(strcmp(type , "string")==0){
+            printf("%s\n", symbolTable[index].name);
+        }
+
+        printVar(location, type, filename);
+    }
 }
 
 char* intIn(int intVal, int sLoc, int irLoc, FILE* filename){
