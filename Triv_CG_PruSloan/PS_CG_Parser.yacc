@@ -60,7 +60,7 @@
     void printStr(char*, FILE*);
     void setGenerator(char*, FILE*);
     void printGenerator(char*, FILE*);
-
+    char* printVar(char* memAddress, char* type, FILE* filename);
 
 
 
@@ -374,7 +374,7 @@ void execute(struct node* start){//will need to call this in the makeFILE
 
 void walk(struct node* yesde, FILE* filename){
         if (strcmp(yesde->token, "=")==0){
-            setGenerator(yesde->rightchild->token);
+            setGenerator(yesde->rightchild->token, filename);
         }
             
         else if (strcmp(yesde->token, "print statement") == 0){
@@ -383,10 +383,10 @@ void walk(struct node* yesde, FILE* filename){
             
         else{
             if (yesde->leftchild) {
-                walk(yesde->leftchild);
+                walk(yesde->leftchild, filename);
             }
             if (yesde->leftchild) {
-                walk(yesde->leftchild);
+                walk(yesde->leftchild, filename);
             }
         }
     }
@@ -394,10 +394,10 @@ void walk(struct node* yesde, FILE* filename){
 void setGenerator(char* name, FILE* filename){//************************************
     int index = ST_get_index(name);
     if(index == -1){
-        printf("AHHHH WHTATAT THE FUKC SJDINFS\n");
+        printf("NOT GOOD BRO\n");
         exit(0);
     }
-    char *type
+    char *type;
     strcpy(type, symbolTable[index].d_type);
 
     printf("%s\n", type);
@@ -456,13 +456,13 @@ void printGenerator(char* name, FILE* filename){//******************************
 }
 
 char* intIn(int intVal, int sLoc, int irLoc, FILE* filename){
-    fprintf(filename,"R[%d] = %d;\n" , irLoc, intval);
-    fprintf(filename, "F23_Time += 1;\n",);
+    fprintf(filename,"R[%d] = %d;\n" , irLoc, intVal);
+    fprintf(filename, "F23_Time += 1;\n");
     fprintf(filename, "Mem[SR + %d] = R[%d];\n", sLoc, irLoc);
     
-    fprintf(filename, "F23_Time += 20 + 1;\n",);
+    fprintf(filename, "F23_Time += 20 + 1;\n");
     char buff[20];
-    sprintf(buff, "Mem[SR + %d]", sLoc)
+    sprintf(buff, "Mem[SR + %d]", sLoc);
     return buff;
     }//************************************
 
@@ -472,9 +472,9 @@ void printStr(char* str, FILE* filename){
     fprintf(filename, "print_string(%s);\n", str);
     fprintf(filename, "F23_Time += 1;\n");
 }
-char* printVar(char* memAdress, char* type, FILE* filename){
+char* printVar(char* memAddress, char* type, FILE* filename){
 
-    (strcmp(type , "integer")==0){
+    if (strcmp(type , "integer")==0){
         fprintf(filename, "print_int(%s);\n", memAddress);
     }
 
