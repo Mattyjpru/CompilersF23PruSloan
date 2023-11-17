@@ -56,12 +56,12 @@
     void insert();
     int search(char*);
     void newSymbol(char, char*);
-    void execute(struct node* start);
-    char* repD(char* str, char target);
-    void walk(node* yesde);
-    char* intIn(int intVal, int sLoc, int irLoc, File* filename);
-    char* ST_get_index(char* name);
-    void printStr(char* str, File* filename);
+    void execute(struct node*);
+    char* repD(char*, char);
+    void walk(struct node*);
+    char* intIn(int, int, int, FILE*);
+    char* ST_get_index(char*);
+    void printStr(char*, FILE*);
 
 
 
@@ -361,8 +361,8 @@ void printInorder(struct node *tree) {
 
 
 
-void execute(struct node* start){//will need to call this in the makefile
-    File* urManeDotH=fopen("yourmain.h", 'w');
+void execute(struct node* start){//will need to call this in the makeFILE
+    FILE* urManeDotH=fopen("yourmain.h", 'w');
     
     fprintf(urManeDotH, "int yourmain() {\n");
     fprintf(urManeDotH, "SR -= %d;\n", st_count);//********
@@ -438,7 +438,7 @@ void printGenerator(scope, name){//************************************
         printVar(mem, type, file)
 }
 
-char* intIn(int intVal, int sLoc, int irLoc, File* filename){
+char* intIn(int intVal, int sLoc, int irLoc, FILE* filename){
     fprintf(filename,"R[%d] = %d;\n" , irLoc, intval);
     fprintf(filename, "F23_Time += 1;\n",);
     fprintf(filename, "Mem[SR + %d] = R[%d];\n", sLoc, irLoc);
@@ -450,12 +450,12 @@ char* intIn(int intVal, int sLoc, int irLoc, File* filename){
     }//************************************
 
 
-void printStr(char* str, File* filename){
+void printStr(char* str, FILE* filename){
 
     fprintf(filename, "print_string(%s);\n", str);
     fprintf(filename, "F23_Time += 1;\n");
 }
-char* printVar(char* memAdress, char* type, File* filename){
+char* printVar(char* memAdress, char* type, FILE* filename){
 
     (strcmp(type , "integer")==0){
         fprintf(filename, "print_int(%s);\n", memAddress);
