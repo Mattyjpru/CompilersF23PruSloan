@@ -58,8 +58,8 @@
     char* intIn(int, int, int, FILE*);
     int ST_get_index(char*);
     void printStr(char*, FILE*);
-    void assignGenerator(char*, FILE*);
-    void printGenerator(char*, FILE*);
+    void assignmentGenerator(char*, FILE*);
+    void printStatementGenerator(char*, FILE*);
     void printVar(char* memAddress, char* type, FILE* filename);
 
 
@@ -375,20 +375,37 @@ void execute(struct node* start){//will need to call this in the makeFILE
 
 void walk(struct node* yesde, FILE* filename){
     printf("walk\n");
-        if (strcmp(yesde->token, "=")==0){
-            assignGenerator(yesde->leftchild->token, filename);
+        if(!(yesde->leftchild)&&!(yesde->rightchild)){
+            printf("leaf\n");
         }
-            
-        else if (strcmp(yesde->token, "print statement") == 0){
-            printGenerator(yesde->rightchild->token, filename);
-        }
-            
         else{
-            if (yesde->leftchild) {
-                walk(yesde->leftchild, filename);
+            if (strcmp(yesde->token, "=")==0){
+                assignmentGenerator(yesde->leftchild->token, filename);
+                /* if (yesde->leftchild) {
+                    walk(yesde->leftchild, filename);
+                } */
+                /* if (yesde->rightchild) {
+                    walk(yesde->rightchild, filename);
+                } */
             }
-            if (yesde->leftchild) {
-                walk(yesde->leftchild, filename);
+                
+            else if (strcmp(yesde->token, "print statement") == 0){
+                printStatementGenerator(yesde->rightchild->token, filename);
+                /* if (yesde->leftchild) {
+                    walk(yesde->leftchild, filename);
+                } */
+                /* if (yesde->rightchild) {
+                    walk(yesde->rightchild, filename);
+                } */
+            }
+                
+            else{
+                if (yesde->leftchild) {
+                    walk(yesde->leftchild, filename);
+                }
+                /* if (yesde->rightchild) {
+                    walk(yesde->rightchild, filename);
+                } */
             }
         }
     }
