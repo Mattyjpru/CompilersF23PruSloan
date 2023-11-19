@@ -58,7 +58,7 @@
     char* intIn(int, int, int, FILE*);
     int ST_get_index(char*);
     void printStr(char*, FILE*);
-    void assignmentGenerator(char*, FILE*);
+    void assignmentGenerator(int, FILE*);
     void printStatementGenerator(char*, FILE*);
     void printVar(char* memAddress, char* type, FILE* filename);
 
@@ -167,7 +167,7 @@ var:
 assignment:
     IDENTIFIER {newSymbol('V', $1.name);} ASSIGN expr SEMI
     { 
-        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), $3.nd, "="); 
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), $4.nd, "="); 
     }
     ;
     
@@ -380,7 +380,12 @@ void walk(struct node* yesde, FILE* filename){
         }
         else{
             if (strcmp(yesde->token, "=")==0){
-                assignmentGenerator(yesde->leftchild->token, filename);
+                int varIndex = ST_get_index(yesde->leftchild->token);
+                int valueIndex = ST_get_index(yesde->rightchild->token);
+
+                symbolTable[varIndex].intval = symbolTable[valueIndex].intval;
+
+                assignmentGenerator(varIndex, filename);
                 /* if (yesde->leftchild) {
                     walk(yesde->leftchild, filename);
                 } */
@@ -410,8 +415,8 @@ void walk(struct node* yesde, FILE* filename){
         }
     }
     
-void assignmentGenerator(char* name, FILE* filename){//************************************
-    int index = ST_get_index(name);
+void assignmentGenerator(int index, FILE* filename){//************************************
+    /* int index = ST_get_index(name); */
     if(index == -1){
         printf("NOT GOOD BRO\n");
         exit(0);
