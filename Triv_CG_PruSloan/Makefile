@@ -2,7 +2,8 @@
 # Compilers Project Makefile
 # Written By Matthew Pru and Cody Sloan
 ##############################################################################
-CC=gcc -ll
+CC=gcc -ll 
+CFLAGS=-mmacosx-version-min=14.0
 BUILD=PruSloanTrivCodeGen
 OUTPUT=PS_CG_Parser_Out.txt
 
@@ -14,7 +15,7 @@ all: $(BUILD)
 #	./$(BUILD) < simple1.f23 | tee $(OUTPUT)
 
 $(BUILD): lex.yy.c y.tab.c
-	${CC}  y.tab.c -o $(BUILD)
+	${CC} ${CFLAGS} y.tab.c -o $(BUILD)
 
 y.tab.c:
 	yacc -d PS_CG_Parser.yacc

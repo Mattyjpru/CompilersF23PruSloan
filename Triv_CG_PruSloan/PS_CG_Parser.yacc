@@ -60,7 +60,7 @@
     void printStr(char*, FILE*);
     void setGenerator(char*, FILE*);
     void printGenerator(char*, FILE*);
-    char* printVar(char* memAddress, char* type, FILE* filename);
+    void printVar(char* memAddress, char* type, FILE* filename);
 
 
 
@@ -474,7 +474,7 @@ void printStr(char* str, FILE* filename){
     fprintf(filename, "print_string(%s);\n", str);
     fprintf(filename, "F23_Time += 1;\n");
 }
-char* printVar(char* memAddress, char* type, FILE* filename){
+void printVar(char* memAddress, char* type, FILE* filename){
 
     if (strcmp(type , "integer")==0){
         fprintf(filename, "print_int(%s);\n", memAddress);
