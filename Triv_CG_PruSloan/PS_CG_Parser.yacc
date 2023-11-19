@@ -217,7 +217,7 @@ int main(){
     do{
         yyparse();
         printf("\n\n");
-        /* printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
+        printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
         printf("___________________________________________________________________________\n\n");
 
         for(int i=0; i<st_count; i++) {
@@ -236,7 +236,7 @@ int main(){
             free(symbolTable[i].d_type);
             free(symbolTable[i].use);
             free(symbolTable[i].memLoc);
-        } */
+        }
     }while(!feof(yyin));
     printf("\n\n");
     printtree(head); 
@@ -380,7 +380,7 @@ void walk(struct node* yesde, FILE* filename){
         }
         else{
             if (strcmp(yesde->token, "=")==0){
-                //assignmentGenerator(yesde->leftchild->token, filename);
+                assignmentGenerator(yesde->leftchild->token, filename);
                 /* if (yesde->leftchild) {
                     walk(yesde->leftchild, filename);
                 } */
@@ -390,7 +390,7 @@ void walk(struct node* yesde, FILE* filename){
             }
                 
             else if (strcmp(yesde->token, "print statement") == 0){
-                //printStatementGenerator(yesde->rightchild->token, filename);
+                printStatementGenerator(yesde->rightchild->token, filename);
                 /* if (yesde->leftchild) {
                     walk(yesde->leftchild, filename);
                 } */
@@ -416,23 +416,24 @@ void assignmentGenerator(char* name, FILE* filename){//*************************
         printf("NOT GOOD BRO\n");
         exit(0);
     }
-    char *type;
-    strcpy(type, symbolTable[index].d_type);
+    /* char *type;
+    strcpy(type, symbolTable[index].d_type); */
 
-    printf("%s\n", type);
+    printf("%s\n", symbolTable[index].d_type);
     char* location;
-    if (strcmp(type , "integer")==0) {
+    if (strcmp(symbolTable[index].d_type , "integer")==0) {
         location = intIn(symbolTable[index].intval, SI, IR, filename);
-        strcpy(symbolTable[index].memLoc, location);
+        printf("%d WHY NO WORK\n", symbolTable[index].intval);
+        symbolTable[index].memLoc=strdup(location);
         printf("%d\n", symbolTable[index].intval);
     }
-    else if(strcmp(type , "double")==0){
+    else if(strcmp(symbolTable[index].d_type , "double")==0){
         printf("%f\n", symbolTable[index].dubval);
     }
-    else if(strcmp(type , "string")==0){
+    else if(strcmp(symbolTable[index].d_type , "string")==0){
         printf("%s\n", symbolTable[index].name);
     }
-
+    free(location);
 }
 
 int ST_get_index(char* name){
@@ -454,26 +455,17 @@ void printStatementGenerator(char* name, FILE* filename){//*********************
     else{
         // Gotta do all this just to get the location to pass to printVar.
         int index = ST_get_index(name);
-        char *type = strcpy(type, symbolTable[index].d_type);
-        char* location;
-        if (strcmp(type , "integer")==0) {
-            location = intIn(symbolTable[index].intval, SI, IR, filename);
-            strcpy(symbolTable[index].memLoc, location);
-            printf("%d\n", symbolTable[index].intval);
-        }
-        else if(strcmp(type , "double")==0){
-            printf("%f.25\n", symbolTable[index].dubval);
-        }
-        else if(strcmp(type , "string")==0){
-            printf("%s\n", symbolTable[index].name);
-        }
+        /* char *type = strcpy(type, symbolTable[index].d_type); */
+        
+        
 
-        printVar(location, type, filename);
+        printVar(symbolTable[index].memLoc, symbolTable[index].d_type, filename);
     }
 }
 
 char* intIn(int intVal, int sLoc, int irLoc, FILE* filename){
     fprintf(filename,"R[%d] = %d;\n" , irLoc, intVal);
+    printf("%dBANANA BREAD, AT FUHUCKING WORK BRO. HELL. YEAH: \n", intVal);
     fprintf(filename, "F23_Time += 1;\n");
     fprintf(filename, "Mem[SR + %d] = R[%d];\n", sLoc, irLoc);
     
