@@ -115,13 +115,13 @@ procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 
 function: K_FUNCTION d_type IDENTIFIER {newSymbol('V', $3.name);} LPAREN param_list RPAREN LCURLY block RCURLY
     {
-        $$.nd = buildNode($6.nd, $9.nd, $3.name);// $-2 never gets a node
+        $$.nd = buildNode($6.nd, $9.nd, $3.name);
     };
 
 block:
-    print               {$$.nd = $1.nd;}//buildNode($1.nd, NULL, "block");}
-    | var               {$$.nd = $1.nd;}//buildNode($1.nd, NULL, "block");}
-    | assignment        {$$.nd = $1.nd;}//buildNode($1.nd, NULL, "block");}    
+    print               {$$.nd = $1.nd;}
+    | var               {$$.nd = $1.nd;}
+    | assignment        {$$.nd = $1.nd;}  
     | block block       {$$.nd = buildNode($1.nd, $2.nd, "blocks");}
     ;
 
@@ -380,7 +380,7 @@ void walk(struct node* yesde, FILE* filename){
         }
         else{
             if (strcmp(yesde->token, "=")==0){
-                assignmentGenerator(yesde->leftchild->token, filename);
+                //assignmentGenerator(yesde->leftchild->token, filename);
                 /* if (yesde->leftchild) {
                     walk(yesde->leftchild, filename);
                 } */
@@ -390,7 +390,7 @@ void walk(struct node* yesde, FILE* filename){
             }
                 
             else if (strcmp(yesde->token, "print statement") == 0){
-                printStatementGenerator(yesde->rightchild->token, filename);
+                //printStatementGenerator(yesde->rightchild->token, filename);
                 /* if (yesde->leftchild) {
                     walk(yesde->leftchild, filename);
                 } */
@@ -403,9 +403,9 @@ void walk(struct node* yesde, FILE* filename){
                 if (yesde->leftchild) {
                     walk(yesde->leftchild, filename);
                 }
-                /* if (yesde->rightchild) {
+                if (yesde->rightchild) {
                     walk(yesde->rightchild, filename);
-                } */
+                }
             }
         }
     }
@@ -427,7 +427,7 @@ void assignmentGenerator(char* name, FILE* filename){//*************************
         printf("%d\n", symbolTable[index].intval);
     }
     else if(strcmp(type , "double")==0){
-        printf("%f.25\n", symbolTable[index].dubval);
+        printf("%f\n", symbolTable[index].dubval);
     }
     else if(strcmp(type , "string")==0){
         printf("%s\n", symbolTable[index].name);

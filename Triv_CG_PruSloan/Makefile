@@ -2,7 +2,7 @@
 # Compilers Project Makefile
 # Written By Matthew Pru and Cody Sloan
 ##############################################################################
-CC=gcc -ll 
+CC=gcc
 CFLAGS=-mmacosx-version-min=14.0
 BUILD=PruSloanTrivCodeGen
 OUTPUT=PS_CG_Parser_Out.txt
