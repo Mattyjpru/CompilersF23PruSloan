@@ -374,6 +374,7 @@ void execute(struct node* start){//will need to call this in the makeFILE
 
 
 void walk(struct node* yesde, FILE* filename){
+    printf("walk\n");
         if (strcmp(yesde->token, "=")==0){
             setGenerator(yesde->rightchild->token, filename);
         }
