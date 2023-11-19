@@ -213,11 +213,11 @@ param_list:
 %%
 extern FILE* yyin;
 
-/* int main(){
+int main(){
     do{
         yyparse();
         printf("\n\n");
-        printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
+        /* printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
         printf("___________________________________________________________________________\n\n");
 
         for(int i=0; i<st_count; i++) {
@@ -236,13 +236,13 @@ extern FILE* yyin;
             free(symbolTable[i].d_type);
             free(symbolTable[i].use);
             free(symbolTable[i].memLoc);
-        }
+        } */
     }while(!feof(yyin));
     printf("\n\n");
     printtree(head); 
     printf("\n\n");
     return 0;
-} */
+}
 void insert(){
     strcpy(useBuff, yytext);
 }
@@ -435,14 +435,13 @@ void printGenerator(char* name, FILE* filename){//******************************
         printStr(name, filename);
     }
     else{
-        // Gotta do all this shit just to get the location to pass to printVar.
+        // Gotta do all this just to get the location to pass to printVar.
         int index = ST_get_index(name);
         char *type = strcpy(type, symbolTable[index].d_type);
         char* location;
         if (strcmp(type , "integer")==0) {
             location = intIn(symbolTable[index].intval, SI, IR, filename);
             strcpy(symbolTable[index].memLoc, location);
-            //# IR += 1
             printf("%d\n", symbolTable[index].intval);
         }
         else if(strcmp(type , "double")==0){
