@@ -56,7 +56,7 @@
     char* repD(char*, char);
     void walk(struct node*, FILE*);
     char* intIn(int, int, int, FILE*);
-    char* ST_get_index(char*);
+    int ST_get_index(char*);
     void printStr(char*, FILE*);
     void setGenerator(char*, FILE*);
     void printGenerator(char*, FILE*);
@@ -235,6 +235,7 @@ extern FILE* yyin;
             free(symbolTable[i].name);
             free(symbolTable[i].d_type);
             free(symbolTable[i].use);
+            free(symbolTable[i].memLoc);
         }
     }while(!feof(yyin));
     printf("\n\n");
@@ -417,7 +418,7 @@ void setGenerator(char* name, FILE* filename){//********************************
 
 }
 
-char* ST_get_index(char* name){
+int ST_get_index(char* name){
     for(int i = 0; i < st_count; i++){
         if(strcmp(symbolTable[i].name, name) == 0){
             return i;
@@ -461,7 +462,8 @@ char* intIn(int intVal, int sLoc, int irLoc, FILE* filename){
     fprintf(filename, "Mem[SR + %d] = R[%d];\n", sLoc, irLoc);
     
     fprintf(filename, "F23_Time += 20 + 1;\n");
-    char buff[20];
+    char* buff;
+    buff = malloc(sizeof(char)*20);
     sprintf(buff, "Mem[SR + %d]", sLoc);
     return buff;
     }//************************************
