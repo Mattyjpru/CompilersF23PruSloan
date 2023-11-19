@@ -406,7 +406,6 @@ void setGenerator(char* name, FILE* filename){//********************************
     if (strcmp(type , "integer")==0) {
         location = intIn(symbolTable[index].intval, SI, IR, filename);
         strcpy(symbolTable[index].memLoc, location);
-        //# IR += 1
         printf("%d\n", symbolTable[index].intval);
     }
     else if(strcmp(type , "double")==0){
