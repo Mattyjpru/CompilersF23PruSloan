@@ -58,7 +58,7 @@
     char* intIn(int, int, int, FILE*);
     int ST_get_index(char*);
     void printStr(char*, FILE*);
-    void setGenerator(char*, FILE*);
+    void assignGenerator(char*, FILE*);
     void printGenerator(char*, FILE*);
     void printVar(char* memAddress, char* type, FILE* filename);
 
@@ -376,11 +376,11 @@ void execute(struct node* start){//will need to call this in the makeFILE
 void walk(struct node* yesde, FILE* filename){
     printf("walk\n");
         if (strcmp(yesde->token, "=")==0){
-            setGenerator(yesde->rightchild->token, filename);
+            assignGenerator(yesde->leftchild->token, filename);
         }
             
         else if (strcmp(yesde->token, "print statement") == 0){
-            printGenerator(yesde->leftchild->token, filename);
+            printGenerator(yesde->rightchild->token, filename);
         }
             
         else{
@@ -393,7 +393,7 @@ void walk(struct node* yesde, FILE* filename){
         }
     }
     
-void setGenerator(char* name, FILE* filename){//************************************
+void assignmentGenerator(char* name, FILE* filename){//************************************
     int index = ST_get_index(name);
     if(index == -1){
         printf("NOT GOOD BRO\n");
@@ -428,7 +428,7 @@ int ST_get_index(char* name){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-void printGenerator(char* name, FILE* filename){//************************************
+void printStatementGenerator(char* name, FILE* filename){//************************************
     // TODO:
     // Figure out how to get 'file'
     if(name[0] == '"'){
