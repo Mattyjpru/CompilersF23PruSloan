@@ -386,22 +386,12 @@ void walk(struct node* yesde, FILE* filename){
                 symbolTable[varIndex].intval = symbolTable[valueIndex].intval;
 
                 assignmentGenerator(varIndex, filename);
-                /* if (yesde->leftchild) {
-                    walk(yesde->leftchild, filename);
-                } */
-                /* if (yesde->rightchild) {
-                    walk(yesde->rightchild, filename);
-                } */
+         
             }
                 
             else if (strcmp(yesde->token, "print statement") == 0){
                 printStatementGenerator(yesde->rightchild->token, filename);
-                /* if (yesde->leftchild) {
-                    walk(yesde->leftchild, filename);
-                } */
-                /* if (yesde->rightchild) {
-                    walk(yesde->rightchild, filename);
-                } */
+      
             }
                 
             else{
@@ -416,19 +406,15 @@ void walk(struct node* yesde, FILE* filename){
     }
     
 void assignmentGenerator(int index, FILE* filename){//************************************
-    /* int index = ST_get_index(name); */
     if(index == -1){
         printf("NOT GOOD BRO\n");
         exit(0);
     }
-    /* char *type;
-    strcpy(type, symbolTable[index].d_type); */
-
-    printf("%s\n", symbolTable[index].d_type);
+    
     char* location;
     if (strcmp(symbolTable[index].d_type , "integer")==0) {
         location = intIn(symbolTable[index].intval, SI, IR, filename);
-        printf("%d WHY NO WORK\n", symbolTable[index].intval);
+        IR++;
         symbolTable[index].memLoc=strdup(location);
         printf("%d\n", symbolTable[index].intval);
     }
