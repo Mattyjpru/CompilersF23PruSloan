@@ -57,11 +57,10 @@
     void walk(struct node*, FILE*);
     char* intIn(int, int, int, FILE*);
     int ST_get_index(char*);
-    void printStr(char*, FILE*);
     void assignmentGenerator(int, FILE*);
     void printStatementGenerator(char*, FILE*);
     void printVar(char* memAddress, char* type, FILE* filename);
-
+    
 
 
     int SI = 0;
@@ -217,7 +216,7 @@ int main(){
     do{
         yyparse();
         printf("\n\n");
-        printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
+        /* printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
         printf("___________________________________________________________________________\n\n");
 
         for(int i=0; i<st_count; i++) {
@@ -230,7 +229,7 @@ int main(){
             else{
                 printf("%-25s %-15s %-15s %-15d\n", symbolTable[i].name, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
             }
-        }
+        } */
         for(int i=0;i<st_count;i++) {
             free(symbolTable[i].name);
             free(symbolTable[i].d_type);
@@ -238,9 +237,9 @@ int main(){
             free(symbolTable[i].memLoc);
         }
     }while(!feof(yyin));
-    printf("\n\n");
+    /* printf("\n\n");
     printtree(head); 
-    printf("\n\n");
+    printf("\n\n"); */
     return 0;
 }
 void insert(){
@@ -335,7 +334,7 @@ struct node* buildNode( struct node* left, struct node* right, char* token){
     newnode->leftchild = left;
     newnode->rightchild = right;
     newnode->token = newstr;
-    printf("Built a node: %s\n", newstr);
+    /* printf("Built a node: %s\n", newstr); */
     return(newnode);
 }
 
@@ -374,9 +373,9 @@ void execute(struct node* start){//will need to call this in the makeFILE
 
 
 void walk(struct node* yesde, FILE* filename){
-    printf("walk\n");
+    /* printf("walk\n"); */
         if(!(yesde->leftchild)&&!(yesde->rightchild)){
-            printf("leaf\n");
+            /* printf("leaf\n"); */
         }
         else{
             if (strcmp(yesde->token, "=")==0){
@@ -386,22 +385,12 @@ void walk(struct node* yesde, FILE* filename){
                 symbolTable[varIndex].intval = symbolTable[valueIndex].intval;
 
                 assignmentGenerator(varIndex, filename);
-                /* if (yesde->leftchild) {
-                    walk(yesde->leftchild, filename);
-                } */
-                /* if (yesde->rightchild) {
-                    walk(yesde->rightchild, filename);
-                } */
+         
             }
                 
             else if (strcmp(yesde->token, "print statement") == 0){
                 printStatementGenerator(yesde->rightchild->token, filename);
-                /* if (yesde->leftchild) {
-                    walk(yesde->leftchild, filename);
-                } */
-                /* if (yesde->rightchild) {
-                    walk(yesde->rightchild, filename);
-                } */
+      
             }
                 
             else{
@@ -416,27 +405,23 @@ void walk(struct node* yesde, FILE* filename){
     }
     
 void assignmentGenerator(int index, FILE* filename){//************************************
-    /* int index = ST_get_index(name); */
     if(index == -1){
-        printf("NOT GOOD BRO\n");
+        printf("THIS IS BAD\n");
         exit(0);
     }
-    /* char *type;
-    strcpy(type, symbolTable[index].d_type); */
-
-    printf("%s\n", symbolTable[index].d_type);
+    
     char* location;
     if (strcmp(symbolTable[index].d_type , "integer")==0) {
         location = intIn(symbolTable[index].intval, SI, IR, filename);
-        printf("%d WHY NO WORK\n", symbolTable[index].intval);
+        IR++;
         symbolTable[index].memLoc=strdup(location);
-        printf("%d\n", symbolTable[index].intval);
+        /* printf("%d\n", symbolTable[index].intval); */
     }
     else if(strcmp(symbolTable[index].d_type , "double")==0){
-        printf("%f\n", symbolTable[index].dubval);
+        /* printf("%f\n", symbolTable[index].dubval); */
     }
     else if(strcmp(symbolTable[index].d_type , "string")==0){
-        printf("%s\n", symbolTable[index].name);
+        /* printf("%s\n", symbolTable[index].name); */
     }
     free(location);
 }
@@ -452,25 +437,14 @@ int ST_get_index(char* name){
 
 ///////////////////////////////////////////////////////////////////////////////////////
 void printStatementGenerator(char* name, FILE* filename){//************************************
-    // TODO:
-    // Figure out how to get 'file'
-    if(name[0] == '"'){
-        printStr(name, filename);
-    }
-    else{
-        // Gotta do all this just to get the location to pass to printVar.
-        int index = ST_get_index(name);
-        /* char *type = strcpy(type, symbolTable[index].d_type); */
-        
-        
 
-        printVar(symbolTable[index].memLoc, symbolTable[index].d_type, filename);
-    }
+    int index = ST_get_index(name);
+    printVar(symbolTable[index].memLoc, symbolTable[index].d_type, filename);
 }
 
 char* intIn(int intVal, int sLoc, int irLoc, FILE* filename){
     fprintf(filename,"R[%d] = %d;\n" , irLoc, intVal);
-    printf("%dBANANA BREAD, AT FUHUCKING WORK BRO. HELL. YEAH: \n", intVal);
+    /* printf("%d integer value is: \n", intVal); */
     fprintf(filename, "F23_Time += 1;\n");
     fprintf(filename, "Mem[SR + %d] = R[%d];\n", sLoc, irLoc);
     
@@ -479,32 +453,16 @@ char* intIn(int intVal, int sLoc, int irLoc, FILE* filename){
     buff = malloc(sizeof(char)*20);
     sprintf(buff, "Mem[SR + %d]", sLoc);
     return buff;
-    }//************************************
+    }
 
-
-void printStr(char* str, FILE* filename){
-
-    fprintf(filename, "print_string(%s);\n", str);
-    fprintf(filename, "F23_Time += 1;\n");
-}
 void printVar(char* memAddress, char* type, FILE* filename){
 
     if (strcmp(type , "integer")==0){
         fprintf(filename, "print_int(%s);\n", memAddress);
     }
-
     fprintf(filename, "F23_Time += 20 + 1;\n");
 }
 
 
-
-/* void strIn(scope, name):
-    """Prints generated code for an string assignment to yourmain.h
-
-    Parameters:
-    scope (string): Scope of the symbol
-    name (string): Name of the symbol
-
-    Returns:
-    """ */
+    
     

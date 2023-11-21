@@ -158,7 +158,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 75 "PS_CG_Parser.yacc"
+#line 72 "PS_CG_Parser.yacc"
 {
     struct nt1 { 
 		char name[100];

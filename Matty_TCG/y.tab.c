@@ -196,7 +196,7 @@
         printf("Invalid Program: %s\n", msg);
         exit(0);
     }
-    
+
     int yylex();
     int yywrap();
     extern char* yytext;
@@ -244,14 +244,11 @@
     void walk(struct node*, FILE*);
     char* intIn(int, int, int, FILE*);
     int ST_get_index(char*);
-    void printStr(char*, FILE*);
-    void assignmentGenerator(char*, FILE*);
+    void assignmentGenerator(int, FILE*);
     void printStatementGenerator(char*, FILE*);
     void printVar(char* memAddress, char* type, FILE* filename);
+    
 
-    char* getChildToken(struct node* child){
-        return child->token;
-    }
 
     int SI = 0;
     int IR = 1;
@@ -279,7 +276,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 75 "PS_CG_Parser.yacc"
+#line 72 "PS_CG_Parser.yacc"
 {
     struct nt1 { 
 		char name[100];
@@ -288,7 +285,7 @@ typedef union YYSTYPE
 	} nd_obj; 
 }
 /* Line 193 of yacc.c.  */
-#line 292 "y.tab.c"
+#line 289 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -301,7 +298,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 305 "y.tab.c"
+#line 302 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -606,11 +603,11 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    96,    96,    98,    98,   103,   106,   107,   108,   109,
-     110,   113,   118,   118,   124,   125,   126,   127,   131,   135,
-     139,   143,   147,   151,   155,   162,   162,   166,   170,   170,
-     179,   180,   181,   185,   186,   188,   190,   195,   196,   197,
-     201,   201,   205
+       0,    93,    93,    95,    95,   100,   103,   104,   105,   106,
+     107,   110,   115,   115,   121,   122,   123,   124,   128,   132,
+     136,   140,   144,   148,   152,   159,   159,   163,   167,   167,
+     175,   176,   177,   181,   182,   184,   186,   191,   192,   193,
+     197,   197,   201
 };
 #endif
 
@@ -1580,17 +1577,17 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 96 "PS_CG_Parser.yacc"
+#line 93 "PS_CG_Parser.yacc"
     { printf("Valid Program\n"); execute(head);}
     break;
 
   case 3:
-#line 98 "PS_CG_Parser.yacc"
+#line 95 "PS_CG_Parser.yacc"
     {newSymbol('M', (yyvsp[(2) - (2)].nd_obj).name);}
     break;
 
   case 4:
-#line 99 "PS_CG_Parser.yacc"
+#line 96 "PS_CG_Parser.yacc"
     {
         (yyval.nd_obj).nd=buildNode( (yyvsp[(5) - (6)].nd_obj).nd, NULL, (yyvsp[(2) - (6)].nd_obj).name);
         head = (yyval.nd_obj).nd; 
@@ -1598,213 +1595,212 @@ yyreduce:
     break;
 
   case 6:
-#line 106 "PS_CG_Parser.yacc"
+#line 103 "PS_CG_Parser.yacc"
     {(yyval.nd_obj).nd = buildNode((yyvsp[(1) - (1)].nd_obj).nd, NULL, "task");}
     break;
 
   case 7:
-#line 107 "PS_CG_Parser.yacc"
+#line 104 "PS_CG_Parser.yacc"
     {(yyval.nd_obj).nd = buildNode((yyvsp[(1) - (1)].nd_obj).nd, NULL, "task");}
     break;
 
   case 8:
-#line 108 "PS_CG_Parser.yacc"
+#line 105 "PS_CG_Parser.yacc"
     {(yyval.nd_obj).nd = buildNode((yyvsp[(1) - (2)].nd_obj).nd, (yyvsp[(2) - (2)].nd_obj).nd, "task");}
     break;
 
   case 9:
-#line 109 "PS_CG_Parser.yacc"
+#line 106 "PS_CG_Parser.yacc"
     {(yyval.nd_obj).nd = buildNode((yyvsp[(1) - (2)].nd_obj).nd, (yyvsp[(2) - (2)].nd_obj).nd, "task");}
     break;
 
   case 11:
-#line 114 "PS_CG_Parser.yacc"
+#line 111 "PS_CG_Parser.yacc"
     {
         (yyval.nd_obj).nd = buildNode((yyvsp[(4) - (8)].nd_obj).nd, (yyvsp[(7) - (8)].nd_obj).nd, (yyvsp[(2) - (8)].nd_obj).name);
     }
     break;
 
   case 12:
-#line 118 "PS_CG_Parser.yacc"
+#line 115 "PS_CG_Parser.yacc"
     {newSymbol('V', (yyvsp[(3) - (3)].nd_obj).name);}
     break;
 
   case 13:
-#line 119 "PS_CG_Parser.yacc"
+#line 116 "PS_CG_Parser.yacc"
     {
         (yyval.nd_obj).nd = buildNode((yyvsp[(6) - (10)].nd_obj).nd, (yyvsp[(9) - (10)].nd_obj).nd, (yyvsp[(3) - (10)].nd_obj).name);
     }
     break;
 
   case 14:
-#line 124 "PS_CG_Parser.yacc"
+#line 121 "PS_CG_Parser.yacc"
     {(yyval.nd_obj).nd = (yyvsp[(1) - (1)].nd_obj).nd;}
     break;
 
   case 15:
-#line 125 "PS_CG_Parser.yacc"
+#line 122 "PS_CG_Parser.yacc"
     {(yyval.nd_obj).nd = (yyvsp[(1) - (1)].nd_obj).nd;}
     break;
 
   case 16:
-#line 126 "PS_CG_Parser.yacc"
+#line 123 "PS_CG_Parser.yacc"
     {(yyval.nd_obj).nd = (yyvsp[(1) - (1)].nd_obj).nd;}
     break;
 
   case 17:
-#line 127 "PS_CG_Parser.yacc"
+#line 124 "PS_CG_Parser.yacc"
     {(yyval.nd_obj).nd = buildNode((yyvsp[(1) - (2)].nd_obj).nd, (yyvsp[(2) - (2)].nd_obj).nd, "blocks");}
     break;
 
   case 18:
-#line 132 "PS_CG_Parser.yacc"
+#line 129 "PS_CG_Parser.yacc"
     {
         (yyval.nd_obj).nd = buildNode(buildNode(NULL, NULL, (yyvsp[(1) - (5)].nd_obj).name), buildNode(NULL, NULL, (yyvsp[(3) - (5)].nd_obj).name), "print statement");
     }
     break;
 
   case 19:
-#line 136 "PS_CG_Parser.yacc"
+#line 133 "PS_CG_Parser.yacc"
     {
         (yyval.nd_obj).nd = buildNode(buildNode(NULL, NULL, (yyvsp[(1) - (5)].nd_obj).name), buildNode(NULL, NULL, (yyvsp[(3) - (5)].nd_obj).name), "print statement");
     }
     break;
 
   case 20:
-#line 140 "PS_CG_Parser.yacc"
+#line 137 "PS_CG_Parser.yacc"
     {
         (yyval.nd_obj).nd = buildNode(buildNode(NULL, NULL, (yyvsp[(1) - (5)].nd_obj).name), buildNode(NULL, NULL, (yyvsp[(3) - (5)].nd_obj).name), "print statement");
     }
     break;
 
   case 21:
-#line 144 "PS_CG_Parser.yacc"
+#line 141 "PS_CG_Parser.yacc"
     {
         (yyval.nd_obj).nd = buildNode(buildNode(NULL, NULL, (yyvsp[(1) - (5)].nd_obj).name), buildNode(NULL, NULL, (yyvsp[(3) - (5)].nd_obj).name), "print statement");
     }
     break;
 
   case 22:
-#line 148 "PS_CG_Parser.yacc"
+#line 145 "PS_CG_Parser.yacc"
     {
         (yyval.nd_obj).nd = buildNode(buildNode(NULL, NULL, (yyvsp[(1) - (5)].nd_obj).name), buildNode(NULL, NULL, (yyvsp[(3) - (5)].nd_obj).name), "print statement");
     }
     break;
 
   case 23:
-#line 152 "PS_CG_Parser.yacc"
+#line 149 "PS_CG_Parser.yacc"
     {
         (yyval.nd_obj).nd = buildNode(buildNode(NULL, NULL, (yyvsp[(1) - (5)].nd_obj).name), buildNode(NULL, NULL, (yyvsp[(3) - (5)].nd_obj).name), "print statement");
     }
     break;
 
   case 24:
-#line 156 "PS_CG_Parser.yacc"
+#line 153 "PS_CG_Parser.yacc"
     {
        (yyval.nd_obj).nd = buildNode(buildNode(NULL, NULL, (yyvsp[(1) - (5)].nd_obj).name), (yyvsp[(3) - (5)].nd_obj).nd, "print statement");
     }
     break;
 
   case 25:
-#line 162 "PS_CG_Parser.yacc"
+#line 159 "PS_CG_Parser.yacc"
     {newSymbol('V', (yyvsp[(2) - (2)].nd_obj).name);}
     break;
 
   case 26:
-#line 163 "PS_CG_Parser.yacc"
+#line 160 "PS_CG_Parser.yacc"
     {
         (yyval.nd_obj).nd = buildNode(buildNode(NULL, NULL, (yyvsp[(2) - (4)].nd_obj).name), NULL, "variable declaration");
     }
     break;
 
   case 27:
-#line 166 "PS_CG_Parser.yacc"
+#line 163 "PS_CG_Parser.yacc"
     {(yyval.nd_obj).nd = (yyvsp[(2) - (2)].nd_obj).nd;}
     break;
 
   case 28:
-#line 170 "PS_CG_Parser.yacc"
+#line 167 "PS_CG_Parser.yacc"
     {newSymbol('V', (yyvsp[(1) - (1)].nd_obj).name);}
     break;
 
   case 29:
-#line 171 "PS_CG_Parser.yacc"
+#line 168 "PS_CG_Parser.yacc"
     { 
-        // symbolTable[st_count+1].intval=atoi($3.name);
         (yyval.nd_obj).nd = buildNode(buildNode(NULL, NULL, (yyvsp[(1) - (5)].nd_obj).name), (yyvsp[(4) - (5)].nd_obj).nd, "="); 
     }
     break;
 
   case 30:
-#line 179 "PS_CG_Parser.yacc"
+#line 175 "PS_CG_Parser.yacc"
     {insert(); (yyval.nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (1)].nd_obj).name); }
     break;
 
   case 31:
-#line 180 "PS_CG_Parser.yacc"
+#line 176 "PS_CG_Parser.yacc"
     {insert(); (yyval.nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (1)].nd_obj).name); }
     break;
 
   case 32:
-#line 181 "PS_CG_Parser.yacc"
+#line 177 "PS_CG_Parser.yacc"
     {insert(); (yyval.nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (1)].nd_obj).name); }
     break;
 
   case 33:
-#line 185 "PS_CG_Parser.yacc"
+#line 181 "PS_CG_Parser.yacc"
     { (yyval.nd_obj).nd = (yyvsp[(1) - (1)].nd_obj).nd;}
     break;
 
   case 34:
-#line 186 "PS_CG_Parser.yacc"
+#line 182 "PS_CG_Parser.yacc"
     { (yyval.nd_obj).nd = buildNode((yyvsp[(1) - (3)].nd_obj).nd, (yyvsp[(3) - (3)].nd_obj).nd, (yyvsp[(2) - (3)].nd_obj).name); }
     break;
 
   case 35:
-#line 188 "PS_CG_Parser.yacc"
+#line 184 "PS_CG_Parser.yacc"
     { (yyval.nd_obj).nd = buildNode((yyvsp[(1) - (3)].nd_obj).nd, (yyvsp[(3) - (3)].nd_obj).nd, (yyvsp[(2) - (3)].nd_obj).name); }
     break;
 
   case 36:
-#line 190 "PS_CG_Parser.yacc"
+#line 186 "PS_CG_Parser.yacc"
     { (yyval.nd_obj).nd = (yyvsp[(2) - (3)].nd_obj).nd; }
     break;
 
   case 37:
-#line 195 "PS_CG_Parser.yacc"
+#line 191 "PS_CG_Parser.yacc"
     { newSymbol('I', (yyvsp[(1) - (1)].nd_obj).name); (yyval.nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (1)].nd_obj).name); }
     break;
 
   case 38:
-#line 196 "PS_CG_Parser.yacc"
+#line 192 "PS_CG_Parser.yacc"
     { newSymbol('D', (yyvsp[(1) - (1)].nd_obj).name); (yyval.nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (1)].nd_obj).name); }
     break;
 
   case 39:
-#line 197 "PS_CG_Parser.yacc"
+#line 193 "PS_CG_Parser.yacc"
     { newSymbol('V', (yyvsp[(1) - (1)].nd_obj).name); (yyval.nd_obj).nd = buildNode(NULL, NULL, (yyvsp[(1) - (1)].nd_obj).name); }
     break;
 
   case 40:
-#line 201 "PS_CG_Parser.yacc"
+#line 197 "PS_CG_Parser.yacc"
     { newSymbol('V', (yyvsp[(2) - (2)].nd_obj).name); }
     break;
 
   case 41:
-#line 202 "PS_CG_Parser.yacc"
+#line 198 "PS_CG_Parser.yacc"
     { 
         (yyval.nd_obj).nd = buildNode(buildNode(NULL, NULL, (yyvsp[(2) - (5)].nd_obj).name), (yyvsp[(5) - (5)].nd_obj).nd, "Parameter List");
     }
     break;
 
   case 42:
-#line 205 "PS_CG_Parser.yacc"
+#line 201 "PS_CG_Parser.yacc"
     {(yyval.nd_obj).nd = NULL;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1808 "y.tab.c"
+#line 1804 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2018,7 +2014,7 @@ yyreturn:
 }
 
 
-#line 216 "PS_CG_Parser.yacc"
+#line 212 "PS_CG_Parser.yacc"
 
 extern FILE* yyin;
 
@@ -2026,7 +2022,7 @@ int main(){
     do{
         yyparse();
         printf("\n\n");
-        printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
+        /* printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
         printf("___________________________________________________________________________\n\n");
 
         for(int i=0; i<st_count; i++) {
@@ -2039,7 +2035,7 @@ int main(){
             else{
                 printf("%-25s %-15s %-15s %-15d\n", symbolTable[i].name, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
             }
-        }
+        } */
         for(int i=0;i<st_count;i++) {
             free(symbolTable[i].name);
             free(symbolTable[i].d_type);
@@ -2047,9 +2043,9 @@ int main(){
             free(symbolTable[i].memLoc);
         }
     }while(!feof(yyin));
-    printf("\n\n");
+    /* printf("\n\n");
     printtree(head); 
-    printf("\n\n");
+    printf("\n\n"); */
     return 0;
 }
 void insert(){
@@ -2144,7 +2140,7 @@ struct node* buildNode( struct node* left, struct node* right, char* token){
     newnode->leftchild = left;
     newnode->rightchild = right;
     newnode->token = newstr;
-    printf("Built a node: %s\n", newstr);
+    /* printf("Built a node: %s\n", newstr); */
     return(newnode);
 }
 
@@ -2183,19 +2179,26 @@ void execute(struct node* start){//will need to call this in the makeFILE
 
 
 void walk(struct node* yesde, FILE* filename){
-    printf("walk\n");
+    /* printf("walk\n"); */
         if(!(yesde->leftchild)&&!(yesde->rightchild)){
-            printf("leaf\n");
+            /* printf("leaf\n"); */
         }
         else{
             if (strcmp(yesde->token, "=")==0){
-                assignmentGenerator(yesde->leftchild->token, filename);
+                int varIndex = ST_get_index(yesde->leftchild->token);
+                int valueIndex = ST_get_index(yesde->rightchild->token);
 
-                printf("%s stuff \n", getChildToken(yesde->rightchild));
+                symbolTable[varIndex].intval = symbolTable[valueIndex].intval;
+
+                assignmentGenerator(varIndex, filename);
+         
             }
+                
             else if (strcmp(yesde->token, "print statement") == 0){
                 printStatementGenerator(yesde->rightchild->token, filename);
+      
             }
+                
             else{
                 if (yesde->leftchild) {
                     walk(yesde->leftchild, filename);
@@ -2207,28 +2210,24 @@ void walk(struct node* yesde, FILE* filename){
         }
     }
     
-void assignmentGenerator(char* name, FILE* filename){//************************************
-    int index = ST_get_index(name);
+void assignmentGenerator(int index, FILE* filename){//************************************
     if(index == -1){
-        printf("NOT GOOD BRO\n");
+        printf("THIS IS BAD\n");
         exit(0);
     }
-    /* char *type;
-    strcpy(type, symbolTable[index].d_type); */
-
-    printf("%s\n", symbolTable[index].d_type);
+    
     char* location;
     if (strcmp(symbolTable[index].d_type , "integer")==0) {
         location = intIn(symbolTable[index].intval, SI, IR, filename);
-        printf("%d WHY NO WORK\n", symbolTable[index].intval);
+        IR++;
         symbolTable[index].memLoc=strdup(location);
-        printf("%d\n", symbolTable[index].intval);
+        /* printf("%d\n", symbolTable[index].intval); */
     }
     else if(strcmp(symbolTable[index].d_type , "double")==0){
-        printf("%f\n", symbolTable[index].dubval);
+        /* printf("%f\n", symbolTable[index].dubval); */
     }
     else if(strcmp(symbolTable[index].d_type , "string")==0){
-        printf("%s\n", symbolTable[index].name);
+        /* printf("%s\n", symbolTable[index].name); */
     }
     free(location);
 }
@@ -2244,25 +2243,14 @@ int ST_get_index(char* name){
 
 ///////////////////////////////////////////////////////////////////////////////////////
 void printStatementGenerator(char* name, FILE* filename){//************************************
-    // TODO:
-    // Figure out how to get 'file'
-    if(name[0] == '"'){
-        printStr(name, filename);
-    }
-    else{
-        // Gotta do all this just to get the location to pass to printVar.
-        int index = ST_get_index(name);
-        /* char *type = strcpy(type, symbolTable[index].d_type); */
-        
-        
 
-        printVar(symbolTable[index].memLoc, symbolTable[index].d_type, filename);
-    }
+    int index = ST_get_index(name);
+    printVar(symbolTable[index].memLoc, symbolTable[index].d_type, filename);
 }
 
 char* intIn(int intVal, int sLoc, int irLoc, FILE* filename){
     fprintf(filename,"R[%d] = %d;\n" , irLoc, intVal);
-    printf("%d BANANA BREAD, AT FUHUCKING WORK BRO. HELL. YEAH: \n", intVal);
+    /* printf("%d integer value is: \n", intVal); */
     fprintf(filename, "F23_Time += 1;\n");
     fprintf(filename, "Mem[SR + %d] = R[%d];\n", sLoc, irLoc);
     
@@ -2271,32 +2259,19 @@ char* intIn(int intVal, int sLoc, int irLoc, FILE* filename){
     buff = malloc(sizeof(char)*20);
     sprintf(buff, "Mem[SR + %d]", sLoc);
     return buff;
-    }//************************************
+    }
 
-
-void printStr(char* str, FILE* filename){
-
-    fprintf(filename, "print_string(%s);\n", str);
-    fprintf(filename, "F23_Time += 1;\n");
-}
 void printVar(char* memAddress, char* type, FILE* filename){
 
     if (strcmp(type , "integer")==0){
         fprintf(filename, "print_int(%s);\n", memAddress);
     }
-
+    if (strcmp(type , "string")==0){
+        fprintf(filename, "print_string(%s);\n", memAddress);
+    }
     fprintf(filename, "F23_Time += 20 + 1;\n");
 }
 
 
-
-/* void strIn(scope, name):
-    """Prints generated code for an string assignment to yourmain.h
-
-    Parameters:
-    scope (string): Scope of the symbol
-    name (string): Name of the symbol
-
-    Returns:
-    """ */
+    
     
