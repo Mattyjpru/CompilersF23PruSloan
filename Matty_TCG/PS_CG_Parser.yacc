@@ -460,9 +460,6 @@ void printVar(char* memAddress, char* type, FILE* filename){
     if (strcmp(type , "integer")==0){
         fprintf(filename, "print_int(%s);\n", memAddress);
     }
-    if (strcmp(type , "string")==0){
-        fprintf(filename, "print_string(%s);\n", memAddress);
-    }
     fprintf(filename, "F23_Time += 20 + 1;\n");
 }
 
