@@ -1,0 +1,99 @@
+/* int search_S(char* in){
+        for(int i=0; i<st_count; i++){
+            if((strcmp(symbolTable[i].use, "ICONSTANT") != 0) && (strcmp(symbolTable[i].use, "DCONSTANT") != 0)){
+                if(strcmp(symbolTable[i].name, in)==0){
+                    return -1;
+                    break;
+                }
+            }
+        }
+        return 0;
+    }
+
+    int search_I(int in){
+        for(int i=0; i<st_count; i++){
+            if(strcmp(symbolTable[i].use, "ICONSTANT")==0)
+            {
+                if(symbolTable[i].intval==in){
+                    return -1;
+                    break;
+                }
+            }
+        }
+        return 0;
+    }
+
+    int search_D(double in){
+         for(int i=0; i<st_count; i++){
+            if(strcmp(symbolTable[i].use, "DCONSTANT")==0)
+            {
+                if(symbolTable[i].dubval==in){
+                    return -1;
+                    break;
+                }
+            }
+        }
+        return 0;
+    } */
+
+    /* void newSymbol_S(char c, char* stringVal){
+        if(!search_S(stringVal)){
+            switch(c){
+                case 'V':
+                    symbolTable[st_count].name=strdup(stringVal);
+                    symbolTable[st_count].d_type=strdup(useBuff);
+                    symbolTable[st_count].line_no=line;
+                    symbolTable[st_count].use=strdup("IDENTIFIER");
+                    st_count++;
+                    break;
+                case 'P':
+                    symbolTable[st_count].name=strdup(stringVal);        
+                    symbolTable[st_count].d_type=strdup("void");    
+                    symbolTable[st_count].line_no=line;    
+                    symbolTable[st_count].use=strdup("PROCEDURE");
+                    st_count++;
+                    break;
+                case 'S':
+                    symbolTable[st_count].name=strdup(stringVal); 
+                    symbolTable[st_count].d_type=strdup("CONST");
+                    symbolTable[st_count].line_no=line;
+                    symbolTable[st_count].use=strdup("SCONSTANT");
+                    st_count++;
+                    break;
+                case 'F':
+                    symbolTable[st_count].name=strdup(stringVal); 
+                    symbolTable[st_count].d_type=strdup(useBuff);
+                    symbolTable[st_count].line_no=line;
+                    symbolTable[st_count].use=strdup("FUNCTION");
+                    st_count++;
+                    break;
+                case 'M':
+                    symbolTable[st_count].name=strdup(stringVal); 
+                    symbolTable[st_count].d_type=strdup("N/A");
+                    symbolTable[st_count].line_no=line;
+                    symbolTable[st_count].use=strdup("PROGRAM");
+                    st_count++;
+                    break;
+            }
+        }
+    }
+
+    void newSymbol_I(int iconstVal){
+        if(!search_I(iconstVal)){
+            symbolTable[st_count].intval=iconstVal;
+            symbolTable[st_count].d_type=strdup("CONST");
+            symbolTable[st_count].line_no=line;
+            symbolTable[st_count].use=strdup("ICONSTANT");
+            st_count++;
+        }
+    }
+
+    void newSymbol_D(double dconstVal){
+        if(!search_D(dconstVal)){
+            symbolTable[st_count].dubval=dconstVal;
+            symbolTable[st_count].d_type=strdup("CONST");
+            symbolTable[st_count].line_no=line;
+            symbolTable[st_count].use=strdup("DCONSTANT");
+            st_count++;
+        }
+    } */
