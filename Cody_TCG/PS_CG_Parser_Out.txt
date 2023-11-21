@@ -1,50 +1,3 @@
-Built a node: integer
-Built a node: integer
-Built a node: i
-Built a node: variable declaration
-Built a node: 441
-Built a node: i
-Built a node: =
-Built a node: print_integer
-Built a node: i
-Built a node: print statement
-Built a node: blocks
-Built a node: blocks
-Built a node: main
-Built a node: task
-Built a node: tiny_example_1
-Valid Program
-walk
-walk
-walk
-walk
-walk
-walk
-leaf
-walk
-walk
-integer
-0 BANANA BREAD, AT FUHUCKING WORK BRO. HELL. YEAH: 
-0 WHY NO WORK
-0
-441 stuff 
-walk
-
-
-SYMBOL                    DATATYPE        TYPE            LINE NUMBER    
-___________________________________________________________________________
-
-tiny_example_1            N/A             PROGRAM         1              
-main                      integer         IDENTIFIER      3              
-i                         integer         IDENTIFIER      5              
-441                       CONST           ICONSTANT       6              
-
-
-
-
- Inorder traversal of the Parse Tree: 
-
-main, i, variable declaration, blocks, i, =, 441, blocks, print_integer, print statement, i, task, tiny_example_1, 
-
+Valid Program
 
 
