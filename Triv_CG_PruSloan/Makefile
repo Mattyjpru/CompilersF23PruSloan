@@ -8,7 +8,7 @@ BUILD=PruSloanTrivCodeGen
 OUTPUT=PS_CG_Parser_Out.txt
 
 all: $(BUILD)
-	./$(BUILD) < te1.f23 | tee $(OUTPUT)
+	./$(BUILD) < te2.f23 | tee $(OUTPUT)
 
 
 #Old rule

@@ -61,7 +61,7 @@
     void assignmentGenerator(int, FILE*);
     void printStatementGenerator(char*, FILE*);
     void printVar(char* memAddress, char* type, FILE* filename);
-
+    char* strIn(char* input, int sLoc, FILE* filename);
 
 
     int SI = 0;
@@ -335,7 +335,7 @@ struct node* buildNode( struct node* left, struct node* right, char* token){
     newnode->leftchild = left;
     newnode->rightchild = right;
     newnode->token = newstr;
-    printf("Built a node: %s\n", newstr);
+    /* printf("Built a node: %s\n", newstr); */
     return(newnode);
 }
 
@@ -423,6 +423,9 @@ void assignmentGenerator(int index, FILE* filename){//**************************
     }
     else if(strcmp(symbolTable[index].d_type , "string")==0){
         /* printf("%s\n", symbolTable[index].name); */
+        location = strIn(symbolTable[index].name, SI, filename);
+        IR++;
+        symbolTable[index].memLoc=strdup(location);
     }
     free(location);
 }
@@ -446,10 +449,6 @@ void printStatementGenerator(char* name, FILE* filename){//*********************
     else{
         // Gotta do all this just to get the location to pass to printVar.
         int index = ST_get_index(name);
-        /* char *type = strcpy(type, symbolTable[index].d_type); */
-        
-        
-
         printVar(symbolTable[index].memLoc, symbolTable[index].d_type, filename);
     }
 }
@@ -465,7 +464,7 @@ char* intIn(int intVal, int sLoc, int irLoc, FILE* filename){
     buff = malloc(sizeof(char)*20);
     sprintf(buff, "Mem[SR + %d]", sLoc);
     return buff;
-    }//************************************
+    }
 
 
 void printStr(char* str, FILE* filename){
@@ -478,19 +477,25 @@ void printVar(char* memAddress, char* type, FILE* filename){
     if (strcmp(type , "integer")==0){
         fprintf(filename, "print_int(%s);\n", memAddress);
     }
-
+    if (strcmp(type , "string")==0){
+        fprintf(filename, "print_string(%s);\n", memAddress);
+    }
     fprintf(filename, "F23_Time += 20 + 1;\n");
 }
 
 
 
-/* void strIn(scope, name):
-    """Prints generated code for an string assignment to yourmain.h
-
-    Parameters:
-    scope (string): Scope of the symbol
-    name (string): Name of the symbol
-
-    Returns:
-    """ */
+char* strIn(char* input, int sLoc, FILE* filename){
+    fprintf(filename,"sBuf = %s;\n" ,  input);
+    /* printf("%d integer value is: \n", intVal); */
+    fprintf(filename, "F23_Time += 1;\n");
+    fprintf(filename, "SMem[SR + %d] = sBuf;\n", sLoc);
+    
+    fprintf(filename, "F23_Time += 20 + 1;\n");
+    char* buff;
+    buff = malloc(sizeof(char)*20);
+    sprintf(buff, "SMem[SR + %d]", sLoc);
+    return buff;
+}
+    
     
