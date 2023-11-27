@@ -1,6 +1,6 @@
-Simple Parser Assignment
+Full Parser Assignment
 COSC 4785
-11/21/23
+11/26/23
 Written by Matthew Pru and Cody Sloan
 
 Our symbol table, AST building and code generation are written in our parser file (PS_CG_Parser.yacc). The 

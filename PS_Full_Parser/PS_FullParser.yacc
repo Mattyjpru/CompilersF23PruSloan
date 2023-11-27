@@ -70,19 +70,26 @@
 %}
 
 %union {
-    struct nt1 { 
-		char name[100];
-        // char dt[100];
-		struct node* nd;
-	} nd_obj; 
+    // struct nt1 { 
+	// 	char name[100];
+    //     // char dt[100];
+	// 	struct node* nd;
+	// } nd_obj; 
+        int iVal;
+    double dVal;
+    char  *sVal;
 }
 
-%token<nd_obj> IDENTIFIER SCONSTANT ICONSTANT DCONSTANT K_DO K_DOUBLE K_ELSE K_EXIT K_FUNCTION K_IF K_INTEGER 
-%token<nd_obj> K_PRINT_DOUBLE K_PRINT_INTEGER K_PRINT_STRING K_PROCEDURE K_PROGRAM K_READ_DOUBLE K_READ_INTEGER
-%token<nd_obj> K_READ_STRING K_RETURN K_STRING K_THEN K_WHILE ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY
-%token<nd_obj> ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
-%token<nd_obj> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
-%type<nd_obj> statement program task function procedure param_list block d_type print var assignment expr value
+%token IDENTIFIER SCONSTANT ICONSTANT DCONSTANT K_DO K_DOUBLE K_ELSE K_EXIT K_FUNCTION K_IF K_INTEGER 
+%token K_PRINT_DOUBLE K_PRINT_INTEGER K_PRINT_STRING K_PROCEDURE K_PROGRAM K_READ_DOUBLE K_READ_INTEGER
+%token K_READ_STRING K_RETURN K_STRING K_THEN K_WHILE ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY
+%token ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
+%token DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
+
+%type<sVal> IDENTIFIER SCONSTANT expr param_list block d_type var assignment task function procedure print gate relop
+%type<iVal> ICONSTANT
+%type<dVal> DCONSTANT
+/* %type statement program task function procedure param_list block d_type print var assignment expr value */
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
@@ -90,7 +97,7 @@
 
 %%
 statement: 
-    program { printf("Valid Program\n"); execute(head);};
+    program { printf("Valid Program\n");};
 
 program: K_PROGRAM IDENTIFIER /*{newSymbol('M', $2.name);}*/ LCURLY task RCURLY
     /* {
