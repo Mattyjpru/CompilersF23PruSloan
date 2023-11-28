@@ -85,7 +85,7 @@
 %token<sVal> ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
 %token<sVal> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
 
-%type<sVal> statement program expr param_list block d_type var assignment task function procedure print value gate relop
+%type<sVal> statement makenummutable reader program expr param_list block d_type var assignment task function arrayat procedure print value gate relop
 /* %type statement program task function procedure param_list block d_type print var assignment expr value */
 
 %left MINUS PLUS
@@ -141,7 +141,7 @@ print:
 
 var:
     d_type IDENTIFIER  SEMI 
-    
+    | d_type buildarr
     | d_type assignment 
     ;
 
@@ -183,14 +183,15 @@ expr:
     ;
     
 value:
-    ICONSTANT           
-    | DCONSTANT         
-    | IDENTIFIER        
+    ICONSTANT  makenummutable         
+    | DCONSTANT    makenummutable     
+    | IDENTIFIER 
+    | arrayat  
+    | MINUS value     
     ;
 
 param_list:
     d_type IDENTIFIER COMMA param_list
-    
     | 
     ;
 
@@ -218,10 +219,23 @@ if: K_IF LPAREN condition RPAREN K_THEN block
     | | K_IF LPAREN condition RPAREN K_THEN block K_ELSE LCURLY block LCURLY
     ;
 
-read:
+reader:
     K_READ_DOUBLE
     | K_READ_INTEGER
     | K_READ_STRING
+    ;
+makenummutable:
+    DECREMENT
+    |
+    INCREMENT
+    |
+    ;
+arrayat:
+    | IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
+    | IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+    ;
+buildarr:
+    IDENTIFIER LBRACKET RBRACKET SEMI
     ;
 
 %%
