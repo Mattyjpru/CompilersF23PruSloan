@@ -119,7 +119,8 @@ block:
     print               
     | var     
     | callfunc         
-    | assignment         
+    | assignment    
+    | if     
     | block block       
     ;
 
@@ -249,6 +250,9 @@ buildarr:
 
 callfunc:
     IDENTIFIER LPAREN arg_list RPAREN
+    ;
+whileloop:
+    K_WHILE LPAREN condition RPAREN LCURLY block RCURLY
 
 %%
 extern FILE* yyin;
