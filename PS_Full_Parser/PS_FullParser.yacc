@@ -86,8 +86,8 @@
 %token<sVal> ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
 %token<sVal> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
 
-%type<sVal> statement makenummutable reader callfunc program expr param_list block d_type var assignment task function arrayat procedure print value gate relop forloop
-/* %type statement program task function procedure param_list block d_type print var assignment expr value */
+%type<sVal> statement program expr param_list block d_type var assignment task function procedure print value
+%type<sVal> if ret makenummutable reader callfunc arrayat gate relop forloop
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
@@ -197,7 +197,7 @@ print:
         nodeCount++);
         printf("\t Terminal Symbol: K_PRINT_INTEGER\n");
         printf("\t Terminal Symbol: LPAREN\n");
-        printf("\t ICONSTANT -> %d\n", $3);
+        printf("\t ICONSTANT -> %s\n", $3);
         printf("\t Terminal Symbol: RPAREN\n");
         printf("\t Terminal Symbol: SEMI\n");
         $$ = "K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI";
@@ -208,7 +208,7 @@ print:
         nodeCount++);
         printf("\t Terminal Symbol: K_PRINT_DOUBLE\n");
         printf("\t Terminal Symbol: LPAREN\n");
-        printf("\t DCONSTANT -> %d\n", $3);
+        printf("\t DCONSTANT -> %s\n", $3);
         printf("\t Terminal Symbol: RPAREN\n");
         printf("\t Terminal Symbol: SEMI\n");
         $$ = "K_PRINT_DOUBLE LPAREN DCONSTANT RPAREN SEMI";
