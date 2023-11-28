@@ -3,7 +3,8 @@
 %}
 
 %%
-[ \t\n\r]                                                       ;
+[ \t\n\r]                                                   ;
+\/\/[^\r\n]*                                                ; // Comment
 "do"                                                        return K_DO;
 "double"                                                    return K_DOUBLE;
 "else"                                                      return K_ELSE;
@@ -34,7 +35,6 @@
 \/=                                                         return ASSIGN_DIVIDE;
 \%=                                                         return ASSIGN_MOD;
 ,                                                           return COMMA;
-\/\/                                                        return COMMENT;
 &&                                                          return DAND;
 \/                                                          return DIVIDE;
 \|\|                                                        return DOR;
