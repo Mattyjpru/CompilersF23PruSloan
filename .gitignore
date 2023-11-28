@@ -29,3 +29,8 @@ Cody_TCG/PS_CG_Parser_Out.txt
 Cody_TCG/PruSloanTrivCodeGen
 Cody_TCG/lex.yy.c
 Cody_TCG/a.out
+PS_Full_Parser/lex.yy.c
+PS_Full_Parser/y.tab.c
+PS_Full_Parser/y.tab.h
+PS_Full_Parser/PruSloanFullParser
+PS_Full_Parser/PS_Full_Parser_Out.txt

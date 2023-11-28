@@ -14,7 +14,6 @@
     int yywrap();
     extern char* yytext;
     extern int line;
-    extern int yylineno;
 
     //Symbol Table stuff
     int st_count=0;
@@ -70,19 +69,24 @@
 %}
 
 %union {
-    struct nt1 { 
-		char name[100];
-        // char dt[100];
-		struct node* nd;
-	} nd_obj; 
+    // struct nt1 { 
+	// 	char name[100];
+    //     // char dt[100];
+	// 	struct node* nd;
+	// } nd_obj; 
+        int iVal;
+    double dVal;
+    char  *sVal;
 }
 
-%token<nd_obj> IDENTIFIER SCONSTANT ICONSTANT DCONSTANT K_DO K_DOUBLE K_ELSE K_EXIT K_FUNCTION K_IF K_INTEGER 
-%token<nd_obj> K_PRINT_DOUBLE K_PRINT_INTEGER K_PRINT_STRING K_PROCEDURE K_PROGRAM K_READ_DOUBLE K_READ_INTEGER
-%token<nd_obj> K_READ_STRING K_RETURN K_STRING K_THEN K_WHILE ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY
-%token<nd_obj> ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
-%token<nd_obj> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
-%type<nd_obj> statement program task function procedure param_list block d_type print var assignment expr value
+%token<sVal> IDENTIFIER SCONSTANT ICONSTANT DCONSTANT K_DO K_DOUBLE K_ELSE K_EXIT K_FUNCTION K_IF K_INTEGER 
+%token<sVal> K_PRINT_DOUBLE K_PRINT_INTEGER K_PRINT_STRING K_PROCEDURE K_PROGRAM K_READ_DOUBLE K_READ_INTEGER
+%token<sVal> K_READ_STRING K_RETURN K_STRING K_THEN K_WHILE ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY
+%token<sVal> ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
+%token<sVal> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
+
+%type<sVal> statement program expr param_list block d_type var assignment task function procedure print value gate relop
+/* %type statement program task function procedure param_list block d_type print var assignment expr value */
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
@@ -90,86 +94,60 @@
 
 %%
 statement: 
-    program { printf("Valid Program\n"); execute(head);};
+    program { printf("\nValid Program\n");};
 
-program: K_PROGRAM IDENTIFIER /*{newSymbol('M', $2.name);}*/ LCURLY task RCURLY
-    /* {
-        $$.nd=buildNode( $5.nd, NULL, $2.name);
-        head = $$.nd; 
-    } */
+program: K_PROGRAM IDENTIFIER LCURLY task RCURLY
+    
     |
     ;
 
-task: function //{$$.nd = buildNode($1.nd, NULL, "task");}
-    | procedure //{$$.nd = buildNode($1.nd, NULL, "task");}
-    | function task //{$$.nd = buildNode($1.nd, $2.nd, "task");}
-    | procedure task  //{$$.nd = buildNode($1.nd, $2.nd, "task");}
-    |
+task: function 
+    | procedure 
+    | function task 
+    | procedure task  
     ;
 
 procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
-    /* {
-        $$.nd = buildNode($4.nd, $7.nd, $2.name);
-    } */
+    
     ;
 
-function: K_FUNCTION d_type IDENTIFIER /*{newSymbol('V', $3.name);} */LPAREN param_list RPAREN LCURLY block RCURLY
-    /* {
-        $$.nd = buildNode($6.nd, $9.nd, $3.name);
-    } */
+function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+    
     ;
 
 block:
-    print               //{$$.nd = $1.nd;}
-    | var               //{$$.nd = $1.nd;}
-    | assignment        //{$$.nd = $1.nd;}  
-    | block block       //{$$.nd = buildNode($1.nd, $2.nd, "blocks");}
+    print               
+    | var               
+    | assignment         
+    | block block       
     ;
 
 print:
     K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI 
-    /* {
-        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
-    } */
+    
     | K_PRINT_DOUBLE LPAREN DCONSTANT  RPAREN SEMI
-    /* {
-        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
-    } */
+    
     | K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-    /* {
-        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
-    } */
+    
     | K_PRINT_INTEGER LPAREN IDENTIFIER  RPAREN SEMI
-    /* {
-        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
-    } */
+    
     | K_PRINT_DOUBLE LPAREN IDENTIFIER  RPAREN SEMI
-    /* {
-        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
-    } */
+    
     | K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
-    /* {
-        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
-    } */
+    
     | K_PRINT_INTEGER LPAREN expr RPAREN SEMI
-    /* {
-       $$.nd = buildNode(buildNode(NULL, NULL, $1.name), $3.nd, "print statement");
-    } */
+    
     ;
 
 var:
-    d_type IDENTIFIER /*{newSymbol('V', $2.name);}*/ SEMI 
-    /* {
-        $$.nd = buildNode(buildNode(NULL, NULL, $2.name), NULL, "variable declaration");
-    } */
-    | d_type assignment //{$$.nd = $2.nd;}
+    d_type IDENTIFIER  SEMI 
+    
+    | d_type assignment 
     ;
 
 assignment:
-    IDENTIFIER /*{newSymbol('V', $1.name);}*/ ASSIGN expr SEMI
-    /* { 
-        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), $4.nd, "="); 
-    } */
+    IDENTIFIER  ASSIGN expr SEMI
+  
     | IDENTIFIER ASSIGN_DIVIDE expr SEMI
 
     | IDENTIFIER ASSIGN_MINUS expr SEMI
@@ -183,16 +161,16 @@ assignment:
     
 
 d_type:
-    K_INTEGER //{insert(); $$.nd = buildNode(NULL, NULL, $1.name); }
-    | K_STRING //{insert(); $$.nd = buildNode(NULL, NULL, $1.name); }
-    | K_DOUBLE //{insert(); $$.nd = buildNode(NULL, NULL, $1.name); }
+    K_INTEGER 
+    | K_STRING 
+    | K_DOUBLE
     ;
 
 expr:
-    value              //{ $$.nd = $1.nd;} 
-    | expr MINUS expr    //{ $$.nd = buildNode($1.nd, $3.nd, $2.name); }
+    value              
+    | expr MINUS expr    
          
-    | expr PLUS expr         //{ $$.nd = buildNode($1.nd, $3.nd, $2.name); }
+    | expr PLUS expr        
     
     | expr MULTIPLY expr
     
@@ -200,22 +178,20 @@ expr:
     
     | expr MOD expr
      
-    | LPAREN expr RPAREN   //{ $$.nd = $2.nd; }
+    | LPAREN expr RPAREN   
 
     ;
     
 value:
-    ICONSTANT           //{ newSymbol('I', $1.name); $$.nd = buildNode(NULL, NULL, $1.name); }
-    | DCONSTANT         //{ newSymbol('D', $1.name); $$.nd = buildNode(NULL, NULL, $1.name); }
-    | IDENTIFIER        //{ newSymbol('V', $1.name); $$.nd = buildNode(NULL, NULL, $1.name); }
+    ICONSTANT           
+    | DCONSTANT         
+    | IDENTIFIER        
     ;
 
 param_list:
-    d_type IDENTIFIER /*{ newSymbol('V', $2.name); }*/ COMMA param_list
-    /* { 
-        $$.nd = buildNode(buildNode(NULL, NULL, $2.name), $5.nd, "Parameter List");
-    }  */
-    | {$$.nd = NULL;}
+    d_type IDENTIFIER COMMA param_list
+    
+    | 
     ;
 
 relop: 
@@ -230,13 +206,31 @@ gate:
     DAND
     |
     DOR;
+
+condition: expr relop expr
+    | condition gate condition
+    | NOT condition
+    ;
+
+if: K_IF LPAREN condition RPAREN K_THEN block
+    | K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
+    | K_IF LPAREN condition RPAREN K_THEN LCURLY block LCURLY
+    | | K_IF LPAREN condition RPAREN K_THEN block K_ELSE LCURLY block LCURLY
+    ;
+
+read:
+    K_READ_DOUBLE
+    | K_READ_INTEGER
+    | K_READ_STRING
+    ;
+
 %%
 extern FILE* yyin;
 
 int main(){
     do{
         yyparse();
-        printf("\n\n");
+        /* printf("\n\n"); */
         /* printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
         printf("___________________________________________________________________________\n\n");
 
@@ -251,21 +245,21 @@ int main(){
                 printf("%-25s %-15s %-15s %-15d\n", symbolTable[i].name, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
             }
         } */
-        for(int i=0;i<st_count;i++) {
+        /* for(int i=0;i<st_count;i++) {
             free(symbolTable[i].name);
             free(symbolTable[i].d_type);
             free(symbolTable[i].use);
             free(symbolTable[i].memLoc);
-        }
+        } */
     }while(!feof(yyin));
     /* printf("\n\n");
     printtree(head); 
     printf("\n\n"); */
     return 0;
 }
-void insert(){
+/* void insert(){
     strcpy(useBuff, yytext);
-}
+} */
 
 ////////////////////////// Function to replace the d to e in double strings /////////////////////////
 /* char* repD(char* str, char target){
