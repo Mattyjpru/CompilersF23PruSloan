@@ -14,7 +14,6 @@
     int yywrap();
     extern char* yytext;
     extern int line;
-    extern int yylineno;
 
     //Symbol Table stuff
     int st_count=0;
@@ -80,15 +79,13 @@
     char  *sVal;
 }
 
-%token IDENTIFIER SCONSTANT ICONSTANT DCONSTANT K_DO K_DOUBLE K_ELSE K_EXIT K_FUNCTION K_IF K_INTEGER 
-%token K_PRINT_DOUBLE K_PRINT_INTEGER K_PRINT_STRING K_PROCEDURE K_PROGRAM K_READ_DOUBLE K_READ_INTEGER
-%token K_READ_STRING K_RETURN K_STRING K_THEN K_WHILE ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY
-%token ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
-%token DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
+%token<sVal> IDENTIFIER SCONSTANT ICONSTANT DCONSTANT K_DO K_DOUBLE K_ELSE K_EXIT K_FUNCTION K_IF K_INTEGER 
+%token<sVal> K_PRINT_DOUBLE K_PRINT_INTEGER K_PRINT_STRING K_PROCEDURE K_PROGRAM K_READ_DOUBLE K_READ_INTEGER
+%token<sVal> K_READ_STRING K_RETURN K_STRING K_THEN K_WHILE ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY
+%token<sVal> ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
+%token<sVal> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
 
-%type<sVal> IDENTIFIER SCONSTANT expr param_list block d_type var assignment task function procedure print gate relop
-%type<iVal> ICONSTANT
-%type<dVal> DCONSTANT
+%type<sVal> statement program expr param_list block d_type var assignment task function procedure print value gate relop
 /* %type statement program task function procedure param_list block d_type print var assignment expr value */
 
 %left MINUS PLUS
@@ -97,7 +94,7 @@
 
 %%
 statement: 
-    program { printf("Valid Program\n");};
+    program { printf("\nValid Program\n");};
 
 program: K_PROGRAM IDENTIFIER /*{newSymbol('M', $2.name);}*/ LCURLY task RCURLY
     /* {
@@ -111,7 +108,6 @@ task: function //{$$.nd = buildNode($1.nd, NULL, "task");}
     | procedure //{$$.nd = buildNode($1.nd, NULL, "task");}
     | function task //{$$.nd = buildNode($1.nd, $2.nd, "task");}
     | procedure task  //{$$.nd = buildNode($1.nd, $2.nd, "task");}
-    |
     ;
 
 procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
@@ -222,7 +218,7 @@ param_list:
     /* { 
         $$.nd = buildNode(buildNode(NULL, NULL, $2.name), $5.nd, "Parameter List");
     }  */
-    | {$$.nd = NULL;}
+    | //{$$.nd = NULL;}
     ;
 
 relop: 
@@ -237,13 +233,27 @@ gate:
     DAND
     |
     DOR;
+
+condition: expr relop expr
+    | condition gate condition
+    | NOT condition
+    ;
+
+if: K_IF LPAREN condition RPAREN K_THEN block
+    | K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
+    | K_IF LPAREN condition RPAREN K_THEN LCURLY block LCURLY
+    | | K_IF LPAREN condition RPAREN K_THEN block K_ELSE LCURLY block LCURLY
+    ;
+
+
+
 %%
 extern FILE* yyin;
 
 int main(){
     do{
         yyparse();
-        printf("\n\n");
+        /* printf("\n\n"); */
         /* printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
         printf("___________________________________________________________________________\n\n");
 
@@ -258,21 +268,21 @@ int main(){
                 printf("%-25s %-15s %-15s %-15d\n", symbolTable[i].name, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
             }
         } */
-        for(int i=0;i<st_count;i++) {
+        /* for(int i=0;i<st_count;i++) {
             free(symbolTable[i].name);
             free(symbolTable[i].d_type);
             free(symbolTable[i].use);
             free(symbolTable[i].memLoc);
-        }
+        } */
     }while(!feof(yyin));
     /* printf("\n\n");
     printtree(head); 
     printf("\n\n"); */
     return 0;
 }
-void insert(){
+/* void insert(){
     strcpy(useBuff, yytext);
-}
+} */
 
 ////////////////////////// Function to replace the d to e in double strings /////////////////////////
 /* char* repD(char* str, char target){

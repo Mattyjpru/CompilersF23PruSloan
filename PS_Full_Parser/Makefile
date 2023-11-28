@@ -4,8 +4,8 @@
 ##############################################################################
 CC=gcc
 
-BUILD=PruSloanTrivCodeGen
-OUTPUT=PS_CG_Parser_Out.txt
+BUILD=PruSloanFullParser
+OUTPUT=PS_Full_Parser_Out.txt
 
 all: $(BUILD)
 	./$(BUILD) < te1.f23 | tee $(OUTPUT)
