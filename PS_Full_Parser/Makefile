@@ -8,7 +8,7 @@ BUILD=PruSloanFullParser
 OUTPUT=PS_Full_Parser_Out.txt
 
 all: $(BUILD)
-	./$(BUILD) < mg.f23 | tee $(OUTPUT)
+	./$(BUILD) < te1.f23 | tee $(OUTPUT)
 
 $(BUILD): lex.yy.c y.tab.c
 	${CC} ${CFLAGS} y.tab.c -o $(BUILD)
