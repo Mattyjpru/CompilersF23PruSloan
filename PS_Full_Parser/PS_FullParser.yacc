@@ -85,7 +85,7 @@
 %token<sVal> ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
 %token<sVal> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
 
-%type<sVal> statement makenummutable reader program expr param_list block d_type var assignment task function arrayat procedure print value gate relop
+%type<sVal> statement makenummutable reader callfunc program expr param_list block d_type var assignment task function arrayat procedure print value gate relop
 /* %type statement program task function procedure param_list block d_type print var assignment expr value */
 
 %left MINUS PLUS
@@ -117,7 +117,8 @@ function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCU
 
 block:
     print               
-    | var               
+    | var     
+    | callfunc         
     | assignment         
     | block block       
     ;
@@ -167,7 +168,9 @@ d_type:
     ;
 
 expr:
-    value              
+    value 
+    | callfunc
+
     | expr MINUS expr    
          
     | expr PLUS expr        
@@ -194,7 +197,10 @@ param_list:
     d_type IDENTIFIER COMMA param_list
     | 
     ;
-
+arg_list:
+    value
+    | value arg_list
+    ;
 relop: 
     LT
     | GT
@@ -216,7 +222,7 @@ condition: expr relop expr
 if: K_IF LPAREN condition RPAREN K_THEN block
     | K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
     | K_IF LPAREN condition RPAREN K_THEN LCURLY block LCURLY
-    | | K_IF LPAREN condition RPAREN K_THEN block K_ELSE LCURLY block LCURLY
+    | K_IF LPAREN condition RPAREN K_THEN block K_ELSE LCURLY block LCURLY
     ;
 
 reader:
@@ -224,19 +230,25 @@ reader:
     | K_READ_INTEGER
     | K_READ_STRING
     ;
+
 makenummutable:
     DECREMENT
     |
     INCREMENT
     |
     ;
+
 arrayat:
     | IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
     | IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
     ;
+
 buildarr:
     IDENTIFIER LBRACKET RBRACKET SEMI
     ;
+
+callfunc:
+    IDENTIFIER LPAREN arg_list RPAREN
 
 %%
 extern FILE* yyin;
