@@ -428,8 +428,7 @@ makenummutable:
     |
     ;
 
-arrayat:
-    | IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
+arrayat: IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
     | IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
     ;
 
