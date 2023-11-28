@@ -87,7 +87,7 @@
 %token<sVal> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
 
 %type<sVal> statement program expr param_list block d_type var assignment task function procedure print value
-%type<sVal> if ret makenummutable reader callfunc arrayat gate relop forloop
+%type<sVal> if ret makenummutable reader callfunc arrayat gate relop forloop whileloop
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
@@ -187,6 +187,9 @@ block:
     }   
     | if     
     | ret
+    | forloop
+    | whileloop
+    | reader
     | block block       
     ;
 
@@ -439,13 +442,16 @@ buildarr:
 callfunc:
     IDENTIFIER LPAREN arg_list RPAREN
     ;
+
 whileloop:
     K_WHILE LPAREN condition RPAREN LCURLY block RCURLY
     ;
+
 forloop:
     K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN LCURLY block RCURLY
     | K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER DECREMENT RPAREN LCURLY block RCURLY
     ;
+    
 ret:
     K_RETURN value SEMI
     |K_RETURN assignment
