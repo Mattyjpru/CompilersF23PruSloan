@@ -28,7 +28,7 @@ program $two_grid_solver
         integer i := 0;                     // Loop variable
 
         while ( i >= 0 && i <= s1 )
-            dsoln[i++] := dval;
+            double d := dval;
 
     }   // of set_constant
 
@@ -52,7 +52,7 @@ program $two_grid_solver
         {
             print_integer( i );
             print_string( " " );
-            print_double( dsoln[i] );
+            print_double( i );
         }   
         print_string( "--- End of vector\n" );
 
@@ -85,7 +85,7 @@ program $two_grid_solver
             {
                 l0_norm := asoln;
             }   
-            i++;
+            //i++;
         }   
 
         return l0_norm;
@@ -107,11 +107,12 @@ program $two_grid_solver
         integer i;                      // Loop variable
 
         // Compute the residuals
-        dres[0] := dres[res1] := 0.0d0;
+        //dres[0] := dres[res1] := 0.0d0;
         do ( i := 1; i < s1; i++ )
-            dres[i] := drhs[i] - 2.0 * dsoln[i] 
-                              + dsoln[i-1] 
-                              + dsoln[i+1];
+            //dres[i] := drhs[i] - 2.0 * dsoln[i] 
+            //                  + dsoln[i-1] 
+            //                  + dsoln[i+1];
+            integer j;
 
     }   // of residuals
 
@@ -127,15 +128,16 @@ program $two_grid_solver
             double  drhs[], integer rhs1        // Right hand side
                      )
     {
-        integer i, n:=1;                        // Loop variables
+        //integer i, n:=1;                        // Loop variables
 
         // Do iters number of Gauss-Seidel iterations 
         while (n<=iters)
         {
             do ( i := 1; i < s1; i++ )
-                dsoln[i] := ( drhs[i] + dsoln[i-1] 
-                                     + dsoln[i+1]) / 2.0d0;
-            n++;
+                //dsoln[i] := ( drhs[i] + dsoln[i-1] 
+                //                     + dsoln[i+1]) / 2.0d0;
+                integer j;
+            //n++;
         }   
 
         // Return the error norm
@@ -167,16 +169,16 @@ program $two_grid_solver
                 double dto[],   integer t1      // Target date, sized  (t1)   
                    )
         {
-            integer i, m;       // Loop variables   
+            //integer i, m;       // Loop variables   
 
             // Aggregate the from data in a Galerkin style on the coarser mesh  
-            dto[0] := dto[t1] := 0.;
+            //dto[0] := dto[t1] := 0.;
             m := 0;
             do ( i := 1 ; i < t1 ; i++ )
             {
                 m += 2;
-                dto[i] := dfrom[m] +
-                        5.d-1 * ( dfrom[m-1] + dfrom[m+1] );
+                //dto[i] := dfrom[m] +
+                //        5.d-1 * ( dfrom[m-1] + dfrom[m+1] );
             }   
 
         }   // of coarsen
@@ -193,14 +195,14 @@ program $two_grid_solver
                 double dto[],   integer t1      // Target date, sized  (t1)   
                    )
         {
-            integer i, m;       // Loop variables   
+            //integer i, m;       // Loop variables   
 
             // Deal with mesh points coincident between the two meshes  
             m := 0;
             do ( i := 1; i < f1 ; i++ )
             {
                 m := m + 2;
-                dto[m] := dto[m] + dfrom[i];
+                //dto[m] := dto[m] + dfrom[i];
             }   
 
             // Deal with mesh points noncoincident between the two meshes  
@@ -208,8 +210,8 @@ program $two_grid_solver
             do ( i := 0; i < f1; i++ )
             {
                 m := m + 2;
-                dto[m] := dto[m] + 
-                         .5 * ( dfrom[i] + dfrom[i+1] );
+                //dto[m] := dto[m] + 
+                //         .5 * ( dfrom[i] + dfrom[i+1] );
             }   
 
         }   // of refine_add

@@ -39,7 +39,7 @@
 %token<sVal> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
 
 %type<sVal> statement program expr param_list block d_type var assignment task function procedure print value
-%type<sVal> if ret makenummutable reader callfunc arrayat gate relop forloop whileloop happyruben
+%type<sVal> if ret makenummutable reader callfunc arrayat gate relop forloop whileloop happyruben buildarr
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
@@ -134,9 +134,10 @@ block:
     | callfunc SEMI
     | assignment SEMI
     {
-        printf("Node %d: Reduced: block: assignment\n", nodeCount++);
+        printf("Node %d: Reduced: block: assignment SEMI\n", nodeCount++);
         printf("\assignment -> %s\n", $1);
-        $$ = "assignment";
+        printf("\t Terminal Symbol: SEMI\n");
+        $$ = "assignment SEMI";
     }   
     | if     
     | ret
@@ -145,7 +146,8 @@ block:
     | reader
     | task
     | LCURLY block RCURLY
-    | block block       
+    | block block 
+    | assignment COMMA happyruben;    
     ;
 
 print:
@@ -238,6 +240,13 @@ var:
         $$ = "d_type IDENTIFIER";
     }
     | d_type buildarr
+    {
+        printf("Node %d: Reduced: var: d_type buildarr\n", nodeCount++);
+        printf("\t d_type -> %s\n", $1);
+        printf("\t buildarr -> %s\n", $2);
+        
+        $$ = "d_type buildarr";
+    }
     | d_type assignment
     {
         printf("Node %d: Reduced: var: d_type assignment\n", nodeCount++);
@@ -332,15 +341,20 @@ value:
     ;
 
 param_list:
-    var
-    | var COMMA param_list
+    | var
     {
-        printf("Node %d: Reduced: param_list: d_type IDENTIFIER COMMA param_list\n",
+        printf("Node %d: Reduced: param_list: var\n",
         nodeCount++);
         // NEEDS REWRITTEN
-        $$ = "d_type IDENTIFIER COMMA param_list";
+        $$ = "var";
     }
-    |
+    | var COMMA param_list
+    {
+        printf("Node %d: Reduced: param_list: var COMMA param_list\n",
+        nodeCount++);
+        // NEEDS REWRITTEN
+        $$ = "var COMMA param_list";
+    }
     ;
 
 // New Code Starts here.
@@ -380,10 +394,9 @@ reader:
     ;
 
 makenummutable:
-    DECREMENT
-    |
-    INCREMENT
-    |
+    | DECREMENT
+    | INCREMENT
+    
     ;
 
 arrayat: IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
