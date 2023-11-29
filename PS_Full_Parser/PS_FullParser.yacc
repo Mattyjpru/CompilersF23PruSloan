@@ -447,7 +447,7 @@ callfunc:
 
 whileloop:
     K_WHILE LPAREN condition RPAREN LCURLY block RCURLY
-    K_WHILE LPAREN condition RPAREN block
+    | K_WHILE LPAREN condition RPAREN block
     ;
 
 forloop:
