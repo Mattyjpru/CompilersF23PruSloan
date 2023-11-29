@@ -132,23 +132,73 @@ block:
         $$ = "var SEMI";
     }
     | callfunc SEMI
+    {
+        printf("Node %d: Reduced: block: callfunc SEMI\n", nodeCount++);
+        printf("\t callfunc -> %s\n", $1);
+        printf("\t Terminal Symbol: SEMI\n");
+        $$ = "callfunc SEMI";
+    }  
     | assignment SEMI
     {
         printf("Node %d: Reduced: block: assignment SEMI\n", nodeCount++);
-        printf("\assignment -> %s\n", $1);
+        printf("\t assignment -> %s\n", $1);
         printf("\t Terminal Symbol: SEMI\n");
         $$ = "assignment SEMI";
     }   
-    | if     
+    | if
+    {
+        printf("Node %d: Reduced: block: if\n", nodeCount++);
+        printf("\t if -> %s\n", $1);
+        $$ = "if";
+    }      
     | ret
+    {
+        printf("Node %d: Reduced: block: ret\n", nodeCount++);
+        printf("\t ret -> %s\n", $1);
+        $$ = "ret";
+    }     
     | forloop
+    {
+        printf("Node %d: Reduced: block: forloop\n", nodeCount++);
+        printf("\t forloop -> %s\n", $1);
+        $$ = "forloop";
+    }     
     | whileloop
+    {
+        printf("Node %d: Reduced: block: whileloop\n", nodeCount++);
+        printf("\t whileloop -> %s\n", $1);
+        $$ = "whileloop";
+    }     
     | reader SEMI
+    {
+        printf("Node %d: Reduced: block: reader SEMI\n", nodeCount++);
+        printf("\t reader -> %s\n", $1);
+        printf("\t Terminal Symbol: SEMI\n");
+        $$ = "reader SEMI";
+    } 
     | task
+    {
+        printf("Node %d: Reduced: block: task\n", nodeCount++);
+        printf("\t task -> %s\n", $1);
+        $$ = "task";
+    }     
     | LCURLY block RCURLY
+    {
+        printf("Node %d: Reduced: block: LCURLY block RCURLY\n", nodeCount++);
+        printf("\t Terminal Symbol: LCURLY\n");
+        printf("\t block -> %s\n", $2);
+        printf("\t Terminal Symbol: RCURLY\n");
+        $$ = "LCURLY block RCURLY";
+    } 
     | block block 
     | IDENTIFIER makenummutable SEMI 
-    | chain SEMI      
+    | chain SEMI   
+    {
+        printf("Node %d: Reduced: block: chain SEMI\n", nodeCount++);
+        printf("\t chain -> %s\n", $1);
+        printf("\t Terminal Symbol: SEMI\n");
+        $$ = "chain SEMI";
+    }    
     ;
 
 print:
@@ -191,10 +241,10 @@ print:
         nodeCount++);
         printf("\t Terminal Symbol: K_PRINT_INTEGER\n");
         printf("\t Terminal Symbol: LPAREN\n");
-        printf("\t IDENTIFIER -> %s\n", $3);
+        printf("\t happyruben -> %s\n", $3);
         printf("\t Terminal Symbol: RPAREN\n");
         printf("\t Terminal Symbol: SEMI\n");
-        $$ = "K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI";
+        $$ = "K_PRINT_INTEGER LPAREN happyruben RPAREN SEMI";
     }
     | K_PRINT_DOUBLE LPAREN happyruben RPAREN SEMI
     {
@@ -202,10 +252,10 @@ print:
         nodeCount++);
         printf("\t Terminal Symbol: K_PRINT_STRING\n");
         printf("\t Terminal Symbol: LPAREN\n");
-        printf("\t IDENTIFIER -> %s\n", $3);
+        printf("\t happyruben -> %s\n", $3);
         printf("\t Terminal Symbol: RPAREN\n");
         printf("\t Terminal Symbol: SEMI\n");
-        $$ = "K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI";
+        $$ = "K_PRINT_STRING LPAREN happyruben RPAREN SEMI";
     }
     | K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
     {
@@ -234,11 +284,11 @@ print:
 var:
     d_type happyruben 
     {
-        printf("Node %d: Reduced: var: d_type IDENTIFIER\n", nodeCount++);
+        printf("Node %d: Reduced: var: d_type happyruben\n", nodeCount++);
         printf("\t d_type -> %s\n", $1);
-        printf("\t IDENTIFIER -> %s\n", $2);
+        printf("\t happyruben -> %s\n", $2);
         
-        $$ = "d_type IDENTIFIER";
+        $$ = "d_type happyruben";
     }
     | d_type buildarr
     {
@@ -256,30 +306,84 @@ var:
         $$ = "d_type assignment";
     }
     | var SEMI
+    {
+        printf("Node %d: Reduced: block: var SEMI\n", nodeCount++);
+        printf("\t var -> %s\n", $1);
+        printf("\t Terminal Symbol: SEMI\n");
+        $$ = "var SEMI";
+    } 
     ;
 
 assignment:
     happyruben ASSIGN expr 
     {
-        printf("Node %d: Reduced: assignment: IDENTIFIER ASSIGN expr SEMI\n", 
+        printf("Node %d: Reduced: assignment: happyruben ASSIGN expr SEMI\n", 
         nodeCount++);
-        printf("\t IDENTIFIER -> %s\n", $1);
+        printf("\t happyruben -> %s\n", $1);
         printf("\t Terminal Symbol: ASSIGN\n");
         printf("\t expr -> %s\n", $3);
         printf("\t Terminal Symbol: SEMI\n");
-        $$ = "IDENTIFIER ASSIGN expr SEMI";
+        $$ = "happyruben ASSIGN expr SEMI";
     }
     | happyruben ASSIGN_DIVIDE expr 
-
+    {
+        printf("Node %d: Reduced: assignment: happyruben ASSIGN_DIVIDE expr SEMI\n", 
+        nodeCount++);
+        printf("\t happyruben -> %s\n", $1);
+        printf("\t Terminal Symbol: ASSIGN_DIVIDE\n");
+        printf("\t expr -> %s\n", $3);
+        printf("\t Terminal Symbol: SEMI\n");
+        $$ = "happyruben ASSIGN_DIVIDE expr SEMI";
+    }
     | happyruben ASSIGN_MINUS expr 
-    
+    {
+        printf("Node %d: Reduced: assignment: happyruben ASSIGN_MINUS expr SEMI\n", 
+        nodeCount++);
+        printf("\t happyruben -> %s\n", $1);
+        printf("\t Terminal Symbol: ASSIGN_MINUS\n");
+        printf("\t expr -> %s\n", $3);
+        printf("\t Terminal Symbol: SEMI\n");
+        $$ = "happyruben ASSIGN_MINUS expr SEMI";
+    }
     | happyruben ASSIGN_MOD expr 
-    
+    {
+        printf("Node %d: Reduced: assignment: happyruben ASSIGN_MOD expr SEMI\n", 
+        nodeCount++);
+        printf("\t happyruben -> %s\n", $1);
+        printf("\t Terminal Symbol: ASSIGN_MOD\n");
+        printf("\t expr -> %s\n", $3);
+        printf("\t Terminal Symbol: SEMI\n");
+        $$ = "happyruben ASSIGN_MOD expr SEMI";
+    }
     | happyruben ASSIGN_MULTIPLY expr 
-    
+    {
+        printf("Node %d: Reduced: assignment: happyruben ASSIGN_MULTIPLY expr SEMI\n", 
+        nodeCount++);
+        printf("\t happyruben -> %s\n", $1);
+        printf("\t Terminal Symbol: ASSIGN_MULTIPLY\n");
+        printf("\t expr -> %s\n", $3);
+        printf("\t Terminal Symbol: SEMI\n");
+        $$ = "happyruben ASSIGN_MULTIPLY expr SEMI";
+    }
     | happyruben ASSIGN_PLUS expr 
-
+    {
+        printf("Node %d: Reduced: assignment: happyruben ASSIGN_PLUS expr SEMI\n", 
+        nodeCount++);
+        printf("\t happyruben -> %s\n", $1);
+        printf("\t Terminal Symbol: ASSIGN_PLUS\n");
+        printf("\t expr -> %s\n", $3);
+        printf("\t Terminal Symbol: SEMI\n");
+        $$ = "happyruben ASSIGN_PLUS expr SEMI";
+    }
     |assignment ASSIGN expr
+    {
+        printf("Node %d: Reduced: assignment: assignment ASSIGN expr \n", 
+        nodeCount++);
+        printf("\t assignment -> %s\n", $1);
+        printf("\t Terminal Symbol: ASSIGN\n");
+        printf("\t expr -> %s\n", $3);
+        $$ = "assignment ASSIGN expr SEMI";
+    }
     ;
     
 
@@ -297,12 +401,26 @@ d_type:
         $$ = "K_STRING";
     }
     | K_DOUBLE
+    {
+        printf("Node %d: Reduced: d_type: K_DOUBLE\n", nodeCount++);
+        printf("\t Terminal Symbol: K_DOUBLE\n");
+        $$ = "K_DOUBLE";
+    }
     ;
 
 expr:
     value 
+    {
+        printf("Node %d: Reduced: block: value\n", nodeCount++);
+        printf("\t value -> %s\n", $1);
+        $$ = "value ";
+    } 
     | callfunc
-
+    {
+        printf("Node %d: Reduced: block: callfunc\n", nodeCount++);
+        printf("\t callfunc -> %s\n", $1);
+        $$ = "callfunc ";
+    } 
     | expr MINUS expr
     {
         printf("Node %d: Reduced: expr: expr MINUS expr\n", nodeCount++);
@@ -320,11 +438,29 @@ expr:
         $$ = "expr PLUS expr";
     }
     | expr MULTIPLY expr
-    
+    {
+        printf("Node %d: Reduced: expr: expr MULTIPLY expr\n", nodeCount++);
+        printf("\t expr-> %s\n",$1);
+        printf("\t Terminal Symbol: MULTIPLY\n");
+        printf("\t expr -> %s\n", $3);
+        $$ = "expr MULTIPLY expr";
+    }
     | expr DIVIDE expr
-    
+    {
+        printf("Node %d: Reduced: expr: expr DIVIDE expr\n", nodeCount++);
+        printf("\t expr-> %s\n",$1);
+        printf("\t Terminal Symbol: DIVIDE\n");
+        printf("\t expr -> %s\n", $3);
+        $$ = "expr DIVIDE expr";
+    }
     | expr MOD expr
-     
+     {
+        printf("Node %d: Reduced: expr: expr MOD expr\n", nodeCount++);
+        printf("\t expr-> %s\n",$1);
+        printf("\t Terminal Symbol: MOD\n");
+        printf("\t expr -> %s\n", $3);
+        $$ = "expr MOD expr";
+    }
     | LPAREN expr RPAREN   
     {
         printf("Node %d: Reduced: expr: LPAREN expr RPAREN\n", nodeCount++);
@@ -336,27 +472,61 @@ expr:
     ;
     
 value:
-    ICONSTANT makenummutable         
-    | DCONSTANT makenummutable     
+    ICONSTANT makenummutable  
+    {
+        printf("Node %d: Reduced: block: ICONSTANT makenummutable\n", nodeCount++);
+        printf("\t Terminal Symbol: ICONSTANT\n");
+        printf("\t makenummutable -> %s\n", $2);
+        $$ = "ICONSTANT makenummutable ";
+    }        
+    | DCONSTANT makenummutable  
+    {
+        printf("Node %d: Reduced: block: DCONSTANT makenummutable\n", nodeCount++);
+        printf("\t Terminal Symbol: DCONSTANT\n");
+        printf("\t makenummutable -> %s\n", $2);
+        $$ = "DCONSTANT makenummutable ";
+    }    
     | happyruben
+    {
+        printf("Node %d: Reduced: block: happyruben\n", nodeCount++);
+        printf("\t happyruben -> %s\n", $1);
+        $$ = "happyruben ";
+    } 
     | MINUS value
+    {
+        printf("Node %d: Reduced: block: MINUS value\n", nodeCount++);
+        printf("\t Terminal Symbol: MINUS\n");
+        printf("\t value -> %s\n", $2);
+        $$ = "MINUS value ";
+    } 
     | callfunc 
+    {
+        printf("Node %d: Reduced: block: callfunc\n", nodeCount++);
+        printf("\t callfunc -> %s\n", $1);
+        $$ = "callfunc ";
+    } 
     |SCONSTANT 
+    {
+        printf("Node %d: Reduced: d_type: SCONSTANT\n", nodeCount++);
+        printf("\t Terminal Symbol: SCONSTANT\n");
+        $$ = "SCONSTANT";
+    }
+
     ;
 
 param_list:
     | var
     {
-        printf("Node %d: Reduced: param_list: var\n",
-        nodeCount++);
-        // NEEDS REWRITTEN
+        printf("Node %d: Reduced: param_list: var\n", nodeCount++);
+        printf("\t var -> %s\n", $1);
         $$ = "var";
     }
     | var COMMA param_list
     {
-        printf("Node %d: Reduced: param_list: var COMMA param_list\n",
-        nodeCount++);
-        // NEEDS REWRITTEN
+        printf("Node %d: Reduced: param_list: var COMMA param_list\n", nodeCount++);
+        printf("\t callfunc -> %s\n", $1);
+        printf("\t Terminal Symbol: COMMA\n");
+        printf("\t param_list -> %s\n", $3);
         $$ = "var COMMA param_list";
     }
     ;
