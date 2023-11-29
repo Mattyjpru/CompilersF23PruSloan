@@ -192,6 +192,7 @@ block:
     | whileloop
     | reader
     | task
+    | LCURLY block RCURLY
     | block block       
     ;
 
@@ -419,8 +420,6 @@ condition: expr relop expr
 
 if: K_IF LPAREN condition RPAREN K_THEN block
     | K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
-    | K_IF LPAREN condition RPAREN K_THEN LCURLY block RCURLY
-    | K_IF LPAREN condition RPAREN K_THEN block K_ELSE LCURLY block RCURLY
     ;
 
 reader:
