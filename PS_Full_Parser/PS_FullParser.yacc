@@ -180,7 +180,7 @@ block:
         $$ = "var SEMI";
     }
     | callfunc         
-    | assignment
+    | assignment SEMI
     {
         printf("Node %d: Reduced: block: assignment\n", nodeCount++);
         printf("\assignment -> %s\n", $1);
@@ -291,10 +291,11 @@ var:
         printf("\t assignment -> %s\n", $2);
         $$ = "d_type assignment";
     }
+    | var SEMI
     ;
 
 assignment:
-    IDENTIFIER ASSIGN expr SEMI
+    IDENTIFIER ASSIGN expr 
     {
         printf("Node %d: Reduced: assignment: IDENTIFIER ASSIGN expr SEMI\n", 
         nodeCount++);
@@ -304,15 +305,15 @@ assignment:
         printf("\t Terminal Symbol: SEMI\n");
         $$ = "IDENTIFIER ASSIGN expr SEMI";
     }
-    | IDENTIFIER ASSIGN_DIVIDE expr SEMI
+    | IDENTIFIER ASSIGN_DIVIDE expr 
 
-    | IDENTIFIER ASSIGN_MINUS expr SEMI
+    | IDENTIFIER ASSIGN_MINUS expr 
     
-    | IDENTIFIER ASSIGN_MOD expr SEMI
+    | IDENTIFIER ASSIGN_MOD expr 
     
-    | IDENTIFIER ASSIGN_MULTIPLY expr SEMI
+    | IDENTIFIER ASSIGN_MULTIPLY expr 
     
-    | IDENTIFIER ASSIGN_PLUS expr SEMI
+    | IDENTIFIER ASSIGN_PLUS expr 
     ;
     
 
@@ -458,7 +459,7 @@ forloop:
     
 ret:
     K_RETURN value SEMI
-    |K_RETURN assignment
+    |K_RETURN assignment SEMI
     ;
 
 %%
