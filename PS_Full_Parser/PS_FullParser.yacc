@@ -39,7 +39,7 @@
 %token<sVal> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
 
 %type<sVal> statement program expr param_list block d_type var assignment task function procedure print value
-%type<sVal> if ret makenummutable reader callfunc arrayat gate relop forloop whileloop happyruben buildarr
+%type<sVal> if ret chain chainend makenummutable reader callfunc arrayat gate relop forloop whileloop happyruben buildarr
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
@@ -143,11 +143,12 @@ block:
     | ret
     | forloop
     | whileloop
-    | reader
+    | reader SEMI
     | task
     | LCURLY block RCURLY
     | block block 
-    | assignment COMMA happyruben;    
+    | IDENTIFIER makenummutable SEMI 
+    | chain SEMI      
     ;
 
 print:
@@ -231,7 +232,7 @@ print:
     ;
 
 var:
-    d_type IDENTIFIER 
+    d_type happyruben 
     {
         printf("Node %d: Reduced: var: d_type IDENTIFIER\n", nodeCount++);
         printf("\t d_type -> %s\n", $1);
@@ -277,6 +278,8 @@ assignment:
     | happyruben ASSIGN_MULTIPLY expr 
     
     | happyruben ASSIGN_PLUS expr 
+
+    |assignment ASSIGN expr
     ;
     
 
@@ -335,9 +338,10 @@ expr:
 value:
     ICONSTANT makenummutable         
     | DCONSTANT makenummutable     
-    | happyruben 
+    | happyruben
     | MINUS value
-    | callfunc  
+    | callfunc 
+    |SCONSTANT 
     ;
 
 param_list:
@@ -388,9 +392,10 @@ if: K_IF LPAREN condition RPAREN K_THEN block
     ;
 
 reader:
-    K_READ_DOUBLE
-    | K_READ_INTEGER
-    | K_READ_STRING
+    K_READ_DOUBLE LPAREN expr RPAREN
+    | K_READ_INTEGER LPAREN expr RPAREN
+    | K_READ_STRING LPAREN SCONSTANT RPAREN
+    | K_READ_STRING LPAREN IDENTIFIER RPAREN
     ;
 
 makenummutable:
@@ -401,6 +406,7 @@ makenummutable:
 
 arrayat: IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
     | IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+    | IDENTIFIER LBRACKET expr RBRACKET
     ;
 
 buildarr:
@@ -432,6 +438,20 @@ happyruben:
     IDENTIFIER
     |
     arrayat
+    ;
+chain:
+    var COMMA
+    | assignment COMMA
+    | expr COMMA
+    | value COMMA
+    | chain chain
+    | chain chainend
+    ;
+chainend:
+    var
+    | value
+    | assignment
+    | expr
     ;
 
 %%
