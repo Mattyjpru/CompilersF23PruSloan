@@ -179,7 +179,7 @@ block:
         printf("\t Terminal Symbol: SEMI\n");
         $$ = "var SEMI";
     }
-    | callfunc         
+    | callfunc SEMI
     | assignment SEMI
     {
         printf("Node %d: Reduced: block: assignment\n", nodeCount++);
@@ -191,6 +191,7 @@ block:
     | forloop
     | whileloop
     | reader
+    | task
     | block block       
     ;
 
@@ -374,7 +375,8 @@ value:
     | DCONSTANT makenummutable     
     | IDENTIFIER 
     | arrayat  
-    | MINUS value     
+    | MINUS value
+    | callfunc  
     ;
 
 param_list:
@@ -392,7 +394,8 @@ param_list:
 // New Code Starts here.
 arg_list:
     value
-    | value arg_list
+    | value COMMA arg_list
+    |
     ;
 
 relop: 
@@ -416,8 +419,8 @@ condition: expr relop expr
 
 if: K_IF LPAREN condition RPAREN K_THEN block
     | K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
-    | K_IF LPAREN condition RPAREN K_THEN LCURLY block LCURLY
-    | K_IF LPAREN condition RPAREN K_THEN block K_ELSE LCURLY block LCURLY
+    | K_IF LPAREN condition RPAREN K_THEN LCURLY block RCURLY
+    | K_IF LPAREN condition RPAREN K_THEN block K_ELSE LCURLY block RCURLY
     ;
 
 reader:
@@ -451,7 +454,9 @@ whileloop:
     ;
 
 forloop:
-    K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN LCURLY block RCURLY
+    K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
+    | K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER DECREMENT RPAREN block
+    | K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN LCURLY block RCURLY
     | K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER DECREMENT RPAREN LCURLY block RCURLY
     ;
     
