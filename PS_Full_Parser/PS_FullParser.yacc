@@ -383,10 +383,7 @@ param_list:
     {
         printf("Node %d: Reduced: param_list: d_type IDENTIFIER COMMA param_list\n",
         nodeCount++);
-        printf("\t d_type -> %s\n", $1);
-        printf("\t IDENTIFIER -> %s\n", $2);
-        printf("\t Terminal Symbol: COMMA\n");
-        printf("\t param_list -> %s\n", $4);
+        // NEEDS REWRITTEN
         $$ = "d_type IDENTIFIER COMMA param_list";
     }
     |
@@ -450,6 +447,7 @@ callfunc:
 
 whileloop:
     K_WHILE LPAREN condition RPAREN LCURLY block RCURLY
+    K_WHILE LPAREN condition RPAREN block
     ;
 
 forloop:
