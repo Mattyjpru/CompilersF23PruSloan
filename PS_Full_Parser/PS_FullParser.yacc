@@ -376,7 +376,8 @@ value:
     ;
 
 param_list:
-    d_type IDENTIFIER COMMA param_list
+    d_type IDENTIFIER
+    | d_type IDENTIFIER COMMA param_list
     {
         printf("Node %d: Reduced: param_list: d_type IDENTIFIER COMMA param_list\n",
         nodeCount++);
@@ -386,7 +387,7 @@ param_list:
         printf("\t param_list -> %s\n", $4);
         $$ = "d_type IDENTIFIER COMMA param_list";
     }
-    | 
+    |
     ;
 
 // New Code Starts here.
@@ -403,7 +404,7 @@ relop:
     | DEQ
     | NE
     ;
-    
+
 gate:
     DAND
     |
