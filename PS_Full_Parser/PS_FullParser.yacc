@@ -172,11 +172,12 @@ block:
         printf("\t print -> %s\n", $1);
         $$ = "print";
     }          
-    | var
+    | var SEMI
     {
-        printf("Node %d: Reduced: block: var\n", nodeCount++);
+        printf("Node %d: Reduced: block: var SEMI\n", nodeCount++);
         printf("\t var -> %s\n", $1);
-        $$ = "var";
+        printf("\t Terminal Symbol: SEMI\n");
+        $$ = "var SEMI";
     }
     | callfunc         
     | assignment
@@ -274,13 +275,13 @@ print:
     ;
 
 var:
-    d_type IDENTIFIER SEMI
+    d_type IDENTIFIER 
     {
-        printf("Node %d: Reduced: var: d_type IDENTIFIER SEMI\n", nodeCount++);
+        printf("Node %d: Reduced: var: d_type IDENTIFIER\n", nodeCount++);
         printf("\t d_type -> %s\n", $1);
         printf("\t IDENTIFIER -> %s\n", $2);
-        printf("\t Terminal Symbol: SEMI\n");
-        $$ = "d_type IDENTIFIER SEMI";
+        
+        $$ = "d_type IDENTIFIER";
     }
     | d_type buildarr
     | d_type assignment
@@ -376,8 +377,8 @@ value:
     ;
 
 param_list:
-    d_type IDENTIFIER
-    | d_type IDENTIFIER COMMA param_list
+    var
+    | var COMMA param_list
     {
         printf("Node %d: Reduced: param_list: d_type IDENTIFIER COMMA param_list\n",
         nodeCount++);
@@ -439,7 +440,7 @@ arrayat: IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET
     ;
 
 buildarr:
-    IDENTIFIER LBRACKET RBRACKET SEMI
+    IDENTIFIER LBRACKET RBRACKET 
     ;
 
 callfunc:
