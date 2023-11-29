@@ -15,54 +15,6 @@
     int nodeCount = 0;
     int yywrap();
     
-
-    //Symbol Table stuff
-    // int st_count=0;
-    // char useBuff[16];
-    
-    // struct stEntry{
-    //     char* name;
-    //     char* d_type;
-    //     char* use;
-    //     int intval;
-    //     float dubval;
-    //     int line_no;
-    //     char* memLoc;
-    // } symbolTable[48];
-    // struct stEntry SymbolTableList[5][48];
-
-    // struct stRtnValue{
-    //     char * strVal;
-    //     int intVal;
-    //     double floatVal;
-    // };
-
-    // Code Gen stuff
-    // struct node{
-    //     char* token;
-    //     struct node* leftchild;
-    //     struct node* rightchild;
-    //     // char* dataType;
-    // };
-    // struct node *head;
-////////func protos
-    // struct node* buildNode(struct node* left, struct node* right, char* token);
-    // void printtree(struct node* );
-    // void printInorder(struct node *);
-    // void insert();
-    // int search(char*);
-    // void newSymbol(char, char*);
-    // void execute(struct node*);
-    // char* repD(char*, char);
-    // void walk(struct node*, FILE*);
-    // char* intIn(int, int, int, FILE*);
-    // int ST_get_index(char*);
-    // void assignmentGenerator(int, FILE*);
-    // void printStatementGenerator(char*, FILE*);
-    // void printVar(char* memAddress, char* type, FILE* filename);
-    
-
-
     int SI = 0;
     int IR = 1;
     int FR = 1;
@@ -87,7 +39,7 @@
 %token<sVal> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
 
 %type<sVal> statement program expr param_list block d_type var assignment task function procedure print value
-%type<sVal> if ret makenummutable reader callfunc arrayat gate relop forloop whileloop
+%type<sVal> if ret makenummutable reader callfunc arrayat gate relop forloop whileloop happyruben
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
@@ -230,7 +182,7 @@ print:
         printf("\t Terminal Symbol: SEMI\n");
         $$ = "K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI";
     }
-    | K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
+    | K_PRINT_INTEGER LPAREN happyruben RPAREN SEMI
     {
         printf("Node %d: Reduced: print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI\n",
         nodeCount++);
@@ -241,7 +193,7 @@ print:
         printf("\t Terminal Symbol: SEMI\n");
         $$ = "K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI";
     }
-    | K_PRINT_DOUBLE LPAREN IDENTIFIER RPAREN SEMI
+    | K_PRINT_DOUBLE LPAREN happyruben RPAREN SEMI
     {
         printf("Node %d: Reduced: print: K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI\n",
         nodeCount++);
@@ -297,7 +249,7 @@ var:
     ;
 
 assignment:
-    IDENTIFIER ASSIGN expr 
+    happyruben ASSIGN expr 
     {
         printf("Node %d: Reduced: assignment: IDENTIFIER ASSIGN expr SEMI\n", 
         nodeCount++);
@@ -307,15 +259,15 @@ assignment:
         printf("\t Terminal Symbol: SEMI\n");
         $$ = "IDENTIFIER ASSIGN expr SEMI";
     }
-    | IDENTIFIER ASSIGN_DIVIDE expr 
+    | happyruben ASSIGN_DIVIDE expr 
 
-    | IDENTIFIER ASSIGN_MINUS expr 
+    | happyruben ASSIGN_MINUS expr 
     
-    | IDENTIFIER ASSIGN_MOD expr 
+    | happyruben ASSIGN_MOD expr 
     
-    | IDENTIFIER ASSIGN_MULTIPLY expr 
+    | happyruben ASSIGN_MULTIPLY expr 
     
-    | IDENTIFIER ASSIGN_PLUS expr 
+    | happyruben ASSIGN_PLUS expr 
     ;
     
 
@@ -374,8 +326,7 @@ expr:
 value:
     ICONSTANT makenummutable         
     | DCONSTANT makenummutable     
-    | IDENTIFIER 
-    | arrayat  
+    | happyruben 
     | MINUS value
     | callfunc  
     ;
@@ -462,6 +413,12 @@ forloop:
 ret:
     K_RETURN value SEMI
     |K_RETURN assignment SEMI
+    ;
+
+happyruben:
+    IDENTIFIER
+    |
+    arrayat
     ;
 
 %%
