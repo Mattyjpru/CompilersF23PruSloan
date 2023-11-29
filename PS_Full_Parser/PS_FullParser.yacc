@@ -5,16 +5,16 @@
     #include <ctype.h>
     #include "lex.yy.c"
 
+    extern int line;
     int yyerror(char *msg){
-        printf("Invalid Program: %s\n", msg);
+        printf("Invalid Program: %s on line %d\n", msg, line);
         exit(0);
     }
 
     int yylex();
     int nodeCount = 0;
     int yywrap();
-    extern char* yytext;
-    extern int line;
+    
 
     //Symbol Table stuff
     // int st_count=0;
@@ -394,6 +394,7 @@ arg_list:
     value
     | value arg_list
     ;
+
 relop: 
     LT
     | GT
@@ -402,6 +403,7 @@ relop:
     | DEQ
     | NE
     ;
+    
 gate:
     DAND
     |

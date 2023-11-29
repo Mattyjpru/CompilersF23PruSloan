@@ -13,7 +13,7 @@ char* repD(char* str, char target){
 %}
 
 %%
-[ \t\n\r]                                                   ;
+[ \t]                                                       ;
 \/\/[^\r\n]*                                                ; // Comment
 "do"                                                        return K_DO;
 "double"                                                    return K_DOUBLE;
@@ -69,6 +69,7 @@ char* repD(char* str, char target){
 \}                                                          return RCURLY;
 \)                                                          return RPAREN;
 ;                                                           return SEMI;
+[\n]                                                        {line++;}
 %%
 
 int yywrap(){
