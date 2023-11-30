@@ -1,0 +1,21 @@
+program Cody_Code{
+    function
+    integer go_crazy(
+        integer int, double dub
+    )
+    {
+        if ( int != 6 ) then {
+            if( int <= 8 || int >= 4) then
+                int += 4;
+        }
+
+        if ( dub < 4 ) then
+            dub += 1;
+        else if ( dub > 4 ) then
+            dub -= 3;
+        else 
+            dub := 5;
+
+        return functionThatDoesntExist(dub, int);
+    }
+}
