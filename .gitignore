@@ -34,3 +34,6 @@ PS_Full_Parser/y.tab.c
 PS_Full_Parser/y.tab.h
 PS_Full_Parser/PruSloanFullParser
 PS_Full_Parser/PS_Full_Parser_Out.txt
+PS_Full_Parser/.vscode/c_cpp_properties.json
+PS_Full_Parser/.vscode/launch.json
+PS_Full_Parser/.vscode/settings.json

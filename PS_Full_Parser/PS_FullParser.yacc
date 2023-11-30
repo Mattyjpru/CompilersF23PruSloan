@@ -624,32 +624,6 @@ ret:
     } 
     ;
 
-
-
-
-
-
-
-//matty code
-arg_list:
-    value
-    {
-        printf("Node %d: Reduced: arg_list: value\n", nodeCount++);
-        printf("\t value -> %s\n", $1);
-        $$ = "value";
-    }
-    | value COMMA arg_list
-    {
-        printf("Node %d: Reduced: arg_list: value COMMA arg_list\n", nodeCount++);
-        printf("\t value-> %s\n",$1);
-        printf("\t Terminal Symbol: Comma\n");
-        printf("\t arg_list -> %s\n", $3);
-        $$ = "value COMMA arg_list";
-    }
-    |
-    {$$ = "_EPSILON_";}
-    ;
-
 relop: 
     LT
     {
@@ -702,6 +676,30 @@ gate:
         printf("\t Terminal Symbol: DOR\n");
         $$ = "DOR";
     }
+    ;
+
+
+
+
+
+//matty code
+arg_list:
+    value
+    {
+        printf("Node %d: Reduced: arg_list: value\n", nodeCount++);
+        printf("\t value -> %s\n", $1);
+        $$ = "value";
+    }
+    | value COMMA arg_list
+    {
+        printf("Node %d: Reduced: arg_list: value COMMA arg_list\n", nodeCount++);
+        printf("\t value-> %s\n",$1);
+        printf("\t Terminal Symbol: Comma\n");
+        printf("\t arg_list -> %s\n", $3);
+        $$ = "value COMMA arg_list";
+    }
+    |
+    {$$ = "_EPSILON_";}
     ;
 
 
