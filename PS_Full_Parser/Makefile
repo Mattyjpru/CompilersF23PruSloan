@@ -5,7 +5,7 @@
 CC=gcc
 
 BUILD=PruSloanFullParser
-OUTPUT=PS_Full_Parser_Out.txt
+OUTPUT=mg_FullParserOutput.txt
 
 all: $(BUILD)
 	./$(BUILD) < mg.f23 | tee $(OUTPUT)
