@@ -552,7 +552,7 @@ param_list:
 
 
 
-//code code
+//cody code
 condition: expr relop expr
     {
         printf("Node %d: Reduced: condition: expr relop expr\n", nodeCount++);
@@ -743,7 +743,7 @@ reader:
     ;
 
 makenummutable:
-    | DECREMENT
+    DECREMENT
     {
         printf("Node %d: Reduced: makenummutable: DECREMENT\n", nodeCount++);
         printf("\t Terminal Symbol: DECREMENT\n");
@@ -755,6 +755,8 @@ makenummutable:
         printf("\t Terminal Symbol: INCREMENT\n");
         $$ = "INCREMENT";
     }
+    |
+    
     ;
 
 arrayat: IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
@@ -946,13 +948,13 @@ chain:
         printf("\t Terminal Symbol: COMMA\n");
         $$ = "expr COMMA";
     }
-    | value COMMA
+    /* | value COMMA
     {
         printf("Node %d: Reduced: chain: value COMMA\n", nodeCount++);
         printf("\t value -> %s\n", $1);
         printf("\t Terminal Symbol: COMMA\n");
         $$ = "value COMMA";
-    }
+    } */
     | chain chain
     {
         printf("Node %d: Reduced: chain: chain chain\n", nodeCount++);
@@ -975,12 +977,12 @@ chainend:
         printf("\t var -> %s\n", $1);
         $$ = "var";
     }
-    | value
+    /* | value
     {
         printf("Node %d: Reduced: chainend: value\n", nodeCount++);
         printf("\t value -> %s\n", $1);
         $$ = "value";
-    }
+    } */
     | assignment
     {
         printf("Node %d: Reduced: chainend: assignment\n", nodeCount++);
