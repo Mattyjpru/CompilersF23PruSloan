@@ -1,0 +1,34 @@
+
+program mattytest
+{
+
+
+    function integer
+         getfunsum(integer s, integer e)
+    {
+        integer i;
+        integer temp := 0;
+        do ( i := s; i < e ; i++ )
+            {
+                temp := temp + i;
+            }   
+        return temp;
+    } 
+
+    procedure
+         printfunarr()
+    {
+        integer start, end;
+        start := 1;
+        end := 100;
+        integer iarr[];
+        while(start<end && start % 2 != 0){
+            iarr[start] := getfunsum(start, end);
+            start++;
+        }
+        
+        print_integer(iarr[5]);
+
+    }
+
+} 

@@ -38,7 +38,7 @@
 %token<sVal> ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
 %token<sVal> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
 
-%type<sVal> statement program expr condition param_list block d_type var assignment task function procedure print value arg_list
+%type<sVal> statement program expr condition param_list forcond block d_type var assignment task function procedure print value arg_list
 %type<sVal> if ret chain chainend makenummutable reader callfunc arrayat gate relop forloop whileloop valRef buildarr
 
 %left MINUS PLUS
@@ -825,16 +825,28 @@ whileloop:
         $$ = "K_WHILE LPAREN condition RPAREN block";
     }
     ;
-
+forcond:
+    ICONSTANT
+    {
+        printf("Node %d: Reduced: forcond: ICONSTANT\n", nodeCount++);
+        printf("\t Terminal Symbol: ICONSTANT\n");
+        $$ = "ICONSTANT";
+    }
+    | IDENTIFIER
+    {
+        printf("Node %d: Reduced: forcond: IDENTIFIER\n", nodeCount++);
+        printf("\t Terminal Symbol: IDENTIFIER\n");
+        $$ = "IDENTIFIER";
+    };
 forloop:
-    K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
+    K_DO LPAREN IDENTIFIER ASSIGN forcond SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
     {
         printf("Node %d: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block\n", nodeCount++);
         printf("\t Terminal Symbol: K_DO\n");
         printf("\t Terminal Symbol: LPAREN\n");
         printf("\t Terminal Symbol: IDENTIFIER\n");
         printf("\t Terminal Symbol: ASSIGN\n");
-        printf("\t Terminal Symbol: ICONSTANT\n");
+        printf("\t forcond -> %s\n", $5);
         printf("\t Terminal Symbol: SEMI\n");
         printf("\t condition -> %s\n", $7);
         printf("\t Terminal Symbol: SEMI\n");
@@ -844,14 +856,14 @@ forloop:
         printf("\t block -> %s\n", $12);
         $$ = "K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block";
     }
-    | K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER DECREMENT RPAREN block
+    | K_DO LPAREN IDENTIFIER ASSIGN forcond SEMI condition SEMI IDENTIFIER DECREMENT RPAREN block
     {
         printf("Node %d: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER DECREMENT RPAREN block\n", nodeCount++);
         printf("\t Terminal Symbol: K_DO\n");
         printf("\t Terminal Symbol: LPAREN\n");
         printf("\t Terminal Symbol: IDENTIFIER\n");
         printf("\t Terminal Symbol: ASSIGN\n");
-        printf("\t Terminal Symbol: ICONSTANT\n");
+        printf("\t forcond -> %s\n", $5);
         printf("\t Terminal Symbol: SEMI\n");
         printf("\t condition -> %s\n", $7);
         printf("\t Terminal Symbol: SEMI\n");
