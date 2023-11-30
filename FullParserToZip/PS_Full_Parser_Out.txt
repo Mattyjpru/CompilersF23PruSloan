@@ -203,85 +203,87 @@ Node 68: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: SEMI
 Node 69: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 70: Reduced: valRef: IDENTIFIER
+Node 70: Reduced: forcond: ICONSTANT
+	 Terminal Symbol: ICONSTANT
+Node 71: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 71: Reduced: value: valRef
+Node 72: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 72: Reduced: expr: value
+Node 73: Reduced: expr: value
 	 value -> valRef 
-Node 73: Reduced: relop: LEQ
+Node 74: Reduced: relop: LEQ
 	 Terminal Symbol: LEQ
-Node 74: Reduced: valRef: IDENTIFIER
+Node 75: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 75: Reduced: value: valRef
+Node 76: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 76: Reduced: expr: value
+Node 77: Reduced: expr: value
 	 value -> valRef 
-Node 77: Reduced: condition: expr relop expr
+Node 78: Reduced: condition: expr relop expr
 	 expr-> value 
 	 relop-> LEQ
 	 expr -> value 
-Node 78: Reduced: valRef: IDENTIFIER
+Node 79: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 79: Reduced: print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
+Node 80: Reduced: print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
 	 Terminal Symbol: K_PRINT_INTEGER
 	 Terminal Symbol: LPAREN
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 80: Reduced: block: print
+Node 81: Reduced: block: print
 	 print -> K_PRINT_INTEGER LPAREN valRef RPAREN SEMI
-Node 81: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 82: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> " "
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 82: Reduced: block: print
+Node 83: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 83: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+Node 84: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 84: Reduced: valRef: arrayat
+Node 85: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 85: Reduced: print: K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
+Node 86: Reduced: print: K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 valRef -> arrayat
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 86: Reduced: block: print
+Node 87: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN valRef RPAREN SEMI
-Node 87: Reduced: block: block
-	 block -> print
-	 block -> print
 Node 88: Reduced: block: block
 	 block -> print
+	 block -> print
+Node 89: Reduced: block: block
+	 block -> print
 	 block -> block block
-Node 89: Reduced: block: LCURLY block RCURLY
+Node 90: Reduced: block: LCURLY block RCURLY
 	 Terminal Symbol: LCURLY
 	 block -> block block
 	 Terminal Symbol: RCURLY
-Node 90: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 91: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "--- End of vector\n"
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 91: Reduced: block: print
+Node 92: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 92: Reduced: block: block
+Node 93: Reduced: block: block
 	 block -> LCURLY block RCURLY
 	 block -> print
-Node 93: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
+Node 94: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
 	 Terminal Symbol: K_DO
 	 Terminal Symbol: LPAREN
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: ASSIGN
-	 Terminal Symbol: ICONSTANT
+	 forcond -> ICONSTANT
 	 Terminal Symbol: SEMI
 	 condition -> expr relop expr
 	 Terminal Symbol: SEMI
@@ -289,21 +291,21 @@ Node 93: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI conditio
 	 Terminal Symbol: INCREMENT
 	 Terminal Symbol: RPAREN
 	 block -> block block
-Node 94: Reduced: block: forloop
+Node 95: Reduced: block: forloop
 	 forloop -> K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
-Node 95: Reduced: block: block
-	 block -> print
-	 block -> forloop
 Node 96: Reduced: block: block
 	 block -> print
-	 block -> block block
+	 block -> forloop
 Node 97: Reduced: block: block
 	 block -> print
 	 block -> block block
 Node 98: Reduced: block: block
+	 block -> print
+	 block -> block block
+Node 99: Reduced: block: block
 	 block -> var SEMI
 	 block -> block block
-Node 99: Reduced: procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+Node 100: Reduced: procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 Terminal Symbol: K_PROCEDURE
 	 IDENTIFIER -> print_vector
 	 Terminal Symbol: LPAREN
@@ -312,228 +314,228 @@ Node 99: Reduced: procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCU
 	 Terminal Symbol: LCURLY
 	 block -> block block
 	 Terminal Symbol: RCURLY
-Node 100: Reduced: d_type: K_DOUBLE
-	 Terminal Symbol: K_DOUBLE
 Node 101: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 102: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
+Node 102: Reduced: d_type: K_DOUBLE
+	 Terminal Symbol: K_DOUBLE
+Node 103: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: RBRACKET
-Node 103: Reduced: var: d_type buildarr
+Node 104: Reduced: var: d_type buildarr
 	 d_type -> K_DOUBLE
 	 buildarr -> IDENTIFIER LBRACKET RBRACKET
-Node 104: Reduced: d_type: K_INTEGER
+Node 105: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 105: Reduced: valRef: IDENTIFIER
+Node 106: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 106: Reduced: var: d_type valRef
+Node 107: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 107: Reduced: param_list: var
+Node 108: Reduced: param_list: var
 	 var -> d_type valRef
-Node 108: Reduced: param_list: var COMMA param_list
+Node 109: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type buildarr
 	 Terminal Symbol: COMMA
 	 param_list -> var
-Node 109: Reduced: d_type: K_INTEGER
+Node 110: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 110: Reduced: valRef: IDENTIFIER
+Node 111: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 111: Reduced: value: ICONSTANT makenummutable
+Node 112: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 112: Reduced: expr: value
+Node 113: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 113: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 114: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> value 
 	 Terminal Symbol: SEMI
-Node 114: Reduced: var: d_type assignment
+Node 115: Reduced: var: d_type assignment
 	 d_type -> K_INTEGER
 	 assignment -> valRef ASSIGN expr SEMI
-Node 115: Reduced: block: var SEMI
+Node 116: Reduced: block: var SEMI
 	 var -> d_type assignment
 	 Terminal Symbol: SEMI
-Node 116: Reduced: d_type: K_DOUBLE
+Node 117: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 117: Reduced: valRef: IDENTIFIER
+Node 118: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 118: Reduced: var: d_type valRef
+Node 119: Reduced: var: d_type valRef
 	 d_type -> K_DOUBLE
 	 valRef -> IDENTIFIER
-Node 119: Reduced: block: var SEMI
+Node 120: Reduced: block: var SEMI
 	 var -> d_type valRef
 	 Terminal Symbol: SEMI
-Node 120: Reduced: d_type: K_DOUBLE
+Node 121: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 121: Reduced: valRef: IDENTIFIER
+Node 122: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 122: Reduced: value: DCONSTANT makenummutable
+Node 123: Reduced: value: DCONSTANT makenummutable
 	 Terminal Symbol: DCONSTANT
 	 makenummutable -> _EPSILON_
-Node 123: Reduced: expr: value
+Node 124: Reduced: expr: value
 	 value -> DCONSTANT makenummutable 
-Node 124: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 125: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> value 
 	 Terminal Symbol: SEMI
-Node 125: Reduced: var: d_type assignment
+Node 126: Reduced: var: d_type assignment
 	 d_type -> K_DOUBLE
 	 assignment -> valRef ASSIGN expr SEMI
-Node 126: Reduced: block: var SEMI
+Node 127: Reduced: block: var SEMI
 	 var -> d_type assignment
 	 Terminal Symbol: SEMI
-Node 127: Reduced: valRef: IDENTIFIER
+Node 128: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 128: Reduced: value: valRef
+Node 129: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 129: Reduced: expr: value
+Node 130: Reduced: expr: value
 	 value -> valRef 
-Node 130: Reduced: relop: LEQ
+Node 131: Reduced: relop: LEQ
 	 Terminal Symbol: LEQ
-Node 131: Reduced: valRef: IDENTIFIER
+Node 132: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 132: Reduced: value: valRef
+Node 133: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 133: Reduced: expr: value
+Node 134: Reduced: expr: value
 	 value -> valRef 
-Node 134: Reduced: condition: expr relop expr
+Node 135: Reduced: condition: expr relop expr
 	 expr-> value 
 	 relop-> LEQ
 	 expr -> value 
-Node 135: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+Node 136: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 136: Reduced: valRef: arrayat
+Node 137: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 137: Reduced: value: valRef
+Node 138: Reduced: value: valRef
 	 valRef -> arrayat
-Node 138: Reduced: expr: value
+Node 139: Reduced: expr: value
 	 value -> valRef 
-Node 139: Reduced: relop: LEQ
+Node 140: Reduced: relop: LEQ
 	 Terminal Symbol: LEQ
-Node 140: Reduced: value: DCONSTANT makenummutable
+Node 141: Reduced: value: DCONSTANT makenummutable
 	 Terminal Symbol: DCONSTANT
 	 makenummutable -> _EPSILON_
-Node 141: Reduced: expr: value
+Node 142: Reduced: expr: value
 	 value -> DCONSTANT makenummutable 
-Node 142: Reduced: condition: expr relop expr
+Node 143: Reduced: condition: expr relop expr
 	 expr-> value 
 	 relop-> LEQ
 	 expr -> value 
-Node 143: Reduced: valRef: IDENTIFIER
+Node 144: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 144: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+Node 145: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 145: Reduced: valRef: arrayat
+Node 146: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 146: Reduced: value: valRef
+Node 147: Reduced: value: valRef
 	 valRef -> arrayat
-Node 147: Reduced: value: MINUS value
+Node 148: Reduced: value: MINUS value
 	 Terminal Symbol: MINUS
 	 value -> valRef 
-Node 148: Reduced: expr: value
+Node 149: Reduced: expr: value
 	 value -> MINUS value 
-Node 149: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 150: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> value 
 	 Terminal Symbol: SEMI
-Node 150: Reduced: block: assignment SEMI
+Node 151: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 151: Reduced: valRef: IDENTIFIER
+Node 152: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 152: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+Node 153: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 153: Reduced: valRef: arrayat
+Node 154: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 154: Reduced: value: valRef
+Node 155: Reduced: value: valRef
 	 valRef -> arrayat
-Node 155: Reduced: expr: value
+Node 156: Reduced: expr: value
 	 value -> valRef 
-Node 156: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 157: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> value 
 	 Terminal Symbol: SEMI
-Node 157: Reduced: block: assignment SEMI
+Node 158: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 158: Reduced: valRef: IDENTIFIER
+Node 159: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 159: Reduced: value: valRef
+Node 160: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 160: Reduced: expr: value
+Node 161: Reduced: expr: value
 	 value -> valRef 
-Node 161: Reduced: relop: GT
+Node 162: Reduced: relop: GT
 	 Terminal Symbol: GT
-Node 162: Reduced: valRef: IDENTIFIER
+Node 163: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 163: Reduced: value: valRef
+Node 164: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 164: Reduced: expr: value
+Node 165: Reduced: expr: value
 	 value -> valRef 
-Node 165: Reduced: condition: expr relop expr
+Node 166: Reduced: condition: expr relop expr
 	 expr-> value 
 	 relop-> GT
 	 expr -> value 
-Node 166: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
 Node 167: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 168: Reduced: value: valRef
+Node 168: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 169: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 169: Reduced: expr: value
+Node 170: Reduced: expr: value
 	 value -> valRef 
-Node 170: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 171: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> value 
 	 Terminal Symbol: SEMI
-Node 171: Reduced: block: assignment SEMI
+Node 172: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 172: Reduced: block: LCURLY block RCURLY
+Node 173: Reduced: block: LCURLY block RCURLY
 	 Terminal Symbol: LCURLY
 	 block -> assignment SEMI
 	 Terminal Symbol: RCURLY
-Node 173: Reduced: makenummutable: INCREMENT
+Node 174: Reduced: makenummutable: INCREMENT
 	 Terminal Symbol: INCREMENT
-Node 174: Reduced: block: IDENTIFIER makenummutable SEMI
+Node 175: Reduced: block: IDENTIFIER makenummutable SEMI
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> INCREMENT
 	 Terminal Symbol: SEMI
-Node 175: Reduced: block: block
+Node 176: Reduced: block: block
 	 block -> LCURLY block RCURLY
 	 block -> IDENTIFIER block RCURLY
-Node 176: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block
+Node 177: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block
 	 Terminal Symbol: K_IF
 	 Terminal Symbol: LPAREN
 	 condition -> expr relop expr
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: K_THEN
 	 block -> block block
-Node 177: Reduced: block: if
+Node 178: Reduced: block: if
 	 if -> K_IF LPAREN condition RPAREN K_THEN block
-Node 178: Reduced: block: block
+Node 179: Reduced: block: block
 	 block -> assignment SEMI
 	 block -> if
-Node 179: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
+Node 180: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
 	 Terminal Symbol: K_IF
 	 Terminal Symbol: LPAREN
 	 condition -> expr relop expr
@@ -542,43 +544,43 @@ Node 179: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
 	 block -> assignment SEMI
 	 Terminal Symbol: K_ELSE
 	 block -> block block
-Node 180: Reduced: block: if
+Node 181: Reduced: block: if
 	 if -> K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
-Node 181: Reduced: block: LCURLY block RCURLY
+Node 182: Reduced: block: LCURLY block RCURLY
 	 Terminal Symbol: LCURLY
 	 block -> if
 	 Terminal Symbol: RCURLY
-Node 182: Reduced: valRef: IDENTIFIER
+Node 183: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 183: Reduced: value: valRef
+Node 184: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 184: Reduced: ret: K_RETURN block SEMI
+Node 185: Reduced: ret: K_RETURN block SEMI
 	 Terminal Symbol: K_RETURN
 	 value -> valRef 
 	 Terminal Symbol: SEMI
-Node 185: Reduced: block: ret
+Node 186: Reduced: block: ret
 	 ret -> K_RETURN value SEMI
-Node 186: Reduced: block: block
+Node 187: Reduced: block: block
 	 block -> LCURLY block RCURLY
 	 block -> ret
-Node 187: Reduced: whileloop: K_WHILE LPAREN condition RPAREN block
+Node 188: Reduced: whileloop: K_WHILE LPAREN condition RPAREN block
 	 Terminal Symbol: K_WHILE
 	 Terminal Symbol: LPAREN
 	 condition -> expr relop expr
 	 Terminal Symbol: RPAREN
 	 block -> block block
-Node 188: Reduced: block: whileloop
+Node 189: Reduced: block: whileloop
 	 whileloop -> K_WHILE LPAREN condition RPAREN block
-Node 189: Reduced: block: block
-	 block -> var SEMI
-	 block -> whileloop
 Node 190: Reduced: block: block
 	 block -> var SEMI
-	 block -> block block
+	 block -> whileloop
 Node 191: Reduced: block: block
 	 block -> var SEMI
 	 block -> block block
-Node 192: Reduced: function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+Node 192: Reduced: block: block
+	 block -> var SEMI
+	 block -> block block
+Node 193: Reduced: function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 Terminal Symbol: K_FUNCTION
 	 d_type -> K_DOUBLE
 	 IDENTIFIER -> error_norm
@@ -588,149 +590,143 @@ Node 192: Reduced: function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAR
 	 Terminal Symbol: LCURLY
 	 block -> block block
 	 Terminal Symbol: RCURLY
-Node 193: Reduced: d_type: K_DOUBLE
+Node 194: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 194: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
+Node 195: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: RBRACKET
-Node 195: Reduced: var: d_type buildarr
+Node 196: Reduced: var: d_type buildarr
 	 d_type -> K_DOUBLE
 	 buildarr -> IDENTIFIER LBRACKET RBRACKET
-Node 196: Reduced: d_type: K_INTEGER
+Node 197: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 197: Reduced: valRef: IDENTIFIER
+Node 198: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 198: Reduced: var: d_type valRef
+Node 199: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 199: Reduced: d_type: K_DOUBLE
+Node 200: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 200: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
+Node 201: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: RBRACKET
-Node 201: Reduced: var: d_type buildarr
+Node 202: Reduced: var: d_type buildarr
 	 d_type -> K_DOUBLE
 	 buildarr -> IDENTIFIER LBRACKET RBRACKET
-Node 202: Reduced: d_type: K_INTEGER
+Node 203: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 203: Reduced: valRef: IDENTIFIER
+Node 204: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 204: Reduced: var: d_type valRef
+Node 205: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 205: Reduced: d_type: K_DOUBLE
+Node 206: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 206: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
+Node 207: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: RBRACKET
-Node 207: Reduced: var: d_type buildarr
+Node 208: Reduced: var: d_type buildarr
 	 d_type -> K_DOUBLE
 	 buildarr -> IDENTIFIER LBRACKET RBRACKET
-Node 208: Reduced: d_type: K_INTEGER
+Node 209: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 209: Reduced: valRef: IDENTIFIER
+Node 210: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 210: Reduced: var: d_type valRef
+Node 211: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 211: Reduced: param_list: var
+Node 212: Reduced: param_list: var
 	 var -> d_type valRef
-Node 212: Reduced: param_list: var COMMA param_list
+Node 213: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type buildarr
 	 Terminal Symbol: COMMA
 	 param_list -> var
-Node 213: Reduced: param_list: var COMMA param_list
-	 callfunc -> d_type valRef
-	 Terminal Symbol: COMMA
-	 param_list -> var COMMA param_list
 Node 214: Reduced: param_list: var COMMA param_list
-	 callfunc -> d_type buildarr
+	 callfunc -> d_type valRef
 	 Terminal Symbol: COMMA
 	 param_list -> var COMMA param_list
 Node 215: Reduced: param_list: var COMMA param_list
-	 callfunc -> d_type valRef
-	 Terminal Symbol: COMMA
-	 param_list -> var COMMA param_list
-Node 216: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type buildarr
 	 Terminal Symbol: COMMA
 	 param_list -> var COMMA param_list
-Node 217: Reduced: d_type: K_INTEGER
+Node 216: Reduced: param_list: var COMMA param_list
+	 callfunc -> d_type valRef
+	 Terminal Symbol: COMMA
+	 param_list -> var COMMA param_list
+Node 217: Reduced: param_list: var COMMA param_list
+	 callfunc -> d_type buildarr
+	 Terminal Symbol: COMMA
+	 param_list -> var COMMA param_list
+Node 218: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 218: Reduced: valRef: IDENTIFIER
+Node 219: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 219: Reduced: var: d_type valRef
+Node 220: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 220: Reduced: block: var SEMI
+Node 221: Reduced: block: var SEMI
 	 var -> d_type valRef
 	 Terminal Symbol: SEMI
-Node 221: Reduced: arrayat: IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
+Node 222: Reduced: arrayat: IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 222: Reduced: valRef: arrayat
+Node 223: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET
-Node 223: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+Node 224: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 224: Reduced: valRef: arrayat
+Node 225: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 225: Reduced: value: valRef
+Node 226: Reduced: value: valRef
 	 valRef -> arrayat
-Node 226: Reduced: expr: value
+Node 227: Reduced: expr: value
 	 value -> valRef 
-Node 227: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 228: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> arrayat
 	 Terminal Symbol: ASSIGN
 	 expr -> value 
 	 Terminal Symbol: SEMI
-Node 228: Reduced: value: DCONSTANT makenummutable
+Node 229: Reduced: value: DCONSTANT makenummutable
 	 Terminal Symbol: DCONSTANT
 	 makenummutable -> _EPSILON_
-Node 229: Reduced: expr: value
+Node 230: Reduced: expr: value
 	 value -> DCONSTANT makenummutable 
-Node 230: Reduced: assignment: assignment ASSIGN expr 
+Node 231: Reduced: assignment: assignment ASSIGN expr 
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: ASSIGN
 	 expr -> value 
-Node 231: Reduced: block: assignment SEMI
+Node 232: Reduced: block: assignment SEMI
 	 assignment -> assignment ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 232: Reduced: valRef: IDENTIFIER
+Node 233: Reduced: forcond: ICONSTANT
+	 Terminal Symbol: ICONSTANT
+Node 234: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 233: Reduced: value: valRef
+Node 235: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 234: Reduced: expr: value
+Node 236: Reduced: expr: value
 	 value -> valRef 
-Node 235: Reduced: relop: LE
+Node 237: Reduced: relop: LE
 	 Terminal Symbol: LE
-Node 236: Reduced: valRef: IDENTIFIER
+Node 238: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 237: Reduced: value: valRef
+Node 239: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 238: Reduced: expr: value
+Node 240: Reduced: expr: value
 	 value -> valRef 
-Node 239: Reduced: condition: expr relop expr
+Node 241: Reduced: condition: expr relop expr
 	 expr-> value 
 	 relop-> LE
 	 expr -> value 
-Node 240: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
-	 Terminal Symbol: IDENTIFIER
-	 Terminal Symbol: LBRACKET
-	 Terminal Symbol: IDENTIFIER
-	 makenummutable -> _EPSILON_
-	 Terminal Symbol: RBRACKET
-Node 241: Reduced: valRef: arrayat
-	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
 Node 242: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
@@ -739,109 +735,117 @@ Node 242: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACK
 	 Terminal Symbol: RBRACKET
 Node 243: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 244: Reduced: value: valRef
-	 valRef -> arrayat
-Node 245: Reduced: expr: value
-	 value -> valRef 
-Node 246: Reduced: value: DCONSTANT makenummutable
-	 Terminal Symbol: DCONSTANT
-	 makenummutable -> _EPSILON_
-Node 247: Reduced: expr: value
-	 value -> DCONSTANT makenummutable 
-Node 248: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+Node 244: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 249: Reduced: valRef: arrayat
+Node 245: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 250: Reduced: value: valRef
+Node 246: Reduced: value: valRef
 	 valRef -> arrayat
-Node 251: Reduced: expr: value
+Node 247: Reduced: expr: value
 	 value -> valRef 
-Node 252: Reduced: valRef: IDENTIFIER
+Node 248: Reduced: value: DCONSTANT makenummutable
+	 Terminal Symbol: DCONSTANT
+	 makenummutable -> _EPSILON_
+Node 249: Reduced: expr: value
+	 value -> DCONSTANT makenummutable 
+Node 250: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
-Node 253: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 254: Reduced: expr: value
+	 Terminal Symbol: LBRACKET
+	 Terminal Symbol: IDENTIFIER
+	 makenummutable -> _EPSILON_
+	 Terminal Symbol: RBRACKET
+Node 251: Reduced: valRef: arrayat
+	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
+Node 252: Reduced: value: valRef
+	 valRef -> arrayat
+Node 253: Reduced: expr: value
 	 value -> valRef 
-Node 255: Reduced: value: ICONSTANT makenummutable
+Node 254: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 255: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 256: Reduced: expr: value
+	 value -> valRef 
+Node 257: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 256: Reduced: expr: value
+Node 258: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 257: Reduced: expr: expr MINUS expr
+Node 259: Reduced: expr: expr MINUS expr
 	 expr-> value 
 	 Terminal Symbol: MINUS
 	 expr -> value 
-Node 258: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
+Node 260: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 expr -> expr MINUS expr
 	 Terminal Symbol: RBRACKET
-Node 259: Reduced: valRef: arrayat
+Node 261: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET expr RBRACKET
-Node 260: Reduced: value: valRef
+Node 262: Reduced: value: valRef
 	 valRef -> arrayat
-Node 261: Reduced: expr: value
+Node 263: Reduced: expr: value
 	 value -> valRef 
-Node 262: Reduced: expr: expr PLUS expr
+Node 264: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 263: Reduced: valRef: IDENTIFIER
+Node 265: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 264: Reduced: value: valRef
+Node 266: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 265: Reduced: expr: value
+Node 267: Reduced: expr: value
 	 value -> valRef 
-Node 266: Reduced: value: ICONSTANT makenummutable
+Node 268: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 267: Reduced: expr: value
+Node 269: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 268: Reduced: expr: expr PLUS expr
+Node 270: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 269: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
+Node 271: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 expr -> expr PLUS expr
 	 Terminal Symbol: RBRACKET
-Node 270: Reduced: valRef: arrayat
+Node 272: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET expr RBRACKET
-Node 271: Reduced: value: valRef
+Node 273: Reduced: value: valRef
 	 valRef -> arrayat
-Node 272: Reduced: expr: value
+Node 274: Reduced: expr: value
 	 value -> valRef 
-Node 273: Reduced: expr: expr PLUS expr
+Node 275: Reduced: expr: expr PLUS expr
 	 expr-> expr PLUS expr
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 274: Reduced: expr: expr MULTIPLY expr
+Node 276: Reduced: expr: expr MULTIPLY expr
 	 expr-> value 
 	 Terminal Symbol: MULTIPLY
 	 expr -> expr PLUS expr
-Node 275: Reduced: expr: expr MINUS expr
+Node 277: Reduced: expr: expr MINUS expr
 	 expr-> value 
 	 Terminal Symbol: MINUS
 	 expr -> expr MULTIPLY expr
-Node 276: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 278: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> arrayat
 	 Terminal Symbol: ASSIGN
 	 expr -> expr MINUS expr
 	 Terminal Symbol: SEMI
-Node 277: Reduced: block: assignment SEMI
+Node 279: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 278: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
+Node 280: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
 	 Terminal Symbol: K_DO
 	 Terminal Symbol: LPAREN
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: ASSIGN
-	 Terminal Symbol: ICONSTANT
+	 forcond -> ICONSTANT
 	 Terminal Symbol: SEMI
 	 condition -> expr relop expr
 	 Terminal Symbol: SEMI
@@ -849,15 +853,15 @@ Node 278: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI conditi
 	 Terminal Symbol: INCREMENT
 	 Terminal Symbol: RPAREN
 	 block -> assignment SEMI
-Node 279: Reduced: block: forloop
+Node 281: Reduced: block: forloop
 	 forloop -> K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
-Node 280: Reduced: block: block
+Node 282: Reduced: block: block
 	 block -> assignment SEMI
 	 block -> forloop
-Node 281: Reduced: block: block
+Node 283: Reduced: block: block
 	 block -> var SEMI
 	 block -> block block
-Node 282: Reduced: procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+Node 284: Reduced: procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 Terminal Symbol: K_PROCEDURE
 	 IDENTIFIER -> residuals
 	 Terminal Symbol: LPAREN
@@ -866,247 +870,249 @@ Node 282: Reduced: procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LC
 	 Terminal Symbol: LCURLY
 	 block -> block block
 	 Terminal Symbol: RCURLY
-Node 283: Reduced: d_type: K_DOUBLE
+Node 285: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 284: Reduced: d_type: K_INTEGER
+Node 286: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 285: Reduced: valRef: IDENTIFIER
+Node 287: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 286: Reduced: var: d_type valRef
+Node 288: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 287: Reduced: d_type: K_DOUBLE
+Node 289: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 288: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
+Node 290: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: RBRACKET
-Node 289: Reduced: var: d_type buildarr
+Node 291: Reduced: var: d_type buildarr
 	 d_type -> K_DOUBLE
 	 buildarr -> IDENTIFIER LBRACKET RBRACKET
-Node 290: Reduced: d_type: K_INTEGER
+Node 292: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 291: Reduced: valRef: IDENTIFIER
+Node 293: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 292: Reduced: var: d_type valRef
+Node 294: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 293: Reduced: d_type: K_DOUBLE
+Node 295: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 294: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
+Node 296: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: RBRACKET
-Node 295: Reduced: var: d_type buildarr
+Node 297: Reduced: var: d_type buildarr
 	 d_type -> K_DOUBLE
 	 buildarr -> IDENTIFIER LBRACKET RBRACKET
-Node 296: Reduced: d_type: K_INTEGER
+Node 298: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 297: Reduced: valRef: IDENTIFIER
+Node 299: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 298: Reduced: var: d_type valRef
+Node 300: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 299: Reduced: param_list: var
+Node 301: Reduced: param_list: var
 	 var -> d_type valRef
-Node 300: Reduced: param_list: var COMMA param_list
-	 callfunc -> d_type buildarr
-	 Terminal Symbol: COMMA
-	 param_list -> var
-Node 301: Reduced: param_list: var COMMA param_list
-	 callfunc -> d_type valRef
-	 Terminal Symbol: COMMA
-	 param_list -> var COMMA param_list
 Node 302: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type buildarr
 	 Terminal Symbol: COMMA
-	 param_list -> var COMMA param_list
+	 param_list -> var
 Node 303: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type valRef
 	 Terminal Symbol: COMMA
 	 param_list -> var COMMA param_list
-Node 304: Reduced: d_type: K_INTEGER
+Node 304: Reduced: param_list: var COMMA param_list
+	 callfunc -> d_type buildarr
+	 Terminal Symbol: COMMA
+	 param_list -> var COMMA param_list
+Node 305: Reduced: param_list: var COMMA param_list
+	 callfunc -> d_type valRef
+	 Terminal Symbol: COMMA
+	 param_list -> var COMMA param_list
+Node 306: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 305: Reduced: valRef: IDENTIFIER
+Node 307: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 306: Reduced: var: d_type valRef
+Node 308: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 307: Reduced: chain: var COMMA
+Node 309: Reduced: chain: var COMMA
 	 var -> d_type valRef
 	 Terminal Symbol: COMMA
-Node 308: Reduced: valRef: IDENTIFIER
+Node 310: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 309: Reduced: value: ICONSTANT makenummutable
+Node 311: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 310: Reduced: expr: value
+Node 312: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 311: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 313: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> value 
 	 Terminal Symbol: SEMI
-Node 312: Reduced: chainend: assignment
+Node 314: Reduced: chainend: assignment
 	 assignment -> valRef ASSIGN expr SEMI
-Node 313: Reduced: chain: chain chainend
+Node 315: Reduced: chain: chain chainend
 	 chain -> var COMMA
 	 chainend -> assignment
-Node 314: Reduced: block: chain SEMI
+Node 316: Reduced: block: chain SEMI
 	 chain -> chain chainend
 	 Terminal Symbol: SEMI
-Node 315: Reduced: valRef: IDENTIFIER
+Node 317: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 316: Reduced: value: valRef
+Node 318: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 317: Reduced: expr: value
+Node 319: Reduced: expr: value
 	 value -> valRef 
-Node 318: Reduced: relop: LEQ
+Node 320: Reduced: relop: LEQ
 	 Terminal Symbol: LEQ
-Node 319: Reduced: valRef: IDENTIFIER
+Node 321: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 320: Reduced: value: valRef
+Node 322: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 321: Reduced: expr: value
+Node 323: Reduced: expr: value
 	 value -> valRef 
-Node 322: Reduced: condition: expr relop expr
+Node 324: Reduced: condition: expr relop expr
 	 expr-> value 
 	 relop-> LEQ
 	 expr -> value 
-Node 323: Reduced: valRef: IDENTIFIER
+Node 325: Reduced: forcond: ICONSTANT
+	 Terminal Symbol: ICONSTANT
+Node 326: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 324: Reduced: value: valRef
+Node 327: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 325: Reduced: expr: value
+Node 328: Reduced: expr: value
 	 value -> valRef 
-Node 326: Reduced: relop: LE
+Node 329: Reduced: relop: LE
 	 Terminal Symbol: LE
-Node 327: Reduced: valRef: IDENTIFIER
+Node 330: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 328: Reduced: value: valRef
+Node 331: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 329: Reduced: expr: value
+Node 332: Reduced: expr: value
 	 value -> valRef 
-Node 330: Reduced: condition: expr relop expr
+Node 333: Reduced: condition: expr relop expr
 	 expr-> value 
 	 relop-> LE
 	 expr -> value 
-Node 331: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+Node 334: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 332: Reduced: valRef: arrayat
+Node 335: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 333: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+Node 336: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 334: Reduced: valRef: arrayat
+Node 337: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 335: Reduced: value: valRef
-	 valRef -> arrayat
-Node 336: Reduced: expr: value
-	 value -> valRef 
-Node 337: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
 Node 338: Reduced: value: valRef
-	 valRef -> IDENTIFIER
+	 valRef -> arrayat
 Node 339: Reduced: expr: value
 	 value -> valRef 
-Node 340: Reduced: value: ICONSTANT makenummutable
+Node 340: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 341: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 342: Reduced: expr: value
+	 value -> valRef 
+Node 343: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 341: Reduced: expr: value
+Node 344: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 342: Reduced: expr: expr MINUS expr
+Node 345: Reduced: expr: expr MINUS expr
 	 expr-> value 
 	 Terminal Symbol: MINUS
 	 expr -> value 
-Node 343: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
+Node 346: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 expr -> expr MINUS expr
 	 Terminal Symbol: RBRACKET
-Node 344: Reduced: valRef: arrayat
+Node 347: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET expr RBRACKET
-Node 345: Reduced: value: valRef
+Node 348: Reduced: value: valRef
 	 valRef -> arrayat
-Node 346: Reduced: expr: value
+Node 349: Reduced: expr: value
 	 value -> valRef 
-Node 347: Reduced: expr: expr PLUS expr
+Node 350: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 348: Reduced: valRef: IDENTIFIER
+Node 351: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 349: Reduced: value: valRef
+Node 352: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 350: Reduced: expr: value
+Node 353: Reduced: expr: value
 	 value -> valRef 
-Node 351: Reduced: value: ICONSTANT makenummutable
+Node 354: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 352: Reduced: expr: value
+Node 355: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 353: Reduced: expr: expr PLUS expr
+Node 356: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 354: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
+Node 357: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 expr -> expr PLUS expr
 	 Terminal Symbol: RBRACKET
-Node 355: Reduced: valRef: arrayat
+Node 358: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET expr RBRACKET
-Node 356: Reduced: value: valRef
+Node 359: Reduced: value: valRef
 	 valRef -> arrayat
-Node 357: Reduced: expr: value
+Node 360: Reduced: expr: value
 	 value -> valRef 
-Node 358: Reduced: expr: expr PLUS expr
+Node 361: Reduced: expr: expr PLUS expr
 	 expr-> expr PLUS expr
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 359: Reduced: expr: LPAREN expr RPAREN
+Node 362: Reduced: expr: LPAREN expr RPAREN
 	 Terminal Symbol: LPAREN
 	 expr -> expr PLUS expr
 	 Terminal Symbol: RPAREN
-Node 360: Reduced: value: DCONSTANT makenummutable
+Node 363: Reduced: value: DCONSTANT makenummutable
 	 Terminal Symbol: DCONSTANT
 	 makenummutable -> _EPSILON_
-Node 361: Reduced: expr: value
+Node 364: Reduced: expr: value
 	 value -> DCONSTANT makenummutable 
-Node 362: Reduced: expr: expr DIVIDE expr
+Node 365: Reduced: expr: expr DIVIDE expr
 	 expr-> LPAREN expr RPAREN
 	 Terminal Symbol: DIVIDE
 	 expr -> value 
-Node 363: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 366: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> arrayat
 	 Terminal Symbol: ASSIGN
 	 expr -> expr DIVIDE expr
 	 Terminal Symbol: SEMI
-Node 364: Reduced: block: assignment SEMI
+Node 367: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 365: Reduced: makenummutable: INCREMENT
+Node 368: Reduced: makenummutable: INCREMENT
 	 Terminal Symbol: INCREMENT
-Node 366: Reduced: block: IDENTIFIER makenummutable SEMI
+Node 369: Reduced: block: IDENTIFIER makenummutable SEMI
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> INCREMENT
 	 Terminal Symbol: SEMI
-Node 367: Reduced: block: block
+Node 370: Reduced: block: block
 	 block -> assignment SEMI
 	 block -> IDENTIFIER block RCURLY
-Node 368: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
+Node 371: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
 	 Terminal Symbol: K_DO
 	 Terminal Symbol: LPAREN
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: ASSIGN
-	 Terminal Symbol: ICONSTANT
+	 forcond -> ICONSTANT
 	 Terminal Symbol: SEMI
 	 condition -> expr relop expr
 	 Terminal Symbol: SEMI
@@ -1114,53 +1120,53 @@ Node 368: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI conditi
 	 Terminal Symbol: INCREMENT
 	 Terminal Symbol: RPAREN
 	 block -> block block
-Node 369: Reduced: block: forloop
+Node 372: Reduced: block: forloop
 	 forloop -> K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
-Node 370: Reduced: block: LCURLY block RCURLY
+Node 373: Reduced: block: LCURLY block RCURLY
 	 Terminal Symbol: LCURLY
 	 block -> forloop
 	 Terminal Symbol: RCURLY
-Node 371: Reduced: valRef: IDENTIFIER
+Node 374: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 372: Reduced: value: valRef
+Node 375: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 373: Reduced: valRef: IDENTIFIER
+Node 376: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 374: Reduced: value: valRef
+Node 377: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 375: Reduced: arg_list: value
+Node 378: Reduced: arg_list: value
 	 value -> valRef 
-Node 376: Reduced: arg_list: value COMMA arg_list
+Node 379: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 377: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 380: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> error_norm
 	 Terminal Symbol: RPAREN
-Node 378: Reduced: value: callfunc
+Node 381: Reduced: value: callfunc
 	 callfunc -> LPAREN arg_list RPAREN
-Node 379: Reduced: ret: K_RETURN block SEMI
+Node 382: Reduced: ret: K_RETURN block SEMI
 	 Terminal Symbol: K_RETURN
 	 value -> callfunc 
 	 Terminal Symbol: SEMI
-Node 380: Reduced: block: ret
+Node 383: Reduced: block: ret
 	 ret -> K_RETURN value SEMI
-Node 381: Reduced: block: block
+Node 384: Reduced: block: block
 	 block -> LCURLY block RCURLY
 	 block -> ret
-Node 382: Reduced: whileloop: K_WHILE LPAREN condition RPAREN block
+Node 385: Reduced: whileloop: K_WHILE LPAREN condition RPAREN block
 	 Terminal Symbol: K_WHILE
 	 Terminal Symbol: LPAREN
 	 condition -> expr relop expr
 	 Terminal Symbol: RPAREN
 	 block -> block block
-Node 383: Reduced: block: whileloop
+Node 386: Reduced: block: whileloop
 	 whileloop -> K_WHILE LPAREN condition RPAREN block
-Node 384: Reduced: block: block
+Node 387: Reduced: block: block
 	 block -> chain SEMI
 	 block -> whileloop
-Node 385: Reduced: function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+Node 388: Reduced: function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 Terminal Symbol: K_FUNCTION
 	 d_type -> K_DOUBLE
 	 IDENTIFIER -> gauss_seidel
@@ -1170,323 +1176,325 @@ Node 385: Reduced: function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAR
 	 Terminal Symbol: LCURLY
 	 block -> block block
 	 Terminal Symbol: RCURLY
-Node 386: Reduced: d_type: K_INTEGER
+Node 389: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 387: Reduced: d_type: K_DOUBLE
+Node 390: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 388: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
+Node 391: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: RBRACKET
-Node 389: Reduced: var: d_type buildarr
+Node 392: Reduced: var: d_type buildarr
 	 d_type -> K_DOUBLE
 	 buildarr -> IDENTIFIER LBRACKET RBRACKET
-Node 390: Reduced: d_type: K_INTEGER
+Node 393: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 391: Reduced: valRef: IDENTIFIER
+Node 394: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 392: Reduced: var: d_type valRef
+Node 395: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 393: Reduced: d_type: K_DOUBLE
+Node 396: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 394: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
+Node 397: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: RBRACKET
-Node 395: Reduced: var: d_type buildarr
+Node 398: Reduced: var: d_type buildarr
 	 d_type -> K_DOUBLE
 	 buildarr -> IDENTIFIER LBRACKET RBRACKET
-Node 396: Reduced: d_type: K_INTEGER
+Node 399: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 397: Reduced: valRef: IDENTIFIER
+Node 400: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 398: Reduced: var: d_type valRef
+Node 401: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 399: Reduced: param_list: var
+Node 402: Reduced: param_list: var
 	 var -> d_type valRef
-Node 400: Reduced: param_list: var COMMA param_list
+Node 403: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type buildarr
 	 Terminal Symbol: COMMA
 	 param_list -> var
-Node 401: Reduced: param_list: var COMMA param_list
+Node 404: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type valRef
 	 Terminal Symbol: COMMA
 	 param_list -> var COMMA param_list
-Node 402: Reduced: param_list: var COMMA param_list
+Node 405: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type buildarr
 	 Terminal Symbol: COMMA
 	 param_list -> var COMMA param_list
-Node 403: Reduced: d_type: K_DOUBLE
+Node 406: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 404: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
+Node 407: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: RBRACKET
-Node 405: Reduced: var: d_type buildarr
+Node 408: Reduced: var: d_type buildarr
 	 d_type -> K_DOUBLE
 	 buildarr -> IDENTIFIER LBRACKET RBRACKET
-Node 406: Reduced: d_type: K_INTEGER
+Node 409: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 407: Reduced: valRef: IDENTIFIER
+Node 410: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 408: Reduced: var: d_type valRef
+Node 411: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 409: Reduced: d_type: K_DOUBLE
+Node 412: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 410: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
+Node 413: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: RBRACKET
-Node 411: Reduced: var: d_type buildarr
+Node 414: Reduced: var: d_type buildarr
 	 d_type -> K_DOUBLE
 	 buildarr -> IDENTIFIER LBRACKET RBRACKET
-Node 412: Reduced: d_type: K_INTEGER
+Node 415: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 413: Reduced: valRef: IDENTIFIER
+Node 416: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 414: Reduced: var: d_type valRef
+Node 417: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 415: Reduced: param_list: var
+Node 418: Reduced: param_list: var
 	 var -> d_type valRef
-Node 416: Reduced: param_list: var COMMA param_list
+Node 419: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type buildarr
 	 Terminal Symbol: COMMA
 	 param_list -> var
-Node 417: Reduced: param_list: var COMMA param_list
+Node 420: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type valRef
 	 Terminal Symbol: COMMA
 	 param_list -> var COMMA param_list
-Node 418: Reduced: param_list: var COMMA param_list
+Node 421: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type buildarr
 	 Terminal Symbol: COMMA
 	 param_list -> var COMMA param_list
-Node 419: Reduced: d_type: K_INTEGER
+Node 422: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 420: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 421: Reduced: var: d_type valRef
-	 d_type -> K_INTEGER
-	 valRef -> IDENTIFIER
-Node 422: Reduced: chain: var COMMA
-	 var -> d_type valRef
-	 Terminal Symbol: COMMA
 Node 423: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 424: Reduced: value: valRef
+Node 424: Reduced: var: d_type valRef
+	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 425: Reduced: expr: value
+Node 425: Reduced: chain: var COMMA
+	 var -> d_type valRef
+	 Terminal Symbol: COMMA
+Node 426: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 427: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 428: Reduced: expr: value
 	 value -> valRef 
-Node 426: Reduced: chainend: expr
+Node 429: Reduced: chainend: expr
 	 expr -> value 
-Node 427: Reduced: chain: chain chainend
+Node 430: Reduced: chain: chain chainend
 	 chain -> var COMMA
 	 chainend -> expr
-Node 428: Reduced: block: chain SEMI
+Node 431: Reduced: block: chain SEMI
 	 chain -> chain chainend
 	 Terminal Symbol: SEMI
-Node 429: Reduced: arrayat: IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
+Node 432: Reduced: arrayat: IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 430: Reduced: valRef: arrayat
+Node 433: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET
-Node 431: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+Node 434: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 432: Reduced: valRef: arrayat
+Node 435: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 433: Reduced: value: valRef
+Node 436: Reduced: value: valRef
 	 valRef -> arrayat
-Node 434: Reduced: expr: value
+Node 437: Reduced: expr: value
 	 value -> valRef 
-Node 435: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 438: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> arrayat
 	 Terminal Symbol: ASSIGN
 	 expr -> value 
 	 Terminal Symbol: SEMI
-Node 436: Reduced: value: DCONSTANT makenummutable
+Node 439: Reduced: value: DCONSTANT makenummutable
 	 Terminal Symbol: DCONSTANT
 	 makenummutable -> _EPSILON_
-Node 437: Reduced: expr: value
+Node 440: Reduced: expr: value
 	 value -> DCONSTANT makenummutable 
-Node 438: Reduced: assignment: assignment ASSIGN expr 
+Node 441: Reduced: assignment: assignment ASSIGN expr 
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: ASSIGN
 	 expr -> value 
-Node 439: Reduced: block: assignment SEMI
+Node 442: Reduced: block: assignment SEMI
 	 assignment -> assignment ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 440: Reduced: valRef: IDENTIFIER
+Node 443: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 441: Reduced: value: ICONSTANT makenummutable
+Node 444: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 442: Reduced: expr: value
+Node 445: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 443: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 446: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> value 
 	 Terminal Symbol: SEMI
-Node 444: Reduced: block: assignment SEMI
+Node 447: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 445: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 446: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 447: Reduced: expr: value
-	 value -> valRef 
-Node 448: Reduced: relop: LE
-	 Terminal Symbol: LE
+Node 448: Reduced: forcond: ICONSTANT
+	 Terminal Symbol: ICONSTANT
 Node 449: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
 Node 450: Reduced: value: valRef
 	 valRef -> IDENTIFIER
 Node 451: Reduced: expr: value
 	 value -> valRef 
-Node 452: Reduced: condition: expr relop expr
+Node 452: Reduced: relop: LE
+	 Terminal Symbol: LE
+Node 453: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 454: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 455: Reduced: expr: value
+	 value -> valRef 
+Node 456: Reduced: condition: expr relop expr
 	 expr-> value 
 	 relop-> LE
 	 expr -> value 
-Node 453: Reduced: valRef: IDENTIFIER
+Node 457: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 454: Reduced: value: ICONSTANT makenummutable
+Node 458: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 455: Reduced: expr: value
+Node 459: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 456: Reduced: assignment: valRef ASSIGN_PLUS expr SEMI
+Node 460: Reduced: assignment: valRef ASSIGN_PLUS expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN_PLUS
 	 expr -> value 
 	 Terminal Symbol: SEMI
-Node 457: Reduced: block: assignment SEMI
+Node 461: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN_PLUS expr SEMI
 	 Terminal Symbol: SEMI
-Node 458: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+Node 462: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 459: Reduced: valRef: arrayat
+Node 463: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 460: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+Node 464: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 461: Reduced: valRef: arrayat
+Node 465: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 462: Reduced: value: valRef
+Node 466: Reduced: value: valRef
 	 valRef -> arrayat
-Node 463: Reduced: expr: value
+Node 467: Reduced: expr: value
 	 value -> valRef 
-Node 464: Reduced: value: DCONSTANT makenummutable
+Node 468: Reduced: value: DCONSTANT makenummutable
 	 Terminal Symbol: DCONSTANT
 	 makenummutable -> _EPSILON_
-Node 465: Reduced: expr: value
+Node 469: Reduced: expr: value
 	 value -> DCONSTANT makenummutable 
-Node 466: Reduced: valRef: IDENTIFIER
+Node 470: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 467: Reduced: value: valRef
+Node 471: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 468: Reduced: expr: value
+Node 472: Reduced: expr: value
 	 value -> valRef 
-Node 469: Reduced: value: ICONSTANT makenummutable
+Node 473: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 470: Reduced: expr: value
+Node 474: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 471: Reduced: expr: expr MINUS expr
+Node 475: Reduced: expr: expr MINUS expr
 	 expr-> value 
 	 Terminal Symbol: MINUS
 	 expr -> value 
-Node 472: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
+Node 476: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 expr -> expr MINUS expr
 	 Terminal Symbol: RBRACKET
-Node 473: Reduced: valRef: arrayat
+Node 477: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET expr RBRACKET
-Node 474: Reduced: value: valRef
+Node 478: Reduced: value: valRef
 	 valRef -> arrayat
-Node 475: Reduced: expr: value
+Node 479: Reduced: expr: value
 	 value -> valRef 
-Node 476: Reduced: valRef: IDENTIFIER
+Node 480: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 477: Reduced: value: valRef
+Node 481: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 478: Reduced: expr: value
+Node 482: Reduced: expr: value
 	 value -> valRef 
-Node 479: Reduced: value: ICONSTANT makenummutable
+Node 483: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 480: Reduced: expr: value
+Node 484: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 481: Reduced: expr: expr PLUS expr
+Node 485: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 482: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
+Node 486: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 expr -> expr PLUS expr
 	 Terminal Symbol: RBRACKET
-Node 483: Reduced: valRef: arrayat
+Node 487: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET expr RBRACKET
-Node 484: Reduced: value: valRef
+Node 488: Reduced: value: valRef
 	 valRef -> arrayat
-Node 485: Reduced: expr: value
+Node 489: Reduced: expr: value
 	 value -> valRef 
-Node 486: Reduced: expr: expr PLUS expr
+Node 490: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 487: Reduced: expr: LPAREN expr RPAREN
+Node 491: Reduced: expr: LPAREN expr RPAREN
 	 Terminal Symbol: LPAREN
 	 expr -> expr PLUS expr
 	 Terminal Symbol: RPAREN
-Node 488: Reduced: expr: expr MULTIPLY expr
+Node 492: Reduced: expr: expr MULTIPLY expr
 	 expr-> value 
 	 Terminal Symbol: MULTIPLY
 	 expr -> LPAREN expr RPAREN
-Node 489: Reduced: expr: expr PLUS expr
+Node 493: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> expr MULTIPLY expr
-Node 490: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 494: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> arrayat
 	 Terminal Symbol: ASSIGN
 	 expr -> expr PLUS expr
 	 Terminal Symbol: SEMI
-Node 491: Reduced: block: assignment SEMI
+Node 495: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 492: Reduced: block: block
+Node 496: Reduced: block: block
 	 block -> assignment SEMI
 	 block -> assignment SEMI
-Node 493: Reduced: block: LCURLY block RCURLY
+Node 497: Reduced: block: LCURLY block RCURLY
 	 Terminal Symbol: LCURLY
 	 block -> block block
 	 Terminal Symbol: RCURLY
-Node 494: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
+Node 498: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
 	 Terminal Symbol: K_DO
 	 Terminal Symbol: LPAREN
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: ASSIGN
-	 Terminal Symbol: ICONSTANT
+	 forcond -> ICONSTANT
 	 Terminal Symbol: SEMI
 	 condition -> expr relop expr
 	 Terminal Symbol: SEMI
@@ -1494,18 +1502,18 @@ Node 494: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI conditi
 	 Terminal Symbol: INCREMENT
 	 Terminal Symbol: RPAREN
 	 block -> LCURLY block RCURLY
-Node 495: Reduced: block: forloop
+Node 499: Reduced: block: forloop
 	 forloop -> K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
-Node 496: Reduced: block: block
+Node 500: Reduced: block: block
 	 block -> assignment SEMI
 	 block -> forloop
-Node 497: Reduced: block: block
+Node 501: Reduced: block: block
 	 block -> assignment SEMI
 	 block -> block block
-Node 498: Reduced: block: block
+Node 502: Reduced: block: block
 	 block -> chain SEMI
 	 block -> block block
-Node 499: Reduced: procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+Node 503: Reduced: procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 Terminal Symbol: K_PROCEDURE
 	 IDENTIFIER -> coarsen
 	 Terminal Symbol: LPAREN
@@ -1514,271 +1522,258 @@ Node 499: Reduced: procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LC
 	 Terminal Symbol: LCURLY
 	 block -> block block
 	 Terminal Symbol: RCURLY
-Node 500: Reduced: d_type: K_DOUBLE
+Node 504: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 501: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
+Node 505: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: RBRACKET
-Node 502: Reduced: var: d_type buildarr
+Node 506: Reduced: var: d_type buildarr
 	 d_type -> K_DOUBLE
 	 buildarr -> IDENTIFIER LBRACKET RBRACKET
-Node 503: Reduced: d_type: K_INTEGER
+Node 507: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 504: Reduced: valRef: IDENTIFIER
+Node 508: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 505: Reduced: var: d_type valRef
+Node 509: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 506: Reduced: d_type: K_DOUBLE
+Node 510: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 507: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
+Node 511: Reduced: buildarr: IDENTIFIER LBRACKET RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: RBRACKET
-Node 508: Reduced: var: d_type buildarr
+Node 512: Reduced: var: d_type buildarr
 	 d_type -> K_DOUBLE
 	 buildarr -> IDENTIFIER LBRACKET RBRACKET
-Node 509: Reduced: d_type: K_INTEGER
+Node 513: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 510: Reduced: valRef: IDENTIFIER
+Node 514: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 511: Reduced: var: d_type valRef
+Node 515: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 512: Reduced: param_list: var
+Node 516: Reduced: param_list: var
 	 var -> d_type valRef
-Node 513: Reduced: param_list: var COMMA param_list
+Node 517: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type buildarr
 	 Terminal Symbol: COMMA
 	 param_list -> var
-Node 514: Reduced: param_list: var COMMA param_list
+Node 518: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type valRef
 	 Terminal Symbol: COMMA
 	 param_list -> var COMMA param_list
-Node 515: Reduced: param_list: var COMMA param_list
+Node 519: Reduced: param_list: var COMMA param_list
 	 callfunc -> d_type buildarr
 	 Terminal Symbol: COMMA
 	 param_list -> var COMMA param_list
-Node 516: Reduced: d_type: K_INTEGER
+Node 520: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 517: Reduced: valRef: IDENTIFIER
+Node 521: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 518: Reduced: var: d_type valRef
+Node 522: Reduced: var: d_type valRef
 	 d_type -> K_INTEGER
 	 valRef -> IDENTIFIER
-Node 519: Reduced: chain: var COMMA
+Node 523: Reduced: chain: var COMMA
 	 var -> d_type valRef
 	 Terminal Symbol: COMMA
-Node 520: Reduced: valRef: IDENTIFIER
+Node 524: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 521: Reduced: value: valRef
+Node 525: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 522: Reduced: expr: value
+Node 526: Reduced: expr: value
 	 value -> valRef 
-Node 523: Reduced: chainend: expr
+Node 527: Reduced: chainend: expr
 	 expr -> value 
-Node 524: Reduced: chain: chain chainend
+Node 528: Reduced: chain: chain chainend
 	 chain -> var COMMA
 	 chainend -> expr
-Node 525: Reduced: block: chain SEMI
+Node 529: Reduced: block: chain SEMI
 	 chain -> chain chainend
 	 Terminal Symbol: SEMI
-Node 526: Reduced: valRef: IDENTIFIER
+Node 530: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 527: Reduced: value: ICONSTANT makenummutable
+Node 531: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 528: Reduced: expr: value
+Node 532: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 529: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 533: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> value 
 	 Terminal Symbol: SEMI
-Node 530: Reduced: block: assignment SEMI
+Node 534: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 531: Reduced: valRef: IDENTIFIER
+Node 535: Reduced: forcond: ICONSTANT
+	 Terminal Symbol: ICONSTANT
+Node 536: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 532: Reduced: value: valRef
+Node 537: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 533: Reduced: expr: value
+Node 538: Reduced: expr: value
 	 value -> valRef 
-Node 534: Reduced: relop: LE
+Node 539: Reduced: relop: LE
 	 Terminal Symbol: LE
-Node 535: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 536: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 537: Reduced: expr: value
-	 value -> valRef 
-Node 538: Reduced: condition: expr relop expr
-	 expr-> value 
-	 relop-> LE
-	 expr -> value 
-Node 539: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
 Node 540: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
 Node 541: Reduced: value: valRef
 	 valRef -> IDENTIFIER
 Node 542: Reduced: expr: value
 	 value -> valRef 
-Node 543: Reduced: value: ICONSTANT makenummutable
-	 Terminal Symbol: ICONSTANT
-	 makenummutable -> _EPSILON_
-Node 544: Reduced: expr: value
-	 value -> ICONSTANT makenummutable 
-Node 545: Reduced: expr: expr PLUS expr
-	 expr-> value 
-	 Terminal Symbol: PLUS
-	 expr -> value 
-Node 546: Reduced: assignment: valRef ASSIGN expr SEMI
-	 valRef -> IDENTIFIER
-	 Terminal Symbol: ASSIGN
-	 expr -> expr PLUS expr
-	 Terminal Symbol: SEMI
-Node 547: Reduced: block: assignment SEMI
-	 assignment -> valRef ASSIGN expr SEMI
-	 Terminal Symbol: SEMI
-Node 548: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
-	 Terminal Symbol: IDENTIFIER
-	 Terminal Symbol: LBRACKET
-	 Terminal Symbol: IDENTIFIER
-	 makenummutable -> _EPSILON_
-	 Terminal Symbol: RBRACKET
-Node 549: Reduced: valRef: arrayat
-	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 550: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
-	 Terminal Symbol: IDENTIFIER
-	 Terminal Symbol: LBRACKET
-	 Terminal Symbol: IDENTIFIER
-	 makenummutable -> _EPSILON_
-	 Terminal Symbol: RBRACKET
-Node 551: Reduced: valRef: arrayat
-	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 552: Reduced: value: valRef
-	 valRef -> arrayat
-Node 553: Reduced: expr: value
-	 value -> valRef 
-Node 554: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
-	 Terminal Symbol: IDENTIFIER
-	 Terminal Symbol: LBRACKET
-	 Terminal Symbol: IDENTIFIER
-	 makenummutable -> _EPSILON_
-	 Terminal Symbol: RBRACKET
-Node 555: Reduced: valRef: arrayat
-	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 556: Reduced: value: valRef
-	 valRef -> arrayat
-Node 557: Reduced: expr: value
-	 value -> valRef 
-Node 558: Reduced: expr: expr PLUS expr
-	 expr-> value 
-	 Terminal Symbol: PLUS
-	 expr -> value 
-Node 559: Reduced: assignment: valRef ASSIGN expr SEMI
-	 valRef -> arrayat
-	 Terminal Symbol: ASSIGN
-	 expr -> expr PLUS expr
-	 Terminal Symbol: SEMI
-Node 560: Reduced: block: assignment SEMI
-	 assignment -> valRef ASSIGN expr SEMI
-	 Terminal Symbol: SEMI
-Node 561: Reduced: block: block
-	 block -> assignment SEMI
-	 block -> assignment SEMI
-Node 562: Reduced: block: LCURLY block RCURLY
-	 Terminal Symbol: LCURLY
-	 block -> block block
-	 Terminal Symbol: RCURLY
-Node 563: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 564: Reduced: value: ICONSTANT makenummutable
-	 Terminal Symbol: ICONSTANT
-	 makenummutable -> _EPSILON_
-Node 565: Reduced: value: MINUS value
-	 Terminal Symbol: MINUS
-	 value -> ICONSTANT makenummutable 
-Node 566: Reduced: expr: value
-	 value -> MINUS value 
-Node 567: Reduced: assignment: valRef ASSIGN expr SEMI
-	 valRef -> IDENTIFIER
-	 Terminal Symbol: ASSIGN
-	 expr -> value 
-	 Terminal Symbol: SEMI
-Node 568: Reduced: block: assignment SEMI
-	 assignment -> valRef ASSIGN expr SEMI
-	 Terminal Symbol: SEMI
-Node 569: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 570: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 571: Reduced: expr: value
-	 value -> valRef 
-Node 572: Reduced: relop: LE
-	 Terminal Symbol: LE
-Node 573: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 574: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 575: Reduced: expr: value
-	 value -> valRef 
-Node 576: Reduced: condition: expr relop expr
+Node 543: Reduced: condition: expr relop expr
 	 expr-> value 
 	 relop-> LE
 	 expr -> value 
-Node 577: Reduced: valRef: IDENTIFIER
+Node 544: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 578: Reduced: valRef: IDENTIFIER
+Node 545: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 579: Reduced: value: valRef
+Node 546: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 580: Reduced: expr: value
+Node 547: Reduced: expr: value
 	 value -> valRef 
-Node 581: Reduced: value: ICONSTANT makenummutable
+Node 548: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 582: Reduced: expr: value
+Node 549: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 583: Reduced: expr: expr PLUS expr
+Node 550: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 584: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 551: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> expr PLUS expr
 	 Terminal Symbol: SEMI
-Node 585: Reduced: block: assignment SEMI
+Node 552: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 586: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+Node 553: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 587: Reduced: valRef: arrayat
+Node 554: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 588: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+Node 555: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 589: Reduced: valRef: arrayat
+Node 556: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
-Node 590: Reduced: value: valRef
+Node 557: Reduced: value: valRef
 	 valRef -> arrayat
-Node 591: Reduced: expr: value
+Node 558: Reduced: expr: value
 	 value -> valRef 
-Node 592: Reduced: value: DCONSTANT makenummutable
-	 Terminal Symbol: DCONSTANT
+Node 559: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+	 Terminal Symbol: IDENTIFIER
+	 Terminal Symbol: LBRACKET
+	 Terminal Symbol: IDENTIFIER
 	 makenummutable -> _EPSILON_
-Node 593: Reduced: expr: value
-	 value -> DCONSTANT makenummutable 
+	 Terminal Symbol: RBRACKET
+Node 560: Reduced: valRef: arrayat
+	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
+Node 561: Reduced: value: valRef
+	 valRef -> arrayat
+Node 562: Reduced: expr: value
+	 value -> valRef 
+Node 563: Reduced: expr: expr PLUS expr
+	 expr-> value 
+	 Terminal Symbol: PLUS
+	 expr -> value 
+Node 564: Reduced: assignment: valRef ASSIGN expr SEMI
+	 valRef -> arrayat
+	 Terminal Symbol: ASSIGN
+	 expr -> expr PLUS expr
+	 Terminal Symbol: SEMI
+Node 565: Reduced: block: assignment SEMI
+	 assignment -> valRef ASSIGN expr SEMI
+	 Terminal Symbol: SEMI
+Node 566: Reduced: block: block
+	 block -> assignment SEMI
+	 block -> assignment SEMI
+Node 567: Reduced: block: LCURLY block RCURLY
+	 Terminal Symbol: LCURLY
+	 block -> block block
+	 Terminal Symbol: RCURLY
+Node 568: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 569: Reduced: value: ICONSTANT makenummutable
+	 Terminal Symbol: ICONSTANT
+	 makenummutable -> _EPSILON_
+Node 570: Reduced: value: MINUS value
+	 Terminal Symbol: MINUS
+	 value -> ICONSTANT makenummutable 
+Node 571: Reduced: expr: value
+	 value -> MINUS value 
+Node 572: Reduced: assignment: valRef ASSIGN expr SEMI
+	 valRef -> IDENTIFIER
+	 Terminal Symbol: ASSIGN
+	 expr -> value 
+	 Terminal Symbol: SEMI
+Node 573: Reduced: block: assignment SEMI
+	 assignment -> valRef ASSIGN expr SEMI
+	 Terminal Symbol: SEMI
+Node 574: Reduced: forcond: ICONSTANT
+	 Terminal Symbol: ICONSTANT
+Node 575: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 576: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 577: Reduced: expr: value
+	 value -> valRef 
+Node 578: Reduced: relop: LE
+	 Terminal Symbol: LE
+Node 579: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 580: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 581: Reduced: expr: value
+	 value -> valRef 
+Node 582: Reduced: condition: expr relop expr
+	 expr-> value 
+	 relop-> LE
+	 expr -> value 
+Node 583: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 584: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 585: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 586: Reduced: expr: value
+	 value -> valRef 
+Node 587: Reduced: value: ICONSTANT makenummutable
+	 Terminal Symbol: ICONSTANT
+	 makenummutable -> _EPSILON_
+Node 588: Reduced: expr: value
+	 value -> ICONSTANT makenummutable 
+Node 589: Reduced: expr: expr PLUS expr
+	 expr-> value 
+	 Terminal Symbol: PLUS
+	 expr -> value 
+Node 590: Reduced: assignment: valRef ASSIGN expr SEMI
+	 valRef -> IDENTIFIER
+	 Terminal Symbol: ASSIGN
+	 expr -> expr PLUS expr
+	 Terminal Symbol: SEMI
+Node 591: Reduced: block: assignment SEMI
+	 assignment -> valRef ASSIGN expr SEMI
+	 Terminal Symbol: SEMI
+Node 592: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+	 Terminal Symbol: IDENTIFIER
+	 Terminal Symbol: LBRACKET
+	 Terminal Symbol: IDENTIFIER
+	 makenummutable -> _EPSILON_
+	 Terminal Symbol: RBRACKET
+Node 593: Reduced: valRef: arrayat
+	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
 Node 594: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
@@ -1791,69 +1786,86 @@ Node 596: Reduced: value: valRef
 	 valRef -> arrayat
 Node 597: Reduced: expr: value
 	 value -> valRef 
-Node 598: Reduced: valRef: IDENTIFIER
+Node 598: Reduced: value: DCONSTANT makenummutable
+	 Terminal Symbol: DCONSTANT
+	 makenummutable -> _EPSILON_
+Node 599: Reduced: expr: value
+	 value -> DCONSTANT makenummutable 
+Node 600: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
-Node 599: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 600: Reduced: expr: value
+	 Terminal Symbol: LBRACKET
+	 Terminal Symbol: IDENTIFIER
+	 makenummutable -> _EPSILON_
+	 Terminal Symbol: RBRACKET
+Node 601: Reduced: valRef: arrayat
+	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
+Node 602: Reduced: value: valRef
+	 valRef -> arrayat
+Node 603: Reduced: expr: value
 	 value -> valRef 
-Node 601: Reduced: value: ICONSTANT makenummutable
+Node 604: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 605: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 606: Reduced: expr: value
+	 value -> valRef 
+Node 607: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 602: Reduced: expr: value
+Node 608: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 603: Reduced: expr: expr PLUS expr
+Node 609: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 604: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
+Node 610: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 expr -> expr PLUS expr
 	 Terminal Symbol: RBRACKET
-Node 605: Reduced: valRef: arrayat
+Node 611: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET expr RBRACKET
-Node 606: Reduced: value: valRef
+Node 612: Reduced: value: valRef
 	 valRef -> arrayat
-Node 607: Reduced: expr: value
+Node 613: Reduced: expr: value
 	 value -> valRef 
-Node 608: Reduced: expr: expr PLUS expr
+Node 614: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 609: Reduced: expr: LPAREN expr RPAREN
+Node 615: Reduced: expr: LPAREN expr RPAREN
 	 Terminal Symbol: LPAREN
 	 expr -> expr PLUS expr
 	 Terminal Symbol: RPAREN
-Node 610: Reduced: expr: expr MULTIPLY expr
+Node 616: Reduced: expr: expr MULTIPLY expr
 	 expr-> value 
 	 Terminal Symbol: MULTIPLY
 	 expr -> LPAREN expr RPAREN
-Node 611: Reduced: expr: expr PLUS expr
+Node 617: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> expr MULTIPLY expr
-Node 612: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 618: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> arrayat
 	 Terminal Symbol: ASSIGN
 	 expr -> expr PLUS expr
 	 Terminal Symbol: SEMI
-Node 613: Reduced: block: assignment SEMI
+Node 619: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 614: Reduced: block: block
+Node 620: Reduced: block: block
 	 block -> assignment SEMI
 	 block -> assignment SEMI
-Node 615: Reduced: block: LCURLY block RCURLY
+Node 621: Reduced: block: LCURLY block RCURLY
 	 Terminal Symbol: LCURLY
 	 block -> block block
 	 Terminal Symbol: RCURLY
-Node 616: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
+Node 622: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
 	 Terminal Symbol: K_DO
 	 Terminal Symbol: LPAREN
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: ASSIGN
-	 Terminal Symbol: ICONSTANT
+	 forcond -> ICONSTANT
 	 Terminal Symbol: SEMI
 	 condition -> expr relop expr
 	 Terminal Symbol: SEMI
@@ -1861,20 +1873,20 @@ Node 616: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI conditi
 	 Terminal Symbol: INCREMENT
 	 Terminal Symbol: RPAREN
 	 block -> LCURLY block RCURLY
-Node 617: Reduced: block: forloop
+Node 623: Reduced: block: forloop
 	 forloop -> K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
-Node 618: Reduced: block: block
+Node 624: Reduced: block: block
 	 block -> assignment SEMI
 	 block -> forloop
-Node 619: Reduced: block: block
+Node 625: Reduced: block: block
 	 block -> LCURLY block RCURLY
 	 block -> block block
-Node 620: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
+Node 626: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
 	 Terminal Symbol: K_DO
 	 Terminal Symbol: LPAREN
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: ASSIGN
-	 Terminal Symbol: ICONSTANT
+	 forcond -> ICONSTANT
 	 Terminal Symbol: SEMI
 	 condition -> expr relop expr
 	 Terminal Symbol: SEMI
@@ -1882,15 +1894,15 @@ Node 620: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI conditi
 	 Terminal Symbol: INCREMENT
 	 Terminal Symbol: RPAREN
 	 block -> block block
-Node 621: Reduced: block: forloop
+Node 627: Reduced: block: forloop
 	 forloop -> K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
-Node 622: Reduced: block: block
+Node 628: Reduced: block: block
 	 block -> assignment SEMI
 	 block -> forloop
-Node 623: Reduced: block: block
+Node 629: Reduced: block: block
 	 block -> chain SEMI
 	 block -> block block
-Node 624: Reduced: procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+Node 630: Reduced: procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 Terminal Symbol: K_PROCEDURE
 	 IDENTIFIER -> refine_add
 	 Terminal Symbol: LPAREN
@@ -1899,182 +1911,182 @@ Node 624: Reduced: procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LC
 	 Terminal Symbol: LCURLY
 	 block -> block block
 	 Terminal Symbol: RCURLY
-Node 625: Reduced: task: procedure
+Node 631: Reduced: task: procedure
 	 procedure -> K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
-Node 626: Reduced: task: task procedure
+Node 632: Reduced: task: task procedure
 	 task -> K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 procedure -> procedure
-Node 627: Reduced: block: task
+Node 633: Reduced: block: task
 	 task -> task procedure
-Node 628: Reduced: valRef: IDENTIFIER
+Node 634: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 629: Reduced: value: valRef
+Node 635: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 630: Reduced: expr: value
+Node 636: Reduced: expr: value
 	 value -> valRef 
-Node 631: Reduced: relop: DEQ
+Node 637: Reduced: relop: DEQ
 	 Terminal Symbol: DEQ
-Node 632: Reduced: valRef: IDENTIFIER
+Node 638: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 633: Reduced: value: valRef
+Node 639: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 634: Reduced: expr: value
+Node 640: Reduced: expr: value
 	 value -> valRef 
-Node 635: Reduced: value: ICONSTANT makenummutable
+Node 641: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 636: Reduced: expr: value
+Node 642: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 637: Reduced: expr: expr DIVIDE expr
+Node 643: Reduced: expr: expr DIVIDE expr
 	 expr-> value 
 	 Terminal Symbol: DIVIDE
 	 expr -> value 
-Node 638: Reduced: condition: expr relop expr
+Node 644: Reduced: condition: expr relop expr
 	 expr-> value 
 	 relop-> DEQ
 	 expr -> expr DIVIDE expr
-Node 639: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 640: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 641: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 642: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 643: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 644: Reduced: value: valRef
-	 valRef -> IDENTIFIER
 Node 645: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
 Node 646: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 647: Reduced: arg_list: value
+Node 647: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 648: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 649: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 650: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 651: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 652: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 653: Reduced: arg_list: value
 	 value -> valRef 
-Node 648: Reduced: arg_list: value COMMA arg_list
+Node 654: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 649: Reduced: arg_list: value COMMA arg_list
+Node 655: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 650: Reduced: arg_list: value COMMA arg_list
+Node 656: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 651: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 657: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> coarsen
 	 Terminal Symbol: RPAREN
-Node 652: Reduced: block: callfunc SEMI
+Node 658: Reduced: block: callfunc SEMI
 	 callfunc -> LPAREN arg_list RPAREN
 	 Terminal Symbol: SEMI
-Node 653: Reduced: valRef: IDENTIFIER
+Node 659: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 654: Reduced: value: valRef
+Node 660: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 655: Reduced: expr: value
+Node 661: Reduced: expr: value
 	 value -> valRef 
-Node 656: Reduced: relop: DEQ
+Node 662: Reduced: relop: DEQ
 	 Terminal Symbol: DEQ
-Node 657: Reduced: valRef: IDENTIFIER
+Node 663: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 658: Reduced: value: valRef
+Node 664: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 659: Reduced: expr: value
+Node 665: Reduced: expr: value
 	 value -> valRef 
-Node 660: Reduced: value: ICONSTANT makenummutable
+Node 666: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 661: Reduced: expr: value
+Node 667: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 662: Reduced: expr: expr MULTIPLY expr
+Node 668: Reduced: expr: expr MULTIPLY expr
 	 expr-> value 
 	 Terminal Symbol: MULTIPLY
 	 expr -> value 
-Node 663: Reduced: condition: expr relop expr
+Node 669: Reduced: condition: expr relop expr
 	 expr-> value 
 	 relop-> DEQ
 	 expr -> expr MULTIPLY expr
-Node 664: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 665: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 666: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 667: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 668: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 669: Reduced: value: valRef
-	 valRef -> IDENTIFIER
 Node 670: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
 Node 671: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 672: Reduced: arg_list: value
+Node 672: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 673: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 674: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 675: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 676: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 677: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 678: Reduced: arg_list: value
 	 value -> valRef 
-Node 673: Reduced: arg_list: value COMMA arg_list
+Node 679: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 674: Reduced: arg_list: value COMMA arg_list
+Node 680: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 675: Reduced: arg_list: value COMMA arg_list
+Node 681: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 676: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 682: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> refine_add
 	 Terminal Symbol: RPAREN
-Node 677: Reduced: block: callfunc SEMI
+Node 683: Reduced: block: callfunc SEMI
 	 callfunc -> LPAREN arg_list RPAREN
 	 Terminal Symbol: SEMI
-Node 678: Reduced: block: LCURLY block RCURLY
+Node 684: Reduced: block: LCURLY block RCURLY
 	 Terminal Symbol: LCURLY
 	 block -> callfunc SEMI
 	 Terminal Symbol: RCURLY
-Node 679: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 685: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "Error in routine interp: data size mismatch.\n"
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 680: Reduced: block: print
+Node 686: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 681: Reduced: value: ICONSTANT makenummutable
+Node 687: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 682: Reduced: ret: K_RETURN block SEMI
+Node 688: Reduced: ret: K_RETURN block SEMI
 	 Terminal Symbol: K_RETURN
 	 value -> ICONSTANT makenummutable 
 	 Terminal Symbol: SEMI
-Node 683: Reduced: block: ret
+Node 689: Reduced: block: ret
 	 ret -> K_RETURN value SEMI
-Node 684: Reduced: block: block
+Node 690: Reduced: block: block
 	 block -> print
 	 block -> ret
-Node 685: Reduced: block: LCURLY block RCURLY
+Node 691: Reduced: block: LCURLY block RCURLY
 	 Terminal Symbol: LCURLY
 	 block -> block block
 	 Terminal Symbol: RCURLY
-Node 686: Reduced: value: ICONSTANT makenummutable
+Node 692: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 687: Reduced: ret: K_RETURN block SEMI
+Node 693: Reduced: ret: K_RETURN block SEMI
 	 Terminal Symbol: K_RETURN
 	 value -> ICONSTANT makenummutable 
 	 Terminal Symbol: SEMI
-Node 688: Reduced: block: ret
+Node 694: Reduced: block: ret
 	 ret -> K_RETURN value SEMI
-Node 689: Reduced: block: block
+Node 695: Reduced: block: block
 	 block -> LCURLY block RCURLY
 	 block -> ret
-Node 690: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
+Node 696: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
 	 Terminal Symbol: K_IF
 	 Terminal Symbol: LPAREN
 	 condition -> expr relop expr
@@ -2083,9 +2095,9 @@ Node 690: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
 	 block -> LCURLY block RCURLY
 	 Terminal Symbol: K_ELSE
 	 block -> block block
-Node 691: Reduced: block: if
+Node 697: Reduced: block: if
 	 if -> K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
-Node 692: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
+Node 698: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
 	 Terminal Symbol: K_IF
 	 Terminal Symbol: LPAREN
 	 condition -> expr relop expr
@@ -2094,12 +2106,12 @@ Node 692: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
 	 block -> callfunc SEMI
 	 Terminal Symbol: K_ELSE
 	 block -> if
-Node 693: Reduced: block: if
+Node 699: Reduced: block: if
 	 if -> K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
-Node 694: Reduced: block: block
+Node 700: Reduced: block: block
 	 block -> task
 	 block -> if
-Node 695: Reduced: function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+Node 701: Reduced: function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 Terminal Symbol: K_FUNCTION
 	 d_type -> K_INTEGER
 	 IDENTIFIER -> interpolate
@@ -2109,436 +2121,415 @@ Node 695: Reduced: function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAR
 	 Terminal Symbol: LCURLY
 	 block -> block block
 	 Terminal Symbol: RCURLY
-Node 696: Reduced: d_type: K_INTEGER
+Node 702: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 697: Reduced: d_type: K_INTEGER
+Node 703: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 698: Reduced: valRef: IDENTIFIER
+Node 704: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 699: Reduced: value: ICONSTANT makenummutable
+Node 705: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 700: Reduced: expr: value
+Node 706: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 701: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 707: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> value 
 	 Terminal Symbol: SEMI
-Node 702: Reduced: var: d_type assignment
+Node 708: Reduced: var: d_type assignment
 	 d_type -> K_INTEGER
 	 assignment -> valRef ASSIGN expr SEMI
-Node 703: Reduced: block: var SEMI
+Node 709: Reduced: block: var SEMI
 	 var -> d_type assignment
 	 Terminal Symbol: SEMI
-Node 704: Reduced: d_type: K_INTEGER
+Node 710: Reduced: d_type: K_INTEGER
 	 Terminal Symbol: K_INTEGER
-Node 705: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 706: Reduced: value: ICONSTANT makenummutable
-	 Terminal Symbol: ICONSTANT
-	 makenummutable -> _EPSILON_
-Node 707: Reduced: expr: value
-	 value -> ICONSTANT makenummutable 
-Node 708: Reduced: assignment: valRef ASSIGN expr SEMI
-	 valRef -> IDENTIFIER
-	 Terminal Symbol: ASSIGN
-	 expr -> value 
-	 Terminal Symbol: SEMI
-Node 709: Reduced: var: d_type assignment
-	 d_type -> K_INTEGER
-	 assignment -> valRef ASSIGN expr SEMI
-Node 710: Reduced: chain: var COMMA
-	 var -> d_type assignment
-	 Terminal Symbol: COMMA
 Node 711: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 712: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 713: Reduced: expr: value
-	 value -> valRef 
-Node 714: Reduced: chainend: expr
-	 expr -> value 
-Node 715: Reduced: chain: chain chainend
-	 chain -> var COMMA
-	 chainend -> expr
-Node 716: Reduced: block: chain SEMI
-	 chain -> chain chainend
-	 Terminal Symbol: SEMI
-Node 717: Reduced: d_type: K_DOUBLE
-	 Terminal Symbol: K_DOUBLE
-Node 718: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 719: Reduced: var: d_type valRef
-	 d_type -> K_DOUBLE
-	 valRef -> IDENTIFIER
-Node 720: Reduced: block: var SEMI
-	 var -> d_type valRef
-	 Terminal Symbol: SEMI
-Node 721: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 722: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 723: Reduced: expr: value
-	 value -> valRef 
-Node 724: Reduced: relop: LEQ
-	 Terminal Symbol: LEQ
-Node 725: Reduced: value: ICONSTANT makenummutable
+Node 712: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 726: Reduced: expr: value
+Node 713: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 727: Reduced: condition: expr relop expr
+Node 714: Reduced: assignment: valRef ASSIGN expr SEMI
+	 valRef -> IDENTIFIER
+	 Terminal Symbol: ASSIGN
+	 expr -> value 
+	 Terminal Symbol: SEMI
+Node 715: Reduced: var: d_type assignment
+	 d_type -> K_INTEGER
+	 assignment -> valRef ASSIGN expr SEMI
+Node 716: Reduced: chain: var COMMA
+	 var -> d_type assignment
+	 Terminal Symbol: COMMA
+Node 717: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 718: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 719: Reduced: expr: value
+	 value -> valRef 
+Node 720: Reduced: chainend: expr
+	 expr -> value 
+Node 721: Reduced: chain: chain chainend
+	 chain -> var COMMA
+	 chainend -> expr
+Node 722: Reduced: block: chain SEMI
+	 chain -> chain chainend
+	 Terminal Symbol: SEMI
+Node 723: Reduced: d_type: K_DOUBLE
+	 Terminal Symbol: K_DOUBLE
+Node 724: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 725: Reduced: var: d_type valRef
+	 d_type -> K_DOUBLE
+	 valRef -> IDENTIFIER
+Node 726: Reduced: block: var SEMI
+	 var -> d_type valRef
+	 Terminal Symbol: SEMI
+Node 727: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 728: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 729: Reduced: expr: value
+	 value -> valRef 
+Node 730: Reduced: relop: LEQ
+	 Terminal Symbol: LEQ
+Node 731: Reduced: value: ICONSTANT makenummutable
+	 Terminal Symbol: ICONSTANT
+	 makenummutable -> _EPSILON_
+Node 732: Reduced: expr: value
+	 value -> ICONSTANT makenummutable 
+Node 733: Reduced: condition: expr relop expr
 	 expr-> value 
 	 relop-> LEQ
 	 expr -> value 
-Node 728: Reduced: gate: DOR
+Node 734: Reduced: gate: DOR
 	 Terminal Symbol: DOR
-Node 729: Reduced: valRef: IDENTIFIER
+Node 735: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 730: Reduced: value: valRef
+Node 736: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 731: Reduced: expr: value
+Node 737: Reduced: expr: value
 	 value -> valRef 
-Node 732: Reduced: value: ICONSTANT makenummutable
+Node 738: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 733: Reduced: expr: value
+Node 739: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 734: Reduced: expr: expr MOD expr
+Node 740: Reduced: expr: expr MOD expr
 	 expr-> value 
 	 Terminal Symbol: MOD
 	 expr -> value 
-Node 735: Reduced: relop: NE
+Node 741: Reduced: relop: NE
 	 Terminal Symbol: NE
-Node 736: Reduced: value: ICONSTANT makenummutable
+Node 742: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 737: Reduced: expr: value
+Node 743: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 738: Reduced: condition: expr relop expr
+Node 744: Reduced: condition: expr relop expr
 	 expr-> expr MOD expr
 	 relop-> NE
 	 expr -> value 
-Node 739: Reduced: condition: condition gate condition
+Node 745: Reduced: condition: condition gate condition
 	 condition-> expr relop expr
 	 gate-> DOR
 	 condition -> expr relop expr
-Node 740: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 746: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "Number of points in the fine mesh (must be even and atleast 6) "
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 741: Reduced: block: print
+Node 747: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 742: Reduced: valRef: IDENTIFIER
+Node 748: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 743: Reduced: value: valRef
+Node 749: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 744: Reduced: expr: value
+Node 750: Reduced: expr: value
 	 value -> valRef 
-Node 745: Reduced: reader: K_READ_INTEGER LPAREN expr RPAREN 
+Node 751: Reduced: reader: K_READ_INTEGER LPAREN expr RPAREN 
 	 Terminal Symbol: K_READ_INTEGER
 	 Terminal Symbol: LPAREN
 	 expr -> value 
 	 Terminal Symbol: RPAREN
-Node 746: Reduced: block: reader SEMI
+Node 752: Reduced: block: reader SEMI
 	 reader -> K_READ_INTEGER LPAREN expr RPAREN
 	 Terminal Symbol: SEMI
-Node 747: Reduced: block: block
+Node 753: Reduced: block: block
 	 block -> print
 	 block -> reader SEMI
-Node 748: Reduced: block: LCURLY block RCURLY
+Node 754: Reduced: block: LCURLY block RCURLY
 	 Terminal Symbol: LCURLY
 	 block -> block block
 	 Terminal Symbol: RCURLY
-Node 749: Reduced: valRef: IDENTIFIER
+Node 755: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 750: Reduced: valRef: IDENTIFIER
+Node 756: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 751: Reduced: value: valRef
+Node 757: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 752: Reduced: expr: value
+Node 758: Reduced: expr: value
 	 value -> valRef 
-Node 753: Reduced: value: ICONSTANT makenummutable
+Node 759: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 754: Reduced: expr: value
+Node 760: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 755: Reduced: expr: expr DIVIDE expr
+Node 761: Reduced: expr: expr DIVIDE expr
 	 expr-> value 
 	 Terminal Symbol: DIVIDE
 	 expr -> value 
-Node 756: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 762: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> expr DIVIDE expr
 	 Terminal Symbol: SEMI
-Node 757: Reduced: block: assignment SEMI
+Node 763: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 758: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 764: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "Fine   mesh points 0:"
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 759: Reduced: block: print
+Node 765: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 760: Reduced: valRef: IDENTIFIER
+Node 766: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 761: Reduced: print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
+Node 767: Reduced: print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
 	 Terminal Symbol: K_PRINT_INTEGER
 	 Terminal Symbol: LPAREN
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 762: Reduced: block: print
+Node 768: Reduced: block: print
 	 print -> K_PRINT_INTEGER LPAREN valRef RPAREN SEMI
-Node 763: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 769: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "\nCoarse mesh points 0:"
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 764: Reduced: block: print
+Node 770: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 765: Reduced: valRef: IDENTIFIER
+Node 771: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 766: Reduced: print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
+Node 772: Reduced: print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
 	 Terminal Symbol: K_PRINT_INTEGER
 	 Terminal Symbol: LPAREN
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 767: Reduced: block: print
+Node 773: Reduced: block: print
 	 print -> K_PRINT_INTEGER LPAREN valRef RPAREN SEMI
-Node 768: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 774: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "\n"
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 769: Reduced: block: print
+Node 775: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 770: Reduced: d_type: K_DOUBLE
+Node 776: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 771: Reduced: valRef: IDENTIFIER
+Node 777: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 772: Reduced: value: valRef
+Node 778: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 773: Reduced: expr: value
+Node 779: Reduced: expr: value
 	 value -> valRef 
-Node 774: Reduced: value: ICONSTANT makenummutable
+Node 780: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 775: Reduced: expr: value
+Node 781: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 776: Reduced: expr: expr PLUS expr
+Node 782: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 777: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
+Node 783: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 expr -> expr PLUS expr
 	 Terminal Symbol: RBRACKET
-Node 778: Reduced: valRef: arrayat
+Node 784: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET expr RBRACKET
-Node 779: Reduced: var: d_type valRef
+Node 785: Reduced: var: d_type valRef
 	 d_type -> K_DOUBLE
 	 valRef -> arrayat
-Node 780: Reduced: chain: var COMMA
+Node 786: Reduced: chain: var COMMA
 	 var -> d_type valRef
 	 Terminal Symbol: COMMA
-Node 781: Reduced: valRef: IDENTIFIER
+Node 787: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 782: Reduced: value: valRef
+Node 788: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 783: Reduced: expr: value
+Node 789: Reduced: expr: value
 	 value -> valRef 
-Node 784: Reduced: value: ICONSTANT makenummutable
+Node 790: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 785: Reduced: expr: value
+Node 791: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 786: Reduced: expr: expr PLUS expr
+Node 792: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 787: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
+Node 793: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 expr -> expr PLUS expr
 	 Terminal Symbol: RBRACKET
-Node 788: Reduced: valRef: arrayat
+Node 794: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET expr RBRACKET
-Node 789: Reduced: value: valRef
+Node 795: Reduced: value: valRef
 	 valRef -> arrayat
-Node 790: Reduced: expr: value
+Node 796: Reduced: expr: value
 	 value -> valRef 
-Node 791: Reduced: chain: expr COMMA
+Node 797: Reduced: chain: expr COMMA
 	 expr -> value 
 	 Terminal Symbol: COMMA
-Node 792: Reduced: valRef: IDENTIFIER
+Node 798: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 793: Reduced: value: valRef
+Node 799: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 794: Reduced: expr: value
+Node 800: Reduced: expr: value
 	 value -> valRef 
-Node 795: Reduced: value: ICONSTANT makenummutable
+Node 801: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 796: Reduced: expr: value
+Node 802: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 797: Reduced: expr: expr PLUS expr
+Node 803: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 798: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
+Node 804: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 expr -> expr PLUS expr
 	 Terminal Symbol: RBRACKET
-Node 799: Reduced: valRef: arrayat
+Node 805: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET expr RBRACKET
-Node 800: Reduced: value: valRef
+Node 806: Reduced: value: valRef
 	 valRef -> arrayat
-Node 801: Reduced: expr: value
+Node 807: Reduced: expr: value
 	 value -> valRef 
-Node 802: Reduced: chainend: expr
+Node 808: Reduced: chainend: expr
 	 expr -> value 
-Node 803: Reduced: chain: chain chainend
+Node 809: Reduced: chain: chain chainend
 	 chain -> expr COMMA
 	 chainend -> expr
-Node 804: Reduced: chain: chain chain
+Node 810: Reduced: chain: chain chain
 	 chain -> var COMMA
 	 chain -> chain chainend
-Node 805: Reduced: block: chain SEMI
+Node 811: Reduced: block: chain SEMI
 	 chain -> chain chain
 	 Terminal Symbol: SEMI
-Node 806: Reduced: d_type: K_DOUBLE
+Node 812: Reduced: d_type: K_DOUBLE
 	 Terminal Symbol: K_DOUBLE
-Node 807: Reduced: valRef: IDENTIFIER
+Node 813: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 808: Reduced: value: valRef
+Node 814: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 809: Reduced: expr: value
+Node 815: Reduced: expr: value
 	 value -> valRef 
-Node 810: Reduced: value: ICONSTANT makenummutable
+Node 816: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 811: Reduced: expr: value
+Node 817: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 812: Reduced: expr: expr PLUS expr
+Node 818: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 813: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
+Node 819: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 expr -> expr PLUS expr
 	 Terminal Symbol: RBRACKET
-Node 814: Reduced: valRef: arrayat
+Node 820: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET expr RBRACKET
-Node 815: Reduced: var: d_type valRef
+Node 821: Reduced: var: d_type valRef
 	 d_type -> K_DOUBLE
 	 valRef -> arrayat
-Node 816: Reduced: chain: var COMMA
+Node 822: Reduced: chain: var COMMA
 	 var -> d_type valRef
 	 Terminal Symbol: COMMA
-Node 817: Reduced: valRef: IDENTIFIER
+Node 823: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 818: Reduced: value: valRef
+Node 824: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 819: Reduced: expr: value
+Node 825: Reduced: expr: value
 	 value -> valRef 
-Node 820: Reduced: value: ICONSTANT makenummutable
+Node 826: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 821: Reduced: expr: value
+Node 827: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 822: Reduced: expr: expr PLUS expr
+Node 828: Reduced: expr: expr PLUS expr
 	 expr-> value 
 	 Terminal Symbol: PLUS
 	 expr -> value 
-Node 823: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
+Node 829: Reduced: arrayat: IDENTIFIER LBRACKET expr RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 expr -> expr PLUS expr
 	 Terminal Symbol: RBRACKET
-Node 824: Reduced: valRef: arrayat
+Node 830: Reduced: valRef: arrayat
 	 arrayat -> IDENTIFIER LBRACKET expr RBRACKET
-Node 825: Reduced: value: valRef
+Node 831: Reduced: value: valRef
 	 valRef -> arrayat
-Node 826: Reduced: expr: value
+Node 832: Reduced: expr: value
 	 value -> valRef 
-Node 827: Reduced: chainend: expr
+Node 833: Reduced: chainend: expr
 	 expr -> value 
-Node 828: Reduced: chain: chain chainend
+Node 834: Reduced: chain: chain chainend
 	 chain -> var COMMA
 	 chainend -> expr
-Node 829: Reduced: block: chain SEMI
+Node 835: Reduced: block: chain SEMI
 	 chain -> chain chainend
 	 Terminal Symbol: SEMI
-Node 830: Reduced: value: DCONSTANT makenummutable
+Node 836: Reduced: value: DCONSTANT makenummutable
 	 Terminal Symbol: DCONSTANT
 	 makenummutable -> _EPSILON_
-Node 831: Reduced: valRef: IDENTIFIER
+Node 837: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 832: Reduced: value: valRef
+Node 838: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 833: Reduced: valRef: IDENTIFIER
+Node 839: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 834: Reduced: value: valRef
+Node 840: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 835: Reduced: arg_list: value
+Node 841: Reduced: arg_list: value
 	 value -> valRef 
-Node 836: Reduced: arg_list: value COMMA arg_list
+Node 842: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 837: Reduced: arg_list: value COMMA arg_list
+Node 843: Reduced: arg_list: value COMMA arg_list
 	 value-> DCONSTANT makenummutable 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 838: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 844: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> set_constant
 	 Terminal Symbol: RPAREN
-Node 839: Reduced: block: callfunc SEMI
+Node 845: Reduced: block: callfunc SEMI
 	 callfunc -> LPAREN arg_list RPAREN
 	 Terminal Symbol: SEMI
-Node 840: Reduced: arrayat: IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
+Node 846: Reduced: arrayat: IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
 	 Terminal Symbol: IDENTIFIER
 	 Terminal Symbol: LBRACKET
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
 	 Terminal Symbol: RBRACKET
-Node 841: Reduced: valRef: arrayat
-	 arrayat -> IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET
-Node 842: Reduced: value: DCONSTANT makenummutable
-	 Terminal Symbol: DCONSTANT
-	 makenummutable -> _EPSILON_
-Node 843: Reduced: expr: value
-	 value -> DCONSTANT makenummutable 
-Node 844: Reduced: assignment: valRef ASSIGN expr SEMI
-	 valRef -> arrayat
-	 Terminal Symbol: ASSIGN
-	 expr -> value 
-	 Terminal Symbol: SEMI
-Node 845: Reduced: block: assignment SEMI
-	 assignment -> valRef ASSIGN expr SEMI
-	 Terminal Symbol: SEMI
-Node 846: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
-	 Terminal Symbol: IDENTIFIER
-	 Terminal Symbol: LBRACKET
-	 Terminal Symbol: IDENTIFIER
-	 makenummutable -> _EPSILON_
-	 Terminal Symbol: RBRACKET
 Node 847: Reduced: valRef: arrayat
-	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
+	 arrayat -> IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET
 Node 848: Reduced: value: DCONSTANT makenummutable
 	 Terminal Symbol: DCONSTANT
 	 makenummutable -> _EPSILON_
@@ -2552,207 +2543,216 @@ Node 850: Reduced: assignment: valRef ASSIGN expr SEMI
 Node 851: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 852: Reduced: value: SCONSTANT
+Node 852: Reduced: arrayat: IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
+	 Terminal Symbol: IDENTIFIER
+	 Terminal Symbol: LBRACKET
+	 Terminal Symbol: IDENTIFIER
+	 makenummutable -> _EPSILON_
+	 Terminal Symbol: RBRACKET
+Node 853: Reduced: valRef: arrayat
+	 arrayat -> IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET
+Node 854: Reduced: value: DCONSTANT makenummutable
+	 Terminal Symbol: DCONSTANT
+	 makenummutable -> _EPSILON_
+Node 855: Reduced: expr: value
+	 value -> DCONSTANT makenummutable 
+Node 856: Reduced: assignment: valRef ASSIGN expr SEMI
+	 valRef -> arrayat
+	 Terminal Symbol: ASSIGN
+	 expr -> value 
+	 Terminal Symbol: SEMI
+Node 857: Reduced: block: assignment SEMI
+	 assignment -> valRef ASSIGN expr SEMI
+	 Terminal Symbol: SEMI
+Node 858: Reduced: value: SCONSTANT
 	 Terminal Symbol: SCONSTANT
-Node 853: Reduced: valRef: IDENTIFIER
+Node 859: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 854: Reduced: value: valRef
+Node 860: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 855: Reduced: valRef: IDENTIFIER
+Node 861: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 856: Reduced: value: valRef
+Node 862: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 857: Reduced: arg_list: value
+Node 863: Reduced: arg_list: value
 	 value -> valRef 
-Node 858: Reduced: arg_list: value COMMA arg_list
+Node 864: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 859: Reduced: arg_list: value COMMA arg_list
+Node 865: Reduced: arg_list: value COMMA arg_list
 	 value-> SCONSTANT
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 860: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 866: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> print_vector
 	 Terminal Symbol: RPAREN
-Node 861: Reduced: block: callfunc SEMI
+Node 867: Reduced: block: callfunc SEMI
 	 callfunc -> LPAREN arg_list RPAREN
 	 Terminal Symbol: SEMI
-Node 862: Reduced: valRef: IDENTIFIER
+Node 868: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 863: Reduced: valRef: IDENTIFIER
+Node 869: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 864: Reduced: value: valRef
+Node 870: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 865: Reduced: valRef: IDENTIFIER
+Node 871: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 866: Reduced: value: valRef
+Node 872: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 867: Reduced: arg_list: value
+Node 873: Reduced: arg_list: value
 	 value -> valRef 
-Node 868: Reduced: arg_list: value COMMA arg_list
+Node 874: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 869: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 875: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> error_norm
 	 Terminal Symbol: RPAREN
-Node 870: Reduced: expr: callfunc
+Node 876: Reduced: expr: callfunc
 	 callfunc -> LPAREN arg_list RPAREN
-Node 871: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 877: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> callfunc 
 	 Terminal Symbol: SEMI
-Node 872: Reduced: block: assignment SEMI
+Node 878: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 873: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 879: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "initial error norm := "
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 874: Reduced: block: print
+Node 880: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 875: Reduced: valRef: IDENTIFIER
+Node 881: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 876: Reduced: print: K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
+Node 882: Reduced: print: K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 877: Reduced: block: print
+Node 883: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN valRef RPAREN SEMI
-Node 878: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 884: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "\n"
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 879: Reduced: block: print
+Node 885: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 880: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 881: Reduced: value: ICONSTANT makenummutable
-	 Terminal Symbol: ICONSTANT
-	 makenummutable -> _EPSILON_
-Node 882: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 883: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 884: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 885: Reduced: value: valRef
-	 valRef -> IDENTIFIER
 Node 886: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 887: Reduced: value: valRef
-	 valRef -> IDENTIFIER
+Node 887: Reduced: value: ICONSTANT makenummutable
+	 Terminal Symbol: ICONSTANT
+	 makenummutable -> _EPSILON_
 Node 888: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
 Node 889: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 890: Reduced: arg_list: value
+Node 890: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 891: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 892: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 893: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 894: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 895: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 896: Reduced: arg_list: value
 	 value -> valRef 
-Node 891: Reduced: arg_list: value COMMA arg_list
+Node 897: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 892: Reduced: arg_list: value COMMA arg_list
+Node 898: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 893: Reduced: arg_list: value COMMA arg_list
+Node 899: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 894: Reduced: arg_list: value COMMA arg_list
+Node 900: Reduced: arg_list: value COMMA arg_list
 	 value-> ICONSTANT makenummutable 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 895: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 901: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> gauss_seidel
 	 Terminal Symbol: RPAREN
-Node 896: Reduced: expr: callfunc
+Node 902: Reduced: expr: callfunc
 	 callfunc -> LPAREN arg_list RPAREN
-Node 897: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 903: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> callfunc 
 	 Terminal Symbol: SEMI
-Node 898: Reduced: block: assignment SEMI
+Node 904: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 899: Reduced: value: SCONSTANT
+Node 905: Reduced: value: SCONSTANT
 	 Terminal Symbol: SCONSTANT
-Node 900: Reduced: valRef: IDENTIFIER
+Node 906: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 901: Reduced: value: valRef
+Node 907: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 902: Reduced: valRef: IDENTIFIER
+Node 908: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 903: Reduced: value: valRef
+Node 909: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 904: Reduced: arg_list: value
+Node 910: Reduced: arg_list: value
 	 value -> valRef 
-Node 905: Reduced: arg_list: value COMMA arg_list
+Node 911: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 906: Reduced: arg_list: value COMMA arg_list
+Node 912: Reduced: arg_list: value COMMA arg_list
 	 value-> SCONSTANT
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 907: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 913: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> print_vector
 	 Terminal Symbol: RPAREN
-Node 908: Reduced: block: callfunc SEMI
+Node 914: Reduced: block: callfunc SEMI
 	 callfunc -> LPAREN arg_list RPAREN
 	 Terminal Symbol: SEMI
-Node 909: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 915: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "Fine mesh error norm := "
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 910: Reduced: block: print
+Node 916: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 911: Reduced: valRef: IDENTIFIER
+Node 917: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 912: Reduced: print: K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
+Node 918: Reduced: print: K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 913: Reduced: block: print
+Node 919: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN valRef RPAREN SEMI
-Node 914: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 920: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "\n"
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 915: Reduced: block: print
+Node 921: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 916: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 917: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 918: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 919: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 920: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 921: Reduced: value: valRef
-	 valRef -> IDENTIFIER
 Node 922: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
 Node 923: Reduced: value: valRef
@@ -2765,483 +2765,477 @@ Node 926: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
 Node 927: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 928: Reduced: arg_list: value
+Node 928: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 929: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 930: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 931: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 932: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 933: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 934: Reduced: arg_list: value
 	 value -> valRef 
-Node 929: Reduced: arg_list: value COMMA arg_list
+Node 935: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 930: Reduced: arg_list: value COMMA arg_list
+Node 936: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 931: Reduced: arg_list: value COMMA arg_list
+Node 937: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 932: Reduced: arg_list: value COMMA arg_list
+Node 938: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 933: Reduced: arg_list: value COMMA arg_list
+Node 939: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 934: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 940: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> residuals
 	 Terminal Symbol: RPAREN
-Node 935: Reduced: block: callfunc SEMI
+Node 941: Reduced: block: callfunc SEMI
 	 callfunc -> LPAREN arg_list RPAREN
 	 Terminal Symbol: SEMI
-Node 936: Reduced: value: SCONSTANT
+Node 942: Reduced: value: SCONSTANT
 	 Terminal Symbol: SCONSTANT
-Node 937: Reduced: valRef: IDENTIFIER
+Node 943: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 938: Reduced: value: valRef
+Node 944: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 939: Reduced: valRef: IDENTIFIER
+Node 945: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 940: Reduced: value: valRef
+Node 946: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 941: Reduced: arg_list: value
+Node 947: Reduced: arg_list: value
 	 value -> valRef 
-Node 942: Reduced: arg_list: value COMMA arg_list
+Node 948: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 943: Reduced: arg_list: value COMMA arg_list
+Node 949: Reduced: arg_list: value COMMA arg_list
 	 value-> SCONSTANT
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 944: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 950: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> print_vector
 	 Terminal Symbol: RPAREN
-Node 945: Reduced: block: callfunc SEMI
+Node 951: Reduced: block: callfunc SEMI
 	 callfunc -> LPAREN arg_list RPAREN
 	 Terminal Symbol: SEMI
-Node 946: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 947: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 948: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 949: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 950: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 951: Reduced: value: valRef
-	 valRef -> IDENTIFIER
 Node 952: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
 Node 953: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 954: Reduced: arg_list: value
+Node 954: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 955: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 956: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 957: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 958: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 959: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 960: Reduced: arg_list: value
 	 value -> valRef 
-Node 955: Reduced: arg_list: value COMMA arg_list
+Node 961: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 956: Reduced: arg_list: value COMMA arg_list
+Node 962: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 957: Reduced: arg_list: value COMMA arg_list
+Node 963: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 958: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 964: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> interpolate
 	 Terminal Symbol: RPAREN
-Node 959: Reduced: expr: callfunc
+Node 965: Reduced: expr: callfunc
 	 callfunc -> LPAREN arg_list RPAREN
-Node 960: Reduced: relop: NE
+Node 966: Reduced: relop: NE
 	 Terminal Symbol: NE
-Node 961: Reduced: value: ICONSTANT makenummutable
+Node 967: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 962: Reduced: expr: value
+Node 968: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 963: Reduced: condition: expr relop expr
+Node 969: Reduced: condition: expr relop expr
 	 expr-> callfunc 
 	 relop-> NE
 	 expr -> value 
-Node 964: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 965: Reduced: value: ICONSTANT makenummutable
-	 Terminal Symbol: ICONSTANT
-	 makenummutable -> _EPSILON_
-Node 966: Reduced: expr: value
-	 value -> ICONSTANT makenummutable 
-Node 967: Reduced: assignment: valRef ASSIGN expr SEMI
-	 valRef -> IDENTIFIER
-	 Terminal Symbol: ASSIGN
-	 expr -> value 
-	 Terminal Symbol: SEMI
-Node 968: Reduced: ret: K_RETURN assignment SEMI
-	 Terminal Symbol: K_RETURN
-	 assignment -> valRef ASSIGN expr SEMI
-	 Terminal Symbol: SEMI
-Node 969: Reduced: block: ret
-	 ret -> K_RETURN assignment SEMI
 Node 970: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
 Node 971: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 972: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 973: Reduced: value: valRef
+Node 972: Reduced: expr: value
+	 value -> ICONSTANT makenummutable 
+Node 973: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
-Node 974: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 975: Reduced: value: valRef
-	 valRef -> IDENTIFIER
+	 Terminal Symbol: ASSIGN
+	 expr -> value 
+	 Terminal Symbol: SEMI
+Node 974: Reduced: ret: K_RETURN assignment SEMI
+	 Terminal Symbol: K_RETURN
+	 assignment -> valRef ASSIGN expr SEMI
+	 Terminal Symbol: SEMI
+Node 975: Reduced: block: ret
+	 ret -> K_RETURN assignment SEMI
 Node 976: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 977: Reduced: value: valRef
-	 valRef -> IDENTIFIER
+Node 977: Reduced: value: ICONSTANT makenummutable
+	 Terminal Symbol: ICONSTANT
+	 makenummutable -> _EPSILON_
 Node 978: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
 Node 979: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 980: Reduced: arg_list: value
+Node 980: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 981: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 982: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 983: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 984: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 985: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 986: Reduced: arg_list: value
 	 value -> valRef 
-Node 981: Reduced: arg_list: value COMMA arg_list
+Node 987: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 982: Reduced: arg_list: value COMMA arg_list
+Node 988: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 983: Reduced: arg_list: value COMMA arg_list
+Node 989: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 984: Reduced: arg_list: value COMMA arg_list
+Node 990: Reduced: arg_list: value COMMA arg_list
 	 value-> ICONSTANT makenummutable 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 985: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 991: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> gauss_seidel
 	 Terminal Symbol: RPAREN
-Node 986: Reduced: expr: callfunc
+Node 992: Reduced: expr: callfunc
 	 callfunc -> LPAREN arg_list RPAREN
-Node 987: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 993: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> callfunc 
 	 Terminal Symbol: SEMI
-Node 988: Reduced: block: assignment SEMI
+Node 994: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 989: Reduced: value: SCONSTANT
+Node 995: Reduced: value: SCONSTANT
 	 Terminal Symbol: SCONSTANT
-Node 990: Reduced: valRef: IDENTIFIER
+Node 996: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 991: Reduced: value: valRef
+Node 997: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 992: Reduced: valRef: IDENTIFIER
+Node 998: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 993: Reduced: value: valRef
+Node 999: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 994: Reduced: arg_list: value
+Node 1000: Reduced: arg_list: value
 	 value -> valRef 
-Node 995: Reduced: arg_list: value COMMA arg_list
+Node 1001: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 996: Reduced: arg_list: value COMMA arg_list
+Node 1002: Reduced: arg_list: value COMMA arg_list
 	 value-> SCONSTANT
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 997: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 1003: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> print_vector
 	 Terminal Symbol: RPAREN
-Node 998: Reduced: block: callfunc SEMI
+Node 1004: Reduced: block: callfunc SEMI
 	 callfunc -> LPAREN arg_list RPAREN
 	 Terminal Symbol: SEMI
-Node 999: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 1000: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 1001: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 1002: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 1003: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 1004: Reduced: value: valRef
-	 valRef -> IDENTIFIER
 Node 1005: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
 Node 1006: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 1007: Reduced: arg_list: value
+Node 1007: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 1008: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 1009: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 1010: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 1011: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 1012: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 1013: Reduced: arg_list: value
 	 value -> valRef 
-Node 1008: Reduced: arg_list: value COMMA arg_list
+Node 1014: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 1009: Reduced: arg_list: value COMMA arg_list
+Node 1015: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 1010: Reduced: arg_list: value COMMA arg_list
+Node 1016: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 1011: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 1017: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> interpolate
 	 Terminal Symbol: RPAREN
-Node 1012: Reduced: expr: callfunc
+Node 1018: Reduced: expr: callfunc
 	 callfunc -> LPAREN arg_list RPAREN
-Node 1013: Reduced: relop: GT
+Node 1019: Reduced: relop: GT
 	 Terminal Symbol: GT
-Node 1014: Reduced: value: ICONSTANT makenummutable
+Node 1020: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 1015: Reduced: expr: value
+Node 1021: Reduced: expr: value
 	 value -> ICONSTANT makenummutable 
-Node 1016: Reduced: condition: expr relop expr
+Node 1022: Reduced: condition: expr relop expr
 	 expr-> callfunc 
 	 relop-> GT
 	 expr -> value 
-Node 1017: Reduced: value: ICONSTANT makenummutable
+Node 1023: Reduced: value: ICONSTANT makenummutable
 	 Terminal Symbol: ICONSTANT
 	 makenummutable -> _EPSILON_
-Node 1018: Reduced: ret: K_RETURN block SEMI
+Node 1024: Reduced: ret: K_RETURN block SEMI
 	 Terminal Symbol: K_RETURN
 	 value -> ICONSTANT makenummutable 
 	 Terminal Symbol: SEMI
-Node 1019: Reduced: block: ret
+Node 1025: Reduced: block: ret
 	 ret -> K_RETURN value SEMI
-Node 1020: Reduced: valRef: IDENTIFIER
+Node 1026: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 1021: Reduced: valRef: IDENTIFIER
+Node 1027: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 1022: Reduced: value: valRef
+Node 1028: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 1023: Reduced: valRef: IDENTIFIER
+Node 1029: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 1024: Reduced: value: valRef
+Node 1030: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 1025: Reduced: arg_list: value
+Node 1031: Reduced: arg_list: value
 	 value -> valRef 
-Node 1026: Reduced: arg_list: value COMMA arg_list
+Node 1032: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 1027: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 1033: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> error_norm
 	 Terminal Symbol: RPAREN
-Node 1028: Reduced: expr: callfunc
+Node 1034: Reduced: expr: callfunc
 	 callfunc -> LPAREN arg_list RPAREN
-Node 1029: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 1035: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> callfunc 
 	 Terminal Symbol: SEMI
-Node 1030: Reduced: block: assignment SEMI
+Node 1036: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 1031: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 1037: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "Fine mesh error norm := "
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 1032: Reduced: block: print
+Node 1038: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 1033: Reduced: valRef: IDENTIFIER
+Node 1039: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 1034: Reduced: print: K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
+Node 1040: Reduced: print: K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 1035: Reduced: block: print
+Node 1041: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN valRef RPAREN SEMI
-Node 1036: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 1042: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "\n"
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 1037: Reduced: block: print
+Node 1043: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 1038: Reduced: value: SCONSTANT
+Node 1044: Reduced: value: SCONSTANT
 	 Terminal Symbol: SCONSTANT
-Node 1039: Reduced: valRef: IDENTIFIER
+Node 1045: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 1040: Reduced: value: valRef
+Node 1046: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 1041: Reduced: valRef: IDENTIFIER
+Node 1047: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 1042: Reduced: value: valRef
+Node 1048: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 1043: Reduced: arg_list: value
+Node 1049: Reduced: arg_list: value
 	 value -> valRef 
-Node 1044: Reduced: arg_list: value COMMA arg_list
+Node 1050: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 1045: Reduced: arg_list: value COMMA arg_list
+Node 1051: Reduced: arg_list: value COMMA arg_list
 	 value-> SCONSTANT
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 1046: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 1052: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> print_vector
 	 Terminal Symbol: RPAREN
-Node 1047: Reduced: block: callfunc SEMI
+Node 1053: Reduced: block: callfunc SEMI
 	 callfunc -> LPAREN arg_list RPAREN
 	 Terminal Symbol: SEMI
-Node 1048: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 1049: Reduced: value: ICONSTANT makenummutable
-	 Terminal Symbol: ICONSTANT
-	 makenummutable -> _EPSILON_
-Node 1050: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 1051: Reduced: value: valRef
-	 valRef -> IDENTIFIER
-Node 1052: Reduced: valRef: IDENTIFIER
-	 Terminal Symbol: IDENTIFIER
-Node 1053: Reduced: value: valRef
-	 valRef -> IDENTIFIER
 Node 1054: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 1055: Reduced: value: valRef
-	 valRef -> IDENTIFIER
+Node 1055: Reduced: value: ICONSTANT makenummutable
+	 Terminal Symbol: ICONSTANT
+	 makenummutable -> _EPSILON_
 Node 1056: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
 Node 1057: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 1058: Reduced: arg_list: value
+Node 1058: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 1059: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 1060: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 1061: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 1062: Reduced: valRef: IDENTIFIER
+	 Terminal Symbol: IDENTIFIER
+Node 1063: Reduced: value: valRef
+	 valRef -> IDENTIFIER
+Node 1064: Reduced: arg_list: value
 	 value -> valRef 
-Node 1059: Reduced: arg_list: value COMMA arg_list
+Node 1065: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 1060: Reduced: arg_list: value COMMA arg_list
+Node 1066: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 1061: Reduced: arg_list: value COMMA arg_list
+Node 1067: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 1062: Reduced: arg_list: value COMMA arg_list
+Node 1068: Reduced: arg_list: value COMMA arg_list
 	 value-> ICONSTANT makenummutable 
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 1063: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 1069: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> gauss_seidel
 	 Terminal Symbol: RPAREN
-Node 1064: Reduced: expr: callfunc
+Node 1070: Reduced: expr: callfunc
 	 callfunc -> LPAREN arg_list RPAREN
-Node 1065: Reduced: assignment: valRef ASSIGN expr SEMI
+Node 1071: Reduced: assignment: valRef ASSIGN expr SEMI
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: ASSIGN
 	 expr -> callfunc 
 	 Terminal Symbol: SEMI
-Node 1066: Reduced: block: assignment SEMI
+Node 1072: Reduced: block: assignment SEMI
 	 assignment -> valRef ASSIGN expr SEMI
 	 Terminal Symbol: SEMI
-Node 1067: Reduced: value: SCONSTANT
+Node 1073: Reduced: value: SCONSTANT
 	 Terminal Symbol: SCONSTANT
-Node 1068: Reduced: valRef: IDENTIFIER
+Node 1074: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 1069: Reduced: value: valRef
+Node 1075: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 1070: Reduced: valRef: IDENTIFIER
+Node 1076: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 1071: Reduced: value: valRef
+Node 1077: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 1072: Reduced: arg_list: value
+Node 1078: Reduced: arg_list: value
 	 value -> valRef 
-Node 1073: Reduced: arg_list: value COMMA arg_list
+Node 1079: Reduced: arg_list: value COMMA arg_list
 	 value-> valRef 
 	 Terminal Symbol: Comma
 	 arg_list -> value
-Node 1074: Reduced: arg_list: value COMMA arg_list
+Node 1080: Reduced: arg_list: value COMMA arg_list
 	 value-> SCONSTANT
 	 Terminal Symbol: Comma
 	 arg_list -> value COMMA arg_list
-Node 1075: Reduced: callfunc: LPAREN arg_list RPAREN
+Node 1081: Reduced: callfunc: LPAREN arg_list RPAREN
 	 Terminal Symbol: LPAREN
 	 arg_list -> print_vector
 	 Terminal Symbol: RPAREN
-Node 1076: Reduced: block: callfunc SEMI
+Node 1082: Reduced: block: callfunc SEMI
 	 callfunc -> LPAREN arg_list RPAREN
 	 Terminal Symbol: SEMI
-Node 1077: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 1083: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "Fine mesh error norm := "
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 1078: Reduced: block: print
+Node 1084: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 1079: Reduced: valRef: IDENTIFIER
+Node 1085: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 1080: Reduced: print: K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
+Node 1086: Reduced: print: K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 valRef -> IDENTIFIER
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 1081: Reduced: block: print
+Node 1087: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN valRef RPAREN SEMI
-Node 1082: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Node 1088: Reduced: print: K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 	 Terminal Symbol: K_PRINT_STRING
 	 Terminal Symbol: LPAREN
 	 SCONSTANT -> "\n"
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: SEMI
-Node 1083: Reduced: block: print
+Node 1089: Reduced: block: print
 	 print -> K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-Node 1084: Reduced: valRef: IDENTIFIER
+Node 1090: Reduced: valRef: IDENTIFIER
 	 Terminal Symbol: IDENTIFIER
-Node 1085: Reduced: value: valRef
+Node 1091: Reduced: value: valRef
 	 valRef -> IDENTIFIER
-Node 1086: Reduced: ret: K_RETURN block SEMI
+Node 1092: Reduced: ret: K_RETURN block SEMI
 	 Terminal Symbol: K_RETURN
 	 value -> valRef 
 	 Terminal Symbol: SEMI
-Node 1087: Reduced: block: ret
+Node 1093: Reduced: block: ret
 	 ret -> K_RETURN value SEMI
-Node 1088: Reduced: block: block
-	 block -> print
-	 block -> ret
-Node 1089: Reduced: block: block
-	 block -> print
-	 block -> block block
-Node 1090: Reduced: block: block
-	 block -> print
-	 block -> block block
-Node 1091: Reduced: block: block
-	 block -> callfunc SEMI
-	 block -> block block
-Node 1092: Reduced: block: block
-	 block -> assignment SEMI
-	 block -> block block
-Node 1093: Reduced: block: block
-	 block -> callfunc SEMI
-	 block -> block block
 Node 1094: Reduced: block: block
 	 block -> print
-	 block -> block block
+	 block -> ret
 Node 1095: Reduced: block: block
 	 block -> print
 	 block -> block block
@@ -3249,61 +3243,61 @@ Node 1096: Reduced: block: block
 	 block -> print
 	 block -> block block
 Node 1097: Reduced: block: block
-	 block -> assignment SEMI
+	 block -> callfunc SEMI
 	 block -> block block
 Node 1098: Reduced: block: block
-	 block -> ret
-	 block -> block block
-Node 1099: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block
-	 Terminal Symbol: K_IF
-	 Terminal Symbol: LPAREN
-	 condition -> expr relop expr
-	 Terminal Symbol: RPAREN
-	 Terminal Symbol: K_THEN
-	 block -> block block
-Node 1100: Reduced: block: if
-	 if -> K_IF LPAREN condition RPAREN K_THEN block
-Node 1101: Reduced: block: block
-	 block -> callfunc SEMI
-	 block -> if
-Node 1102: Reduced: block: block
 	 block -> assignment SEMI
+	 block -> block block
+Node 1099: Reduced: block: block
+	 block -> callfunc SEMI
+	 block -> block block
+Node 1100: Reduced: block: block
+	 block -> print
+	 block -> block block
+Node 1101: Reduced: block: block
+	 block -> print
+	 block -> block block
+Node 1102: Reduced: block: block
+	 block -> print
 	 block -> block block
 Node 1103: Reduced: block: block
+	 block -> assignment SEMI
+	 block -> block block
+Node 1104: Reduced: block: block
 	 block -> ret
 	 block -> block block
-Node 1104: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block
+Node 1105: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block
 	 Terminal Symbol: K_IF
 	 Terminal Symbol: LPAREN
 	 condition -> expr relop expr
 	 Terminal Symbol: RPAREN
 	 Terminal Symbol: K_THEN
 	 block -> block block
-Node 1105: Reduced: block: if
+Node 1106: Reduced: block: if
 	 if -> K_IF LPAREN condition RPAREN K_THEN block
-Node 1106: Reduced: block: block
-	 block -> callfunc SEMI
-	 block -> if
 Node 1107: Reduced: block: block
 	 block -> callfunc SEMI
-	 block -> block block
+	 block -> if
 Node 1108: Reduced: block: block
-	 block -> print
-	 block -> block block
-Node 1109: Reduced: block: block
-	 block -> print
-	 block -> block block
-Node 1110: Reduced: block: block
-	 block -> print
-	 block -> block block
-Node 1111: Reduced: block: block
-	 block -> callfunc SEMI
-	 block -> block block
-Node 1112: Reduced: block: block
 	 block -> assignment SEMI
 	 block -> block block
+Node 1109: Reduced: block: block
+	 block -> ret
+	 block -> block block
+Node 1110: Reduced: if: K_IF LPAREN condition RPAREN K_THEN block
+	 Terminal Symbol: K_IF
+	 Terminal Symbol: LPAREN
+	 condition -> expr relop expr
+	 Terminal Symbol: RPAREN
+	 Terminal Symbol: K_THEN
+	 block -> block block
+Node 1111: Reduced: block: if
+	 if -> K_IF LPAREN condition RPAREN K_THEN block
+Node 1112: Reduced: block: block
+	 block -> callfunc SEMI
+	 block -> if
 Node 1113: Reduced: block: block
-	 block -> print
+	 block -> callfunc SEMI
 	 block -> block block
 Node 1114: Reduced: block: block
 	 block -> print
@@ -3312,7 +3306,7 @@ Node 1115: Reduced: block: block
 	 block -> print
 	 block -> block block
 Node 1116: Reduced: block: block
-	 block -> assignment SEMI
+	 block -> print
 	 block -> block block
 Node 1117: Reduced: block: block
 	 block -> callfunc SEMI
@@ -3321,56 +3315,74 @@ Node 1118: Reduced: block: block
 	 block -> assignment SEMI
 	 block -> block block
 Node 1119: Reduced: block: block
-	 block -> assignment SEMI
+	 block -> print
 	 block -> block block
 Node 1120: Reduced: block: block
-	 block -> callfunc SEMI
+	 block -> print
 	 block -> block block
 Node 1121: Reduced: block: block
-	 block -> chain SEMI
+	 block -> print
 	 block -> block block
 Node 1122: Reduced: block: block
-	 block -> chain SEMI
-	 block -> block block
-Node 1123: Reduced: block: block
-	 block -> print
-	 block -> block block
-Node 1124: Reduced: block: block
-	 block -> print
-	 block -> block block
-Node 1125: Reduced: block: block
-	 block -> print
-	 block -> block block
-Node 1126: Reduced: block: block
-	 block -> print
-	 block -> block block
-Node 1127: Reduced: block: block
-	 block -> print
-	 block -> block block
-Node 1128: Reduced: block: block
 	 block -> assignment SEMI
 	 block -> block block
+Node 1123: Reduced: block: block
+	 block -> callfunc SEMI
+	 block -> block block
+Node 1124: Reduced: block: block
+	 block -> assignment SEMI
+	 block -> block block
+Node 1125: Reduced: block: block
+	 block -> assignment SEMI
+	 block -> block block
+Node 1126: Reduced: block: block
+	 block -> callfunc SEMI
+	 block -> block block
+Node 1127: Reduced: block: block
+	 block -> chain SEMI
+	 block -> block block
+Node 1128: Reduced: block: block
+	 block -> chain SEMI
+	 block -> block block
 Node 1129: Reduced: block: block
+	 block -> print
+	 block -> block block
+Node 1130: Reduced: block: block
+	 block -> print
+	 block -> block block
+Node 1131: Reduced: block: block
+	 block -> print
+	 block -> block block
+Node 1132: Reduced: block: block
+	 block -> print
+	 block -> block block
+Node 1133: Reduced: block: block
+	 block -> print
+	 block -> block block
+Node 1134: Reduced: block: block
+	 block -> assignment SEMI
+	 block -> block block
+Node 1135: Reduced: block: block
 	 block -> LCURLY block RCURLY
 	 block -> block block
-Node 1130: Reduced: whileloop: K_WHILE LPAREN condition RPAREN block
+Node 1136: Reduced: whileloop: K_WHILE LPAREN condition RPAREN block
 	 Terminal Symbol: K_WHILE
 	 Terminal Symbol: LPAREN
 	 condition -> condition gate condition
 	 Terminal Symbol: RPAREN
 	 block -> block block
-Node 1131: Reduced: block: whileloop
+Node 1137: Reduced: block: whileloop
 	 whileloop -> K_WHILE LPAREN condition RPAREN block
-Node 1132: Reduced: block: block
+Node 1138: Reduced: block: block
 	 block -> var SEMI
 	 block -> whileloop
-Node 1133: Reduced: block: block
+Node 1139: Reduced: block: block
 	 block -> chain SEMI
 	 block -> block block
-Node 1134: Reduced: block: block
+Node 1140: Reduced: block: block
 	 block -> var SEMI
 	 block -> block block
-Node 1135: Reduced: function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+Node 1141: Reduced: function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 Terminal Symbol: K_FUNCTION
 	 d_type -> K_INTEGER
 	 IDENTIFIER -> main
@@ -3380,27 +3392,27 @@ Node 1135: Reduced: function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPA
 	 Terminal Symbol: LCURLY
 	 block -> block block
 	 Terminal Symbol: RCURLY
-Node 1136: Reduced: task: function
+Node 1142: Reduced: task: function
 	 function -> K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
-Node 1137: Reduced: task: task function
+Node 1143: Reduced: task: task function
 	 task -> K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 function -> function
-Node 1138: Reduced: task: task function
+Node 1144: Reduced: task: task function
 	 task -> K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 function -> task function
-Node 1139: Reduced: task: task procedure
+Node 1145: Reduced: task: task procedure
 	 task -> K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 procedure -> task function
-Node 1140: Reduced: task: task function
+Node 1146: Reduced: task: task function
 	 task -> K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 function -> task procedure
-Node 1141: Reduced: task: task procedure
+Node 1147: Reduced: task: task procedure
 	 task -> K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 procedure -> task function
-Node 1142: Reduced: task: task procedure
+Node 1148: Reduced: task: task procedure
 	 task -> K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
 	 procedure -> task procedure
-Node 1143: Reduced: program: K_PROGRAM IDENTIFIER LCURLY task RCURLY
+Node 1149: Reduced: program: K_PROGRAM IDENTIFIER LCURLY task RCURLY
 	 Terminal Symbol: K_PROGRAM
 	 IDENTIFIER -> $two_grid_solver
 	 Terminal Symbol: LCURLY
