@@ -10,6 +10,12 @@ OUTPUT=PS_Full_Parser_Out.txt
 all: $(BUILD)
 	./$(BUILD) < mg.f23 | tee $(OUTPUT)
 
+Pru: $(BUILD)
+	./$(BUILD) < Pru1.f23 | tee Pru1_output.txt
+
+Sloan: $(BUILD)
+	./$(BUILD) < Sloan2.f23 | tee Sloan2_output.txt
+
 $(BUILD): lex.yy.c y.tab.c
 	${CC} ${CFLAGS} y.tab.c -o $(BUILD)
 
