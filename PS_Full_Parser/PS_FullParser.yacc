@@ -39,7 +39,7 @@
 %token<sVal> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
 
 %type<sVal> statement program expr condition param_list block d_type var assignment task function procedure print value arg_list
-%type<sVal> if ret chain chainend makenummutable reader callfunc arrayat gate relop forloop whileloop happyruben buildarr
+%type<sVal> if ret chain chainend makenummutable reader callfunc arrayat gate relop forloop whileloop valRef buildarr
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
@@ -248,27 +248,27 @@ print:
         printf("\t Terminal Symbol: SEMI\n");
         $$ = "K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI";
     }
-    | K_PRINT_INTEGER LPAREN happyruben RPAREN SEMI
+    | K_PRINT_INTEGER LPAREN valRef RPAREN SEMI
     {
         printf("Node %d: Reduced: print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI\n",
         nodeCount++);
         printf("\t Terminal Symbol: K_PRINT_INTEGER\n");
         printf("\t Terminal Symbol: LPAREN\n");
-        printf("\t happyruben -> %s\n", $3);
+        printf("\t valRef -> %s\n", $3);
         printf("\t Terminal Symbol: RPAREN\n");
         printf("\t Terminal Symbol: SEMI\n");
-        $$ = "K_PRINT_INTEGER LPAREN happyruben RPAREN SEMI";
+        $$ = "K_PRINT_INTEGER LPAREN valRef RPAREN SEMI";
     }
-    | K_PRINT_DOUBLE LPAREN happyruben RPAREN SEMI
+    | K_PRINT_DOUBLE LPAREN valRef RPAREN SEMI
     {
         printf("Node %d: Reduced: print: K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI\n",
         nodeCount++);
         printf("\t Terminal Symbol: K_PRINT_STRING\n");
         printf("\t Terminal Symbol: LPAREN\n");
-        printf("\t happyruben -> %s\n", $3);
+        printf("\t valRef -> %s\n", $3);
         printf("\t Terminal Symbol: RPAREN\n");
         printf("\t Terminal Symbol: SEMI\n");
-        $$ = "K_PRINT_STRING LPAREN happyruben RPAREN SEMI";
+        $$ = "K_PRINT_STRING LPAREN valRef RPAREN SEMI";
     }
     | K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
     {
@@ -295,13 +295,13 @@ print:
     ;
 
 var:
-    d_type happyruben 
+    d_type valRef 
     {
-        printf("Node %d: Reduced: var: d_type happyruben\n", nodeCount++);
+        printf("Node %d: Reduced: var: d_type valRef\n", nodeCount++);
         printf("\t d_type -> %s\n", $1);
-        printf("\t happyruben -> %s\n", $2);
+        printf("\t valRef -> %s\n", $2);
         
-        $$ = "d_type happyruben";
+        $$ = "d_type valRef";
     }
     | d_type buildarr
     {
@@ -328,65 +328,65 @@ var:
     ;
 
 assignment:
-    happyruben ASSIGN expr 
+    valRef ASSIGN expr 
     {
-        printf("Node %d: Reduced: assignment: happyruben ASSIGN expr SEMI\n", 
+        printf("Node %d: Reduced: assignment: valRef ASSIGN expr SEMI\n", 
         nodeCount++);
-        printf("\t happyruben -> %s\n", $1);
+        printf("\t valRef -> %s\n", $1);
         printf("\t Terminal Symbol: ASSIGN\n");
         printf("\t expr -> %s\n", $3);
         printf("\t Terminal Symbol: SEMI\n");
-        $$ = "happyruben ASSIGN expr SEMI";
+        $$ = "valRef ASSIGN expr SEMI";
     }
-    | happyruben ASSIGN_DIVIDE expr 
+    | valRef ASSIGN_DIVIDE expr 
     {
-        printf("Node %d: Reduced: assignment: happyruben ASSIGN_DIVIDE expr SEMI\n", 
+        printf("Node %d: Reduced: assignment: valRef ASSIGN_DIVIDE expr SEMI\n", 
         nodeCount++);
-        printf("\t happyruben -> %s\n", $1);
+        printf("\t valRef -> %s\n", $1);
         printf("\t Terminal Symbol: ASSIGN_DIVIDE\n");
         printf("\t expr -> %s\n", $3);
         printf("\t Terminal Symbol: SEMI\n");
-        $$ = "happyruben ASSIGN_DIVIDE expr SEMI";
+        $$ = "valRef ASSIGN_DIVIDE expr SEMI";
     }
-    | happyruben ASSIGN_MINUS expr 
+    | valRef ASSIGN_MINUS expr 
     {
-        printf("Node %d: Reduced: assignment: happyruben ASSIGN_MINUS expr SEMI\n", 
+        printf("Node %d: Reduced: assignment: valRef ASSIGN_MINUS expr SEMI\n", 
         nodeCount++);
-        printf("\t happyruben -> %s\n", $1);
+        printf("\t valRef -> %s\n", $1);
         printf("\t Terminal Symbol: ASSIGN_MINUS\n");
         printf("\t expr -> %s\n", $3);
         printf("\t Terminal Symbol: SEMI\n");
-        $$ = "happyruben ASSIGN_MINUS expr SEMI";
+        $$ = "valRef ASSIGN_MINUS expr SEMI";
     }
-    | happyruben ASSIGN_MOD expr 
+    | valRef ASSIGN_MOD expr 
     {
-        printf("Node %d: Reduced: assignment: happyruben ASSIGN_MOD expr SEMI\n", 
+        printf("Node %d: Reduced: assignment: valRef ASSIGN_MOD expr SEMI\n", 
         nodeCount++);
-        printf("\t happyruben -> %s\n", $1);
+        printf("\t valRef -> %s\n", $1);
         printf("\t Terminal Symbol: ASSIGN_MOD\n");
         printf("\t expr -> %s\n", $3);
         printf("\t Terminal Symbol: SEMI\n");
-        $$ = "happyruben ASSIGN_MOD expr SEMI";
+        $$ = "valRef ASSIGN_MOD expr SEMI";
     }
-    | happyruben ASSIGN_MULTIPLY expr 
+    | valRef ASSIGN_MULTIPLY expr 
     {
-        printf("Node %d: Reduced: assignment: happyruben ASSIGN_MULTIPLY expr SEMI\n", 
+        printf("Node %d: Reduced: assignment: valRef ASSIGN_MULTIPLY expr SEMI\n", 
         nodeCount++);
-        printf("\t happyruben -> %s\n", $1);
+        printf("\t valRef -> %s\n", $1);
         printf("\t Terminal Symbol: ASSIGN_MULTIPLY\n");
         printf("\t expr -> %s\n", $3);
         printf("\t Terminal Symbol: SEMI\n");
-        $$ = "happyruben ASSIGN_MULTIPLY expr SEMI";
+        $$ = "valRef ASSIGN_MULTIPLY expr SEMI";
     }
-    | happyruben ASSIGN_PLUS expr 
+    | valRef ASSIGN_PLUS expr 
     {
-        printf("Node %d: Reduced: assignment: happyruben ASSIGN_PLUS expr SEMI\n", 
+        printf("Node %d: Reduced: assignment: valRef ASSIGN_PLUS expr SEMI\n", 
         nodeCount++);
-        printf("\t happyruben -> %s\n", $1);
+        printf("\t valRef -> %s\n", $1);
         printf("\t Terminal Symbol: ASSIGN_PLUS\n");
         printf("\t expr -> %s\n", $3);
         printf("\t Terminal Symbol: SEMI\n");
-        $$ = "happyruben ASSIGN_PLUS expr SEMI";
+        $$ = "valRef ASSIGN_PLUS expr SEMI";
     }
     |assignment ASSIGN expr
     {
@@ -499,11 +499,11 @@ value:
         printf("\t makenummutable -> %s\n", $2);
         $$ = "DCONSTANT makenummutable ";
     }    
-    | happyruben
+    | valRef
     {
-        printf("Node %d: Reduced: value: happyruben\n", nodeCount++);
-        printf("\t happyruben -> %s\n", $1);
-        $$ = "happyruben ";
+        printf("Node %d: Reduced: value: valRef\n", nodeCount++);
+        printf("\t valRef -> %s\n", $1);
+        $$ = "valRef ";
     } 
     | MINUS value
     {
@@ -528,7 +528,7 @@ value:
     ;
 
 param_list:
-    | var
+    var
     {
         printf("Node %d: Reduced: param_list: var\n", nodeCount++);
         printf("\t var -> %s\n", $1);
@@ -542,6 +542,7 @@ param_list:
         printf("\t param_list -> %s\n", $3);
         $$ = "var COMMA param_list";
     }
+    | {$$ = "_EPSILON_";}
     ;
 
 
@@ -646,6 +647,7 @@ arg_list:
         $$ = "value COMMA arg_list";
     }
     |
+    {$$ = "_EPSILON_";}
     ;
 
 relop: 
@@ -756,6 +758,7 @@ makenummutable:
         $$ = "INCREMENT";
     }
     |
+    {$$ = "_EPSILON_";}
     
     ;
 
@@ -813,19 +816,7 @@ callfunc:
     ;
 
 whileloop:
-    K_WHILE LPAREN condition RPAREN LCURLY block RCURLY
-    {
-        printf("Node %d: Reduced: whileloop: K_WHILE LPAREN condition RPAREN LCURLY block RCURLY\n", nodeCount++);
-        printf("\t Terminal Symbol: K_WHILE\n");
-        printf("\t Terminal Symbol: LPAREN\n");
-        printf("\t condition -> %s\n", $3);
-        printf("\t Terminal Symbol: RPAREN\n");
-        printf("\t Terminal Symbol: LCURLY\n");
-        printf("\t block -> %s\n", $6);
-        printf("\t Terminal Symbol: RCURLY\n");
-        $$ = "K_WHILE LPAREN condition RPAREN LCURLY block RCURLY";
-    }
-    | K_WHILE LPAREN condition RPAREN block
+     K_WHILE LPAREN condition RPAREN block
     {
         printf("Node %d: Reduced: whileloop: K_WHILE LPAREN condition RPAREN block\n", nodeCount++);
         printf("\t Terminal Symbol: K_WHILE\n");
@@ -872,56 +863,19 @@ forloop:
         printf("\t block -> %s\n", $12);
         $$ = "K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER DECREMENT RPAREN block";
     }
-    | K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN LCURLY block RCURLY
-        {
-        printf("Node %d: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN LCURLY block RCURLY\n", nodeCount++);
-        printf("\t Terminal Symbol: K_DO\n");
-        printf("\t Terminal Symbol: LPAREN\n");
-        printf("\t Terminal Symbol: IDENTIFIER\n");
-        printf("\t Terminal Symbol: ASSIGN\n");
-        printf("\t Terminal Symbol: ICONSTANT\n");
-        printf("\t Terminal Symbol: SEMI\n");
-        printf("\t condition -> %s\n", $7);
-        printf("\t Terminal Symbol: SEMI\n");
-        printf("\t Terminal Symbol: IDENTIFIER\n");
-        printf("\t Terminal Symbol: INCREMENT\n");
-        printf("\t Terminal Symbol: RPAREN\n");
-        printf("\t Terminal Symbol: LCURLY\n");
-        printf("\t block -> %s\n", $12);
-        printf("\t Terminal Symbol: RCURLY\n");
-        $$ = "K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER INCREMENT RPAREN LCURLY block RCURLY";
-    }
-    | K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER DECREMENT RPAREN LCURLY block RCURLY
-    {
-        printf("Node %d: Reduced: forloop: K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER DECREMENT RPAREN LCURLY block RCURLY\n", nodeCount++);
-        printf("\t Terminal Symbol: K_DO\n");
-        printf("\t Terminal Symbol: LPAREN\n");
-        printf("\t Terminal Symbol: IDENTIFIER\n");
-        printf("\t Terminal Symbol: ASSIGN\n");
-        printf("\t Terminal Symbol: ICONSTANT\n");
-        printf("\t Terminal Symbol: SEMI\n");
-        printf("\t condition -> %s\n", $7);
-        printf("\t Terminal Symbol: SEMI\n");
-        printf("\t Terminal Symbol: IDENTIFIER\n");
-        printf("\t Terminal Symbol: DECREMENT\n");
-        printf("\t Terminal Symbol: RPAREN\n");
-        printf("\t Terminal Symbol: LCURLY\n");
-        printf("\t block -> %s\n", $12);
-        printf("\t Terminal Symbol: RCURLY\n");
-        $$ = "K_DO LPAREN IDENTIFIER ASSIGN ICONSTANT SEMI condition SEMI IDENTIFIER DECREMENT RPAREN LCURLY block RCURLY";
-    }
+
     ;
     
-happyruben:
+valRef:
     IDENTIFIER
     {
-        printf("Node %d: Reduced: happyruben: IDENTIFIER\n", nodeCount++);
+        printf("Node %d: Reduced: valRef: IDENTIFIER\n", nodeCount++);
         printf("\t Terminal Symbol: IDENTIFIER\n");
         $$ = "IDENTIFIER";
     }
     | arrayat
     {
-        printf("Node %d: Reduced: happyruben: arrayat\n", nodeCount++);
+        printf("Node %d: Reduced: valRef: arrayat\n", nodeCount++);
         printf("\t arrayat -> %s\n", $1);
         $$ = "arrayat";
     }
@@ -948,13 +902,7 @@ chain:
         printf("\t Terminal Symbol: COMMA\n");
         $$ = "expr COMMA";
     }
-    /* | value COMMA
-    {
-        printf("Node %d: Reduced: chain: value COMMA\n", nodeCount++);
-        printf("\t value -> %s\n", $1);
-        printf("\t Terminal Symbol: COMMA\n");
-        $$ = "value COMMA";
-    } */
+
     | chain chain
     {
         printf("Node %d: Reduced: chain: chain chain\n", nodeCount++);
@@ -977,12 +925,7 @@ chainend:
         printf("\t var -> %s\n", $1);
         $$ = "var";
     }
-    /* | value
-    {
-        printf("Node %d: Reduced: chainend: value\n", nodeCount++);
-        printf("\t value -> %s\n", $1);
-        $$ = "value";
-    } */
+
     | assignment
     {
         printf("Node %d: Reduced: chainend: assignment\n", nodeCount++);
