@@ -4,16 +4,12 @@
 ##############################################################################
 CC=gcc
 
-BUILD=PruSloanTrivCodeGen
+BUILD=PruSloanSimpleCodeGen
 OUTPUT=PS_CG_Parser_Out.txt
 
 all: $(BUILD)
 	./$(BUILD) < te2.f23 | tee $(OUTPUT)
-
-
-#Old rule
-#	./$(BUILD) < simple1.f23 | tee $(OUTPUT)
-
+	
 $(BUILD): lex.yy.c y.tab.c
 	${CC} ${CFLAGS} y.tab.c -o $(BUILD)
 
@@ -22,7 +18,7 @@ runCode:
 	gcc f23.c -lm ; ./a.out
 
 y.tab.c:
-	yacc -d PS_CG_Parser.yacc
+	yacc -d CodeGenParser_PruSloan.yacc
 
 lex.yy.c:
 	lex PSlexer.l

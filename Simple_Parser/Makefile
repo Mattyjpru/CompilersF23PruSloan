@@ -23,7 +23,7 @@ $(BUILD): lex.yy.c y.tab.c
 	${CC} lex.yy.c y.tab.c -o $(BUILD)
 
 y.tab.c:
-	yacc -d PSSimParser.yacc
+	yacc -d PSCodeGenParser.yacc
 
 lex.yy.c:
 	lex PSlexer.l

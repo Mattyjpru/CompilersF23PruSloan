@@ -78,12 +78,14 @@
 	} nd_obj; 
 }
 
-%token<nd_obj> IDENTIFIER SCONSTANT ICONSTANT DCONSTANT K_DO K_DOUBLE K_ELSE K_EXIT K_FUNCTION K_IF K_INTEGER 
+%token<nd_obj> IDENTIFIER ICONSTANT DCONSTANT SCONSTANT K_DO K_DOUBLE K_ELSE K_EXIT K_FUNCTION K_IF K_INTEGER 
 %token<nd_obj> K_PRINT_DOUBLE K_PRINT_INTEGER K_PRINT_STRING K_PROCEDURE K_PROGRAM K_READ_DOUBLE K_READ_INTEGER
 %token<nd_obj> K_READ_STRING K_RETURN K_STRING K_THEN K_WHILE ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY
 %token<nd_obj> ASSIGN_DIVIDE ASSIGN_MOD COMMA COMMENT DAND DIVIDE DOR DEQ GEQ GT LBRACKET LEQ LCURLY LPAREN LT MINUS 
 %token<nd_obj> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
-%type<nd_obj> statement program task function procedure param_list block d_type print var assignment expr value
+
+%type<nd_obj> statement program expr condition param_list forcond block d_type var assignment task function procedure print value arg_list
+%type<nd_obj> if ret chain chainend makenummutable reader callfunc arrayat gate relop forloop whileloop valRef buildarr
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
