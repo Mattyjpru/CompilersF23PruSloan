@@ -202,66 +202,63 @@ assignment:
 
     | valRef ASSIGN_PLUS expr 
 
-    |assignment ASSIGN expr
+    | assignment ASSIGN expr
 
     ;
     
 
 d_type:
-    K_INTEGER
+    K_INTEGER {insert(); $$.nd = buildNode(NULL, NULL, $1.name); }
 
-    | K_STRING
+    | K_STRING {insert(); $$.nd = buildNode(NULL, NULL, $1.name); }
 
-    | K_DOUBLE
-
+    | K_DOUBLE {insert(); $$.nd = buildNode(NULL, NULL, $1.name); }
+ 
     ;
 
 expr:
-    value 
+    value { $$.nd = $1.nd; }
 
-    | callfunc
+    | callfunc { $$.nd = $1.nd;}
 
-    | expr MINUS expr
+    | expr MINUS expr { $$.nd = buildNode($1.nd, $3.nd, $2.name); }
 
-    | expr PLUS expr        
+    | expr PLUS expr { $$.nd = buildNode($1.nd, $3.nd, $2.name); }
 
-    | expr MULTIPLY expr
+    | expr MULTIPLY expr { $$.nd = buildNode($1.nd, $3.nd, $2.name); }
 
-    | expr DIVIDE expr
+    | expr DIVIDE expr { $$.nd = buildNode($1.nd, $3.nd, $2.name); }
 
-    | expr MOD expr
+    | expr MOD expr { $$.nd = buildNode($1.nd, $3.nd, $2.name); }
 
-    | LPAREN expr RPAREN   
+    | LPAREN expr RPAREN { $$.nd = $2.nd;} 
 
     ;
     
 value:
-    ICONSTANT makenummutable  
+    ICONSTANT makenummutable ////////////////////////////////////////////////////////////////////////
 
-    | DCONSTANT makenummutable  
+    | DCONSTANT makenummutable  ////////////////////////////////////////////////////////////////////////
 
-    | valRef
+    | valRef { $$.nd = $1.nd;}
 
-    | MINUS value
+    | MINUS value ////////////////////////////////////////////////////////////////////////
 
-    | callfunc 
+    | callfunc { $$.nd = $1.nd;}
 
-    |SCONSTANT 
-
+    | SCONSTANT { $$.nd = $1.nd;}
 
     ;
 
 param_list:
-    var
+    var { $$.nd = $1.nd; }
 
     | var COMMA param_list
-
-    | 
+    { 
+        $$.nd = buildNode($1.nd, $5.nd, "Parameter List");
+    } 
+    | {$$.nd = NULL;}
     ;
-
-
-
-
 
 // New Code Starts here.
 
