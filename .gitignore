@@ -38,3 +38,9 @@ PS_Full_Parser/.vscode/c_cpp_properties.json
 PS_Full_Parser/.vscode/launch.json
 PS_Full_Parser/.vscode/settings.json
 PS_Full_Parser/Sloan2_output.txt
+Simple_Code_Gen/lex.yy.c
+Simple_Code_Gen/PruSloanSimpleCodeGen
+Simple_Code_Gen/PS_CG_Parser_Out.txt
+Simple_Code_Gen/y.tab.c
+Simple_Code_Gen/y.tab.h
+Simple_Code_Gen/yourmain.h

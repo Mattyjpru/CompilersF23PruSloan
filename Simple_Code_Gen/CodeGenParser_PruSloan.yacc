@@ -255,7 +255,7 @@ param_list:
 
     | var COMMA param_list
     { 
-        $$.nd = buildNode($1.nd, $5.nd, "Parameter List");
+        $$.nd = buildNode($1.nd, $3.nd, "Parameter List");
     } 
     | {$$.nd = NULL;}
     ;
