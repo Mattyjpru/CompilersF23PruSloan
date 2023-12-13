@@ -153,30 +153,40 @@ block:
 
 print:
     K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI 
-
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
+    }
     | K_PRINT_DOUBLE LPAREN DCONSTANT RPAREN SEMI
-
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
+    }
     | K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
-
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
+    }
     | K_PRINT_INTEGER LPAREN valRef RPAREN SEMI
-
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
+    }
     | K_PRINT_DOUBLE LPAREN valRef RPAREN SEMI
-
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
+    }
     | K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
-
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
+    }
     | K_PRINT_INTEGER LPAREN expr RPAREN SEMI
-
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), $3.nd, "print statement");
+    }
     ;
 
 var:
-    d_type valRef 
-
-    | d_type buildarr
-
-    | d_type assignment
-
-    | var SEMI
-
+    d_type valRef {$$.nd = $2.nd;}
+    | d_type buildarr {$$.nd = $2.nd;}
+    | d_type assignment {$$.nd = $2.nd;}
+    | var SEMI {$$.nd = $1.nd;}
     ;
 
 assignment:
