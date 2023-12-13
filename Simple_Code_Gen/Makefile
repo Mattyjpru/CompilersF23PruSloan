@@ -13,7 +13,6 @@ all: $(BUILD)
 $(BUILD): lex.yy.c y.tab.c
 	${CC} ${CFLAGS} y.tab.c -o $(BUILD)
 
-
 runCode:
 	gcc f23.c -lm ; ./a.out
 

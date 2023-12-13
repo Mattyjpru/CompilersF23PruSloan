@@ -94,59 +94,61 @@
 
 %%
 statement: 
-    program { printf("\nValid Program\n");};
+    program { printf("\nValid Program\n"); execute(head);};
 
-program: K_PROGRAM IDENTIFIER LCURLY task RCURLY
-
+program: K_PROGRAM IDENTIFIER {newSymbol('M', $2.name);} LCURLY task RCURLY
+    {
+        $$.nd=buildNode( $5.nd, NULL, $2.name);
+        head = $$.nd;
+    }
     ;
 
-task: function
-
-    | procedure
-
-    | function task
-
-    | procedure task  
-
+task: function {$$.nd = buildNode($1.nd, NULL, "task");}
+    | procedure {$$.nd = buildNode($1.nd, NULL, "task");}
+    | function task {$$.nd = buildNode($1.nd, $2.nd, "task");}
+    | procedure task {$$.nd = buildNode($1.nd, $2.nd, "task");}
     ;
 
 procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
-
+    {
+        $$.nd = buildNode($4.nd, $7.nd, $2.name);
+    }
     ;
 
-function: K_FUNCTION d_type IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
-
+function: K_FUNCTION d_type IDENTIFIER {newSymbol('V', $3.name);} LPAREN param_list RPAREN LCURLY block RCURLY
+    {
+        $$.nd = buildNode($6.nd, $9.nd, $3.name);
+    }
     ;
 
 block:
-    print
+    print {$$.nd = $1.nd;}
 
-    | var SEMI
+    | var SEMI {$$.nd = $1.nd;}
 
-    | callfunc SEMI
+    | callfunc SEMI {$$.nd = $1.nd;}
 
-    | assignment SEMI
+    | assignment SEMI {$$.nd = $1.nd;}
 
-    | if
+    | if {$$.nd = $1.nd;}
 
-    | ret
+    | ret {$$.nd = $1.nd;}
 
-    | forloop
+    | forloop {$$.nd = $1.nd;}
 
-    | whileloop
+    | whileloop {$$.nd = $1.nd;}
 
-    | reader SEMI
+    | reader SEMI {$$.nd = $1.nd;}
 
-    | task
+    | task {$$.nd = $1.nd;}
 
-    | LCURLY block RCURLY
+    | LCURLY block RCURLY {$$.nd = $2.nd;}
 
-    | block block 
+    | block block {$$.nd = buildNode($1.nd, $2.nd, "blocks");}
 
-    | IDENTIFIER makenummutable SEMI 
+    | IDENTIFIER /*{newSymbol('V', $3.name);}*/ makenummutable SEMI /*{$$.nd = $3.nd;}  NOT SURE HOW TO DO THIS ONE*/
 
-    | chain SEMI   
-
+    | chain SEMI {$$.nd = $1.nd;}
     ;
 
 print:
@@ -245,7 +247,6 @@ param_list:
     | var COMMA param_list
 
     | 
-    /* {$$ = "_EPSILON_";} */
     ;
 
 
