@@ -71,12 +71,11 @@
 %}
 
 %union {
-    struct nt1 { 
+    struct nt1{ 
 		char name[100];
         // char dt[100];
 		struct node* nd;
-	} nd_obj; 
-    // 
+	}nd_obj; 
 }
 
 %token<nd_obj> IDENTIFIER ICONSTANT DCONSTANT SCONSTANT K_DO K_DOUBLE K_ELSE K_EXIT K_FUNCTION K_IF K_INTEGER 
@@ -109,15 +108,15 @@ task: function {$$.nd = buildNode($1.nd, NULL, "task");}
     | procedure task {$$.nd = buildNode($1.nd, $2.nd, "task");}
     ;
 
-procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN LCURLY block RCURLY
+procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN block
     {
-        $$.nd = buildNode($4.nd, $7.nd, $2.name);
+        $$.nd = buildNode($4.nd, $6.nd, $2.name);
     }
     ;
 
-function: K_FUNCTION d_type IDENTIFIER {newSymbol('V', $3.name);} LPAREN param_list RPAREN LCURLY block RCURLY
+function: K_FUNCTION d_type IDENTIFIER {newSymbol('V', $3.name);} LPAREN param_list RPAREN block
     {
-        $$.nd = buildNode($6.nd, $9.nd, $3.name);
+        $$.nd = buildNode($6.nd, $8.nd, $3.name);
     }
     ;
 
@@ -164,13 +163,13 @@ print:
     {
         $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
     }
-    | K_PRINT_INTEGER LPAREN valRef RPAREN SEMI
+    | K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI
     {
         $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
     }
     | K_PRINT_DOUBLE LPAREN valRef RPAREN SEMI
     {
-        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "print statement");
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), $3.nd, "print statement");
     }
     | K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI
     {
@@ -190,19 +189,19 @@ var:
     ;
 
 assignment:
-    valRef ASSIGN expr 
+    valRef ASSIGN expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
 
-    | valRef ASSIGN_DIVIDE expr 
+    | valRef ASSIGN_DIVIDE expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
 
-    | valRef ASSIGN_MINUS expr 
+    | valRef ASSIGN_MINUS expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
 
-    | valRef ASSIGN_MOD expr 
+    | valRef ASSIGN_MOD expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
 
-    | valRef ASSIGN_MULTIPLY expr 
+    | valRef ASSIGN_MULTIPLY expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
 
-    | valRef ASSIGN_PLUS expr 
+    | valRef ASSIGN_PLUS expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
 
-    | assignment ASSIGN expr
+    | assignment ASSIGN expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
 
     ;
     
@@ -385,7 +384,7 @@ forloop:
     ;
     
 valRef:
-    IDENTIFIER
+    IDENTIFIER { newSymbol('V', $1.name);}
 
     | arrayat
 
@@ -420,7 +419,7 @@ int main(){
     do{
         yyparse();
         printf("\n\n");
-        /* printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
+        printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
         printf("___________________________________________________________________________\n\n");
 
         for(int i=0; i<st_count; i++) {
@@ -433,7 +432,7 @@ int main(){
             else{
                 printf("%-25s %-15s %-15s %-15d\n", symbolTable[i].name, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
             }
-        } */
+        }
         for(int i=0;i<st_count;i++) {
             free(symbolTable[i].name);
             free(symbolTable[i].d_type);
@@ -675,17 +674,18 @@ void printStr(char* str, FILE* filename){
     fprintf(filename, "print_string(%s);\n", str);
     fprintf(filename, "F23_Time += 1;\n");
 }
-void printVar(char* memAddress, char* type, FILE* filename){
 
+void printVar(char* memAddress, char* type, FILE* filename){
+    fprintf(stderr, "EAT MY ASS1\n");
     if (strcmp(type , "integer")==0){
         fprintf(filename, "print_int(%s);\n", memAddress);
     }
+    fprintf(stderr, "EAT MY ASS2\n");
     if (strcmp(type , "string")==0){
         fprintf(filename, "print_string(%s);\n", memAddress);
     }
     fprintf(filename, "F23_Time += 20 + 1;\n");
 }
-
 
 
 char* strIn(char* input, int sLoc, FILE* filename){
