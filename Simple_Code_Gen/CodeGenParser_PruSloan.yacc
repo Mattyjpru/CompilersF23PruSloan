@@ -12,7 +12,6 @@
 
     int yylex();
     int yywrap();
-    extern char* yytext;
     extern int line;
     
     //Symbol Table stuff
@@ -25,10 +24,6 @@
     struct SymTabEntry{
         char* name;
         char* type;
-        char* use;
-        int intval;
-        float dubval;
-        int line_no;
         char* memLoc;
     }InitialSymTab[MAX_ST_SIZE];
 
@@ -43,6 +38,12 @@
         int intVal;
         double floatVal;
     };
+
+    // Define a struct to hold the result of ST_get_index
+    typedef struct {
+        int stackIndex;
+        int SymTabIndex;
+    } IndexPair;
 
     // Code Gen stuff
     struct node{
@@ -64,7 +65,7 @@
     char* repD(char*, char);
     void walk(struct node*, FILE*);
     char* intIn(int, int, int, FILE*);
-    int ST_get_index(char*);
+    IndexPair ST_get_index(char*);
     void printStr(char*, FILE*);
     void assignmentGenerator(int, FILE*);
     void printStatementGenerator(char*, FILE*);
@@ -94,7 +95,7 @@
 %token<nd_obj> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
 
 %type<nd_obj> statement program expr condition param_list forcond block d_type var assignment task function procedure print value arg_list
-%type<nd_obj> if ret chain chainend makenummutable reader callfunc arrayat gate relop forloop whileloop valRef buildarr
+%type<nd_obj> if ret chain makenummutable reader callfunc arrayat gate relop forloop whileloop valRef buildarr
 
 %left MINUS PLUS
 //%left DIVIDE MULTIPLY
@@ -246,7 +247,7 @@ expr:
 value:
     ICONSTANT {newSymbol('I', $1.name);}  ////////////////////////////////////////////////////////////////////////
     {
-        {$$.nd = buildNode($3.nd, NULL, $1.name);}
+        {$$.nd = buildNode(NULL, NULL, $1.name);}
     }
     | DCONSTANT {newSymbol('D', $1.name);}   ////////////////////////////////////////////////////////////////////////
     {
@@ -373,11 +374,11 @@ reader:
 makenummutable:
     DECREMENT
     {
-        $$.nd=buildnode(NULL,NULL, "--");
+        $$.nd=buildNode(NULL,NULL, "--");
     }
     | INCREMENT
     {
-        $$.nd=buildnode(NULL,NULL, "++");
+        $$.nd=buildNode(NULL,NULL, "++");
     }
     |
     /* {$$ = "_EPSILON_";} */
@@ -407,7 +408,7 @@ buildarr:
 callfunc:
     IDENTIFIER LPAREN arg_list RPAREN
     {
-        $$.nd=buildNode($1.nd,$3.nd,"callfunc")
+        $$.nd=buildNode($1.nd,$3.nd,"callfunc");
     }
 
     ;
@@ -421,7 +422,7 @@ whileloop:
 forcond:
     ICONSTANT
     {
-        $$.nd=builNode(NULL,NULL,$1.name);
+        $$.nd=buildNode(NULL,NULL,$1.name);
     }
     | IDENTIFIER{$$.nd=$1.nd;}
     /* {
@@ -476,20 +477,10 @@ extern FILE* yyin;
 int main(){
     do{
         yyparse();
-        printf("\n\n");
-        printf("%-25s %-15s %-15s %-15s\n","SYMBOL", "DATATYPE", "TYPE", "LINE NUMBER");
         printf("___________________________________________________________________________\n\n");
 
         for(int i=0; i<st_count; i++) {
-            if(strcmp(InitialSymTab[i].type, "ICONSTANT") == 0){
-                printf("%-25d %-15s\n", InitialSymTab[i].intval, InitialSymTab[i].type);
-            }
-            else if(strcmp(InitialSymTab[i].type, "DCONSTANT") == 0){
-                printf("%-25f %-15s\n", InitialSymTab[i].dubval, InitialSymTab[i].type);
-            }
-            else{
-                printf("%-25s %-15s\n", InitialSymTab[i].name, InitialSymTab[i].type);
-            }
+            printf("%-25s %-15s\n", InitialSymTab[i].name, InitialSymTab[i].type);
         }
         for(int i=0;i<st_count;i++) {
             free(InitialSymTab[i].name);
@@ -515,18 +506,27 @@ char* repD(char* str, char target){
     return str;
 }
 
+int search(char* in){
+    for(int i=0; i<st_count; i++){
+        if(strcmp(InitialSymTab[i].name, in)==0){
+            return -1;
+            break;
+        }
+    }
+    return 0;
+}
+
 ////////////////////////////////// New Symbol Table Stuff //////////////////////////////////////////
 void newSymbol(char c, char* stringVal){
     if(!search(stringVal)){
         switch(c){
             case 'I':
-                InitialSymTab[st_count].intval = atoi(stringVal);
+                InitialSymTab[st_count].name=strdup(stringVal);
                 InitialSymTab[st_count].type=strdup("ICONSTANT");
                 st_count++;
                 break;
-            case 'D':
-                stringVal = strdup(repD(repD(stringVal,'d'),'D'));
-                InitialSymTab[st_count].dubval = atof(stringVal);
+            case 'D': 
+                InitialSymTab[st_count].name = strdup(repD(repD(stringVal,'d'),'D'));;
                 InitialSymTab[st_count].type=strdup("DCONSTANT");
                 st_count++;
                 break;
@@ -559,17 +559,6 @@ void newSymbol(char c, char* stringVal){
                 break;
         }
     }
-}
-
-
-int search(char* in){
-    for(int i=0; i<st_count; i++){
-        if(strcmp(InitialSymTab[i].name, in)==0){
-            return -1;
-            break;
-        }
-    }
-    return 0;
 }
 
 
@@ -686,13 +675,16 @@ void assignmentGenerator(int index, FILE* filename){//**************************
     free(location);
 }
 
-int ST_get_index(char* name){
-    for(int i = 0; i < st_count; i++){
-        if(strcmp(InitialSymTab[i].name, name) == 0){
-            return i;
+IndexPair ST_get_index(char* name){
+    for(int i = ST_Stack->top-1; i >= 0; i--){
+        int ST_size = ST_Stack->sizes[i];
+        for(int j = ST_size-1; j >= 0; j--){
+            if(strcmp(ST_Stack[i][j].name, name) == 0){
+                return (IndexPair) {i, j};
+            }
         }
     }
-    return -1;
+    return (IndexPair){-1,-1};
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
