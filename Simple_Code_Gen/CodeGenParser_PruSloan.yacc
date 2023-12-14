@@ -145,7 +145,7 @@ block:
 
     | block block {$$.nd = buildNode($1.nd, $2.nd, "blocks");}
 
-    | IDENTIFIER /*{newSymbol('V', $3.name);}*/ makenummutable SEMI /*{$$.nd = $3.nd;}  NOT SURE HOW TO DO THIS ONE*/
+    | IDENTIFIER {newSymbol('V', $1.name);} makenummutable SEMI /*{$$.nd = $3.nd;}  NOT SURE HOW TO DO THIS ONE*/
 
     | chain SEMI {$$.nd = $1.nd;}
     ;
@@ -239,8 +239,10 @@ value:
     {
         {$$.nd = buildNode(NULL, NULL, $1.name);}
     }
-    | DCONSTANT makenummutable  ////////////////////////////////////////////////////////////////////////
-
+    | DCONSTANT {newSymbol('D', $1.name);} makenummutable  ////////////////////////////////////////////////////////////////////////
+    {
+        {$$.nd = buildNode(NULL, NULL, $1.name);}
+    }
     | valRef { $$.nd = $1.nd;}
 
     | MINUS value ////////////////////////////////////////////////////////////////////////
@@ -267,9 +269,13 @@ param_list:
 
 //cody code
 condition: expr relop expr
-
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "condition");
+    }
     | condition gate condition
-
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "gate");
+    }
     | NOT condition
 
     ;
@@ -282,30 +288,36 @@ if: K_IF LPAREN condition RPAREN K_THEN block
 
 ret:
     K_RETURN value SEMI
-
+    {
+        $$.nd=buildnode(NULL,$2.nd,"return");
+        // $$.nd=buildnode(NULL,buildnode(NULL, NULL, $2.name),"return");
+    }
     |K_RETURN assignment SEMI
-
+    {
+        $$.nd=buildnode(NULL,$2.nd,"return");
+        // $$.nd=buildnode(NULL,buildnode(NULL, NULL, $2.name),"return");
+    }
     ;
 
 relop: 
-    LT
+    LT{$$.nd=buildnode(NULL, NULL, $1.name);}
 
-    | GT
+    | GT{$$.nd=buildnode(NULL, NULL, $1.name);}
 
-    | LEQ
+    | LEQ{$$.nd=buildnode(NULL, NULL, $1.name);}
 
-    | GEQ
+    | GEQ{$$.nd=buildnode(NULL, NULL, $1.name);}
 
-    | DEQ
+    | DEQ{$$.nd=buildnode(NULL, NULL, $1.name);}
 
-    | NE
+    | NE{$$.nd=buildnode(NULL, NULL, $1.name);}
 
     ;
 
 gate:
-    DAND
+    DAND{$$.nd=buildnode(NULL, NULL, $1.name);}
 
-    | DOR
+    | DOR{$$.nd=buildnode(NULL, NULL, $1.name);}
 
     ;
 
@@ -404,12 +416,12 @@ chain:
 
     ;
 chainend:
-    var
+    var{ $$.nd = $1.nd; }
 
 
-    | assignment
+    | assignment{ $$.nd = $1.nd; }
 
-    | expr
+    | expr{ $$.nd = $1.nd; }
 
     ;
 
