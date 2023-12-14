@@ -198,19 +198,19 @@ var:
     ;
 
 assignment:
-    valRef ASSIGN expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
+    valRef ASSIGN expr {$$.nd = buildNode($1.nd, $3.nd, "=");}
 
-    | valRef ASSIGN_DIVIDE expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
+    | valRef ASSIGN_DIVIDE expr {$$.nd = buildNode($1.nd, $3.nd, "/=");}
 
-    | valRef ASSIGN_MINUS expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
+    | valRef ASSIGN_MINUS expr {$$.nd = buildNode($1.nd, $3.nd, "-=");}
 
-    | valRef ASSIGN_MOD expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
+    | valRef ASSIGN_MOD expr {$$.nd = buildNode($1.nd, $3.nd, "%=");}
 
-    | valRef ASSIGN_MULTIPLY expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
+    | valRef ASSIGN_MULTIPLY expr {$$.nd = buildNode($1.nd, $3.nd, "*=");}
 
-    | valRef ASSIGN_PLUS expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
+    | valRef ASSIGN_PLUS expr {$$.nd = buildNode($1.nd, $3.nd, "+=");}
 
-    | assignment ASSIGN expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
+    | assignment ASSIGN expr {$$.nd = buildNode($1.nd, $3.nd, "=");}
 
     ;
     
@@ -244,11 +244,11 @@ expr:
     ;
     
 value:
-    ICONSTANT {newSymbol('I', $1.name);} makenummutable ////////////////////////////////////////////////////////////////////////
+    ICONSTANT {newSymbol('I', $1.name);}  ////////////////////////////////////////////////////////////////////////
     {
-        {$$.nd = buildNode(NULL, NULL, $1.name);}
+        {$$.nd = buildNode($3.nd, NULL, $1.name);}
     }
-    | DCONSTANT {newSymbol('D', $1.name);} makenummutable  ////////////////////////////////////////////////////////////////////////
+    | DCONSTANT {newSymbol('D', $1.name);}   ////////////////////////////////////////////////////////////////////////
     {
         {$$.nd = buildNode(NULL, NULL, $1.name);}
     }
@@ -290,9 +290,13 @@ condition: expr relop expr
     ;
 
 if: K_IF LPAREN condition RPAREN K_THEN block
-
+    {
+        $$.nd=buildNode($3.nd, $6.nd, "if");
+    }
     | K_IF LPAREN condition RPAREN K_THEN block K_ELSE block
-
+    {
+        $$.nd=buildNode(buildNode($3.nd, $6.nd, "if"), buildNode(NULL, $8.nd, "else"), "ifel");
+    }
     ;
 
 ret:
@@ -337,61 +341,89 @@ gate:
 //matty code
 arg_list:
     value
-
+    {$$.nd=$1.nd;}
     | value COMMA arg_list
-
-    |
+    {
+        $$.nd=buildNode($1.nd,$3.nd,"arg_list");
+    }
+    |{$$.nd=NULL;}
     /* {$$ = "_EPSILON_";} */
     ;
 
 
 reader:
     K_READ_DOUBLE LPAREN expr RPAREN
-
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "reader");
+    }
     | K_READ_INTEGER LPAREN expr RPAREN
-
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "reader");
+    }
     | K_READ_STRING LPAREN SCONSTANT RPAREN
-
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "reader");
+    }
     | K_READ_STRING LPAREN IDENTIFIER RPAREN
-
+    {
+        $$.nd = buildNode(buildNode(NULL, NULL, $1.name), buildNode(NULL, NULL, $3.name), "reader");
+    }
     ;
 
 makenummutable:
     DECREMENT
-
+    {
+        $$.nd=buildnode(NULL,NULL, "--");
+    }
     | INCREMENT
-
+    {
+        $$.nd=buildnode(NULL,NULL, "++");
+    }
     |
     /* {$$ = "_EPSILON_";} */
+    {$$.nd=NULL;}
     
     ;
 
-arrayat: IDENTIFIER LBRACKET ICONSTANT makenummutable RBRACKET 
-
+arrayat: IDENTIFIER LBRACKET ICONSTANT RBRACKET 
+    {
+        $$.nd=buildNode($1.nd,$3.nd,"arrayat");
+    }
     | IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
-
+    {
+        $$.nd=buildNode($1.nd,buildNode($3.nd, $4.nd, "mutate"),"arrayat");
+    }
     | IDENTIFIER LBRACKET expr RBRACKET
-
+    {
+        $$.nd=buildNode($1.nd,$3.nd,"arrayat");
+    }
     ;
 
 buildarr:
-    IDENTIFIER LBRACKET RBRACKET 
+    IDENTIFIER LBRACKET RBRACKET {newSymbol('V',$1.name);$$.nd=buildNode(NULL, NULL, $1.name);}
 
     ;
 
 callfunc:
     IDENTIFIER LPAREN arg_list RPAREN
+    {
+        $$.nd=buildNode($1.nd,$3.nd,"callfunc")
+    }
 
     ;
 
 whileloop:
      K_WHILE LPAREN condition RPAREN block
-
+    {
+        $$.nd=buildNode($3.nd, $5.nd, "while");
+    }
     ;
 forcond:
     ICONSTANT
-
-    | IDENTIFIER
+    {
+        $$.nd=builNode(NULL,NULL,$1.name);
+    }
+    | IDENTIFIER{$$.nd=$1.nd;}
     /* {
         printf("Node %d: Reduced: forcond: IDENTIFIER\n", nodeCount++);
         printf("\t Terminal Symbol: IDENTIFIER\n");
@@ -400,8 +432,10 @@ forcond:
     ;
 forloop:
     K_DO LPAREN IDENTIFIER ASSIGN forcond SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
+    {$$.nd=buildNode(buildNode($3.nd, $5.nd, "="),buildNode($7.nd,$12.nd,"++"),"forloop");}
 
     | K_DO LPAREN IDENTIFIER ASSIGN forcond SEMI condition SEMI IDENTIFIER DECREMENT RPAREN block
+    {$$.nd=buildNode(buildNode($3.nd, $5.nd, "="),buildNode($7.nd,$12.nd,"--"),"forloop");}
 
 
     ;
@@ -409,22 +443,24 @@ forloop:
 valRef:
     IDENTIFIER { newSymbol('V', $1.name); $$.nd=buildNode(NULL, NULL, $1.name);}
 
-    | arrayat
+    | arrayat{$$.nd=$1.nd;}
 
     ;
 chain:
-    var COMMA
-
-    | assignment COMMA
-
-    | expr COMMA
-
-    | chain chain
-
-    | chain chainend
+    var //COMMA
+    {$$.nd=$1.nd;}
+    | assignment //COMMA
+    {$$.nd=$1.nd;}
+    | expr //COMMA
+    {$$.nd=$1.nd;}
+    | chain COMMA chain
+    {
+        $$.nd=buildNode($1.nd,$3.nd,"chain");
+    }
+    /* | chain chainend */
 
     ;
-chainend:
+/* chainend:
     var{ $$.nd = $1.nd; }
 
 
@@ -432,7 +468,7 @@ chainend:
 
     | expr{ $$.nd = $1.nd; }
 
-    ;
+    ; */
 
 %%
 extern FILE* yyin;
@@ -525,64 +561,6 @@ void newSymbol(char c, char* stringVal){
     }
 }
 
-/* void newSymbol(char c, char* stringVal){
-    if(!search(stringVal)){
-        switch(c){
-            case 'I':
-                InitialSymTab[st_count].name=strdup(stringVal);
-                InitialSymTab[st_count].intval = atoi(stringVal);
-                InitialSymTab[st_count].d_type=strdup("CONST");
-                InitialSymTab[st_count].line_no=line;    
-                InitialSymTab[st_count].use=strdup("ICONSTANT");//this should be ICONSTANT but if i change it to that, it sets the 441 to 0?
-                st_count++;
-                break;
-            case 'D':
-                stringVal = strdup(repD(repD(stringVal,'d'),'D'));
-                InitialSymTab[st_count].name=strdup(stringVal);
-                InitialSymTab[st_count].dubval = atof(stringVal);
-                InitialSymTab[st_count].d_type=strdup("CONST");
-                InitialSymTab[st_count].line_no=line;
-                InitialSymTab[st_count].use=strdup("DCONSTANT");
-                st_count++;
-                break;
-            case 'V':
-                InitialSymTab[st_count].name=strdup(stringVal);
-                InitialSymTab[st_count].d_type=strdup(useBuff);
-                InitialSymTab[st_count].line_no=line;
-                InitialSymTab[st_count].use=strdup("IDENTIFIER");
-                st_count++;
-                break;
-            case 'P':
-                InitialSymTab[st_count].name=strdup(stringVal);        
-                InitialSymTab[st_count].d_type=strdup("void");    
-                InitialSymTab[st_count].line_no=line;    
-                InitialSymTab[st_count].use=strdup("PROCEDURE");
-                st_count++;
-                break;
-            case 'S':
-                InitialSymTab[st_count].name=strdup(stringVal); 
-                InitialSymTab[st_count].d_type=strdup("CONST");
-                InitialSymTab[st_count].line_no=line;
-                InitialSymTab[st_count].use=strdup("SCONSTANT");
-                st_count++;
-                break;
-            case 'F':
-                InitialSymTab[st_count].name=strdup(stringVal); 
-                InitialSymTab[st_count].d_type=strdup(useBuff);
-                InitialSymTab[st_count].line_no=line;
-                InitialSymTab[st_count].use=strdup("FUNCTION");
-                st_count++;
-                break;
-            case 'M':
-                InitialSymTab[st_count].name=strdup(stringVal); 
-                InitialSymTab[st_count].d_type=strdup("N/A");
-                InitialSymTab[st_count].line_no=line;
-                InitialSymTab[st_count].use=strdup("PROGRAM");
-                st_count++;
-                break;
-        }
-    }
-} */
 
 int search(char* in){
     for(int i=0; i<st_count; i++){
@@ -647,28 +625,36 @@ void walk(struct node* yesde, FILE* filename){
             /* printf("leaf\n"); */
         }
         else{
-            if (strcmp(yesde->token, "=")==0){
-                int varIndex = ST_get_index(yesde->leftchild->token);
-                int valueIndex = ST_get_index(yesde->rightchild->token);
+            switch(yesde->token){
+                case "=":
+                    int varIndex = ST_get_index(yesde->leftchild->token);
+                    int valueIndex = ST_get_index(yesde->rightchild->token);
 
-                InitialSymTab[varIndex].intval = InitialSymTab[valueIndex].intval;
+                    InitialSymTab[varIndex].intval = InitialSymTab[valueIndex].intval;
 
-                assignmentGenerator(varIndex, filename);
-         
-            }
-                
-            else if (strcmp(yesde->token, "print statement") == 0){
-                printStatementGenerator(yesde->rightchild->token, filename);
-      
-            }
-                
-            else{
-                if (yesde->leftchild) {
-                    walk(yesde->leftchild, filename);
-                }
-                if (yesde->rightchild) {
-                    walk(yesde->rightchild, filename);
-                }
+                    assignmentGenerator(varIndex, filename);
+                case "print statement":
+                    printStatementGenerator(yesde->rightchild->token, filename);
+                case "while":
+                case "forloop":
+                case "+=":
+                case "/=":
+                case "-=":
+                case "*=":
+                case "%=":
+                case "callfunc":
+                case "reader":
+                case "arg_list":
+
+
+
+                default:
+                    if (yesde->leftchild) {
+                        walk(yesde->leftchild, filename);
+                    }
+                    if (yesde->rightchild) {
+                        walk(yesde->rightchild, filename);
+                    }
             }
         }
     }
