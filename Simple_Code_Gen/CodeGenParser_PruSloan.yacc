@@ -14,25 +14,31 @@
     int yywrap();
     extern char* yytext;
     extern int line;
-    extern int yylineno;
-
+    
     //Symbol Table stuff
     int st_count=0;
     char useBuff[16];
-    
-    struct stEntry{
+
+    #define MAX_ST_SIZE 48
+    #define MAX_ST_STACK_SIZE 30
+
+    struct SymTabEntry{
         char* name;
-        char* d_type;
+        char* type;
         char* use;
         int intval;
         float dubval;
         int line_no;
         char* memLoc;
-    } symbolTable[48];
-    // struct stEntry SymbolTableList[5][48];
+    }InitialSymTab[MAX_ST_SIZE];
 
-    struct stRtnValue{
-        char * strVal;
+    struct SymTabStack{
+        struct SymTabEntry SymTab[MAX_ST_STACK_SIZE][MAX_ST_SIZE];
+        int top;
+    }*ST_Stack;
+
+    struct SymTabRtnValue{
+        char* strVal;
         int intVal;
         double floatVal;
     };
@@ -45,8 +51,9 @@
         // char* dataType;
     };
     struct node *head;
+
 ////////func protos
-    struct node* buildNode(struct node* left, struct node* right, char* token);
+    struct node* buildNode(struct node*, struct node*, char*);
     void printtree(struct node* );
     void printInorder(struct node *);
     void insert();
@@ -60,9 +67,10 @@
     void printStr(char*, FILE*);
     void assignmentGenerator(int, FILE*);
     void printStatementGenerator(char*, FILE*);
-    void printVar(char* memAddress, char* type, FILE* filename);
-    char* strIn(char* input, int sLoc, FILE* filename);
-
+    void printVar(char*, char*, FILE*);
+    char* strIn(char*, int, FILE*);
+    void ST_Stack_init();
+    int SymTab_push(struct SymTabEntry*);
 
     int SI = 0;
     int IR = 1;
@@ -93,7 +101,7 @@
 
 %%
 statement: 
-    program { printf("\nValid Program\n"); execute(head);};
+     program { printf("\nValid Program\n"); /*execute(head); */ printtree(head);}; 
 
 program: K_PROGRAM IDENTIFIER {newSymbol('M', $2.name);} LCURLY task RCURLY
     {
@@ -189,7 +197,7 @@ var:
     ;
 
 assignment:
-    valRef ASSIGN expr {$$.nd = buildNode($1.nd, $3.nd, "=");}
+    valRef ASSIGN expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
 
     | valRef ASSIGN_DIVIDE expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
 
@@ -289,35 +297,35 @@ if: K_IF LPAREN condition RPAREN K_THEN block
 ret:
     K_RETURN value SEMI
     {
-        $$.nd=buildnode(NULL,$2.nd,"return");
-        // $$.nd=buildnode(NULL,buildnode(NULL, NULL, $2.name),"return");
+        $$.nd=buildNode(NULL,$2.nd,"return");
+        // $$.nd=buildNode(NULL,buildNode(NULL, NULL, $2.name),"return");
     }
     |K_RETURN assignment SEMI
     {
-        $$.nd=buildnode(NULL,$2.nd,"return");
-        // $$.nd=buildnode(NULL,buildnode(NULL, NULL, $2.name),"return");
+        $$.nd=buildNode(NULL,$2.nd,"return");
+        // $$.nd=buildNode(NULL,buildNode(NULL, NULL, $2.name),"return");
     }
     ;
 
 relop: 
-    LT{$$.nd=buildnode(NULL, NULL, $1.name);}
+    LT{$$.nd=buildNode(NULL, NULL, $1.name);}
 
-    | GT{$$.nd=buildnode(NULL, NULL, $1.name);}
+    | GT{$$.nd=buildNode(NULL, NULL, $1.name);}
 
-    | LEQ{$$.nd=buildnode(NULL, NULL, $1.name);}
+    | LEQ{$$.nd=buildNode(NULL, NULL, $1.name);}
 
-    | GEQ{$$.nd=buildnode(NULL, NULL, $1.name);}
+    | GEQ{$$.nd=buildNode(NULL, NULL, $1.name);}
 
-    | DEQ{$$.nd=buildnode(NULL, NULL, $1.name);}
+    | DEQ{$$.nd=buildNode(NULL, NULL, $1.name);}
 
-    | NE{$$.nd=buildnode(NULL, NULL, $1.name);}
+    | NE{$$.nd=buildNode(NULL, NULL, $1.name);}
 
     ;
 
 gate:
-    DAND{$$.nd=buildnode(NULL, NULL, $1.name);}
+    DAND{$$.nd=buildNode(NULL, NULL, $1.name);}
 
-    | DOR{$$.nd=buildnode(NULL, NULL, $1.name);}
+    | DOR{$$.nd=buildNode(NULL, NULL, $1.name);}
 
     ;
 
@@ -436,21 +444,19 @@ int main(){
         printf("___________________________________________________________________________\n\n");
 
         for(int i=0; i<st_count; i++) {
-            if(strcmp(symbolTable[i].use, "ICONSTANT") == 0){
-                printf("%-25d %-15s %-15s %-15d\n", symbolTable[i].intval, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
+            if(strcmp(InitialSymTab[i].type, "ICONSTANT") == 0){
+                printf("%-25d %-15s\n", InitialSymTab[i].intval, InitialSymTab[i].type);
             }
-            else if(strcmp(symbolTable[i].use, "DCONSTANT") == 0){
-                printf("%-25f %-15s %-15s %-15d\n", symbolTable[i].dubval, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
+            else if(strcmp(InitialSymTab[i].type, "DCONSTANT") == 0){
+                printf("%-25f %-15s\n", InitialSymTab[i].dubval, InitialSymTab[i].type);
             }
             else{
-                printf("%-25s %-15s %-15s %-15d\n", symbolTable[i].name, symbolTable[i].d_type, symbolTable[i].use, symbolTable[i].line_no);
+                printf("%-25s %-15s\n", InitialSymTab[i].name, InitialSymTab[i].type);
             }
         }
         for(int i=0;i<st_count;i++) {
-            free(symbolTable[i].name);
-            free(symbolTable[i].d_type);
-            free(symbolTable[i].use);
-            free(symbolTable[i].memLoc);
+            free(InitialSymTab[i].name);
+            free(InitialSymTab[i].type);
         }
     }while(!feof(yyin));
     /* printf("\n\n");
@@ -477,64 +483,109 @@ void newSymbol(char c, char* stringVal){
     if(!search(stringVal)){
         switch(c){
             case 'I':
-                symbolTable[st_count].name=strdup(stringVal);
-                symbolTable[st_count].intval = atoi(stringVal);
-                symbolTable[st_count].d_type=strdup("CONST");
-                symbolTable[st_count].line_no=line;    
-                symbolTable[st_count].use=strdup("ICONSTANT");//this should be ICONSTANT but if i change it to that, it sets the 441 to 0?
+                InitialSymTab[st_count].intval = atoi(stringVal);
+                InitialSymTab[st_count].type=strdup("ICONSTANT");
                 st_count++;
                 break;
             case 'D':
                 stringVal = strdup(repD(repD(stringVal,'d'),'D'));
-                symbolTable[st_count].name=strdup(stringVal);
-                symbolTable[st_count].dubval = atof(stringVal);
-                symbolTable[st_count].d_type=strdup("CONST");
-                symbolTable[st_count].line_no=line;
-                symbolTable[st_count].use=strdup("DCONSTANT");
+                InitialSymTab[st_count].dubval = atof(stringVal);
+                InitialSymTab[st_count].type=strdup("DCONSTANT");
                 st_count++;
                 break;
             case 'V':
-                symbolTable[st_count].name=strdup(stringVal);
-                symbolTable[st_count].d_type=strdup(useBuff);
-                symbolTable[st_count].line_no=line;
-                symbolTable[st_count].use=strdup("IDENTIFIER");
+                InitialSymTab[st_count].name=strdup(stringVal);
+                InitialSymTab[st_count].type=strdup(useBuff);
                 st_count++;
                 break;
             case 'P':
-                symbolTable[st_count].name=strdup(stringVal);        
-                symbolTable[st_count].d_type=strdup("void");    
-                symbolTable[st_count].line_no=line;    
-                symbolTable[st_count].use=strdup("PROCEDURE");
+                InitialSymTab[st_count].name=strdup(stringVal);        
+                InitialSymTab[st_count].type=strdup("PROCEDURE");    
                 st_count++;
                 break;
             case 'S':
-                symbolTable[st_count].name=strdup(stringVal); 
-                symbolTable[st_count].d_type=strdup("CONST");
-                symbolTable[st_count].line_no=line;
-                symbolTable[st_count].use=strdup("SCONSTANT");
+                InitialSymTab[st_count].name=strdup(stringVal); 
+                InitialSymTab[st_count].type=strdup("SCONSTANT");
                 st_count++;
                 break;
             case 'F':
-                symbolTable[st_count].name=strdup(stringVal); 
-                symbolTable[st_count].d_type=strdup(useBuff);
-                symbolTable[st_count].line_no=line;
-                symbolTable[st_count].use=strdup("FUNCTION");
+                InitialSymTab[st_count].name=strdup(stringVal); 
+                InitialSymTab[st_count].type=strdup("FUNCTION");
+                // Do we want to save the return type of the function?
+                //InitialSymTab[st_count].use=strdup(useBuff);
                 st_count++;
                 break;
             case 'M':
-                symbolTable[st_count].name=strdup(stringVal); 
-                symbolTable[st_count].d_type=strdup("N/A");
-                symbolTable[st_count].line_no=line;
-                symbolTable[st_count].use=strdup("PROGRAM");
+                InitialSymTab[st_count].name=strdup(stringVal); 
+                InitialSymTab[st_count].type=strdup("PROGRAM");
                 st_count++;
                 break;
         }
     }
 }
 
+/* void newSymbol(char c, char* stringVal){
+    if(!search(stringVal)){
+        switch(c){
+            case 'I':
+                InitialSymTab[st_count].name=strdup(stringVal);
+                InitialSymTab[st_count].intval = atoi(stringVal);
+                InitialSymTab[st_count].d_type=strdup("CONST");
+                InitialSymTab[st_count].line_no=line;    
+                InitialSymTab[st_count].use=strdup("ICONSTANT");//this should be ICONSTANT but if i change it to that, it sets the 441 to 0?
+                st_count++;
+                break;
+            case 'D':
+                stringVal = strdup(repD(repD(stringVal,'d'),'D'));
+                InitialSymTab[st_count].name=strdup(stringVal);
+                InitialSymTab[st_count].dubval = atof(stringVal);
+                InitialSymTab[st_count].d_type=strdup("CONST");
+                InitialSymTab[st_count].line_no=line;
+                InitialSymTab[st_count].use=strdup("DCONSTANT");
+                st_count++;
+                break;
+            case 'V':
+                InitialSymTab[st_count].name=strdup(stringVal);
+                InitialSymTab[st_count].d_type=strdup(useBuff);
+                InitialSymTab[st_count].line_no=line;
+                InitialSymTab[st_count].use=strdup("IDENTIFIER");
+                st_count++;
+                break;
+            case 'P':
+                InitialSymTab[st_count].name=strdup(stringVal);        
+                InitialSymTab[st_count].d_type=strdup("void");    
+                InitialSymTab[st_count].line_no=line;    
+                InitialSymTab[st_count].use=strdup("PROCEDURE");
+                st_count++;
+                break;
+            case 'S':
+                InitialSymTab[st_count].name=strdup(stringVal); 
+                InitialSymTab[st_count].d_type=strdup("CONST");
+                InitialSymTab[st_count].line_no=line;
+                InitialSymTab[st_count].use=strdup("SCONSTANT");
+                st_count++;
+                break;
+            case 'F':
+                InitialSymTab[st_count].name=strdup(stringVal); 
+                InitialSymTab[st_count].d_type=strdup(useBuff);
+                InitialSymTab[st_count].line_no=line;
+                InitialSymTab[st_count].use=strdup("FUNCTION");
+                st_count++;
+                break;
+            case 'M':
+                InitialSymTab[st_count].name=strdup(stringVal); 
+                InitialSymTab[st_count].d_type=strdup("N/A");
+                InitialSymTab[st_count].line_no=line;
+                InitialSymTab[st_count].use=strdup("PROGRAM");
+                st_count++;
+                break;
+        }
+    }
+} */
+
 int search(char* in){
     for(int i=0; i<st_count; i++){
-        if(strcmp(symbolTable[i].name, in)==0){
+        if(strcmp(InitialSymTab[i].name, in)==0){
             return -1;
             break;
         }
@@ -580,6 +631,7 @@ void execute(struct node* start){//will need to call this in the makeFILE
     
     fprintf(urManeDotH, "int yourmain() {\n");
     fprintf(urManeDotH, "SR -= %d;\n", st_count);//********
+    ST_Stack_init();
     walk(start, urManeDotH);
     fprintf(urManeDotH, "SR += %d;\n", st_count);//********
     fprintf(urManeDotH, "return 0;\n}");
@@ -598,7 +650,7 @@ void walk(struct node* yesde, FILE* filename){
                 int varIndex = ST_get_index(yesde->leftchild->token);
                 int valueIndex = ST_get_index(yesde->rightchild->token);
 
-                symbolTable[varIndex].intval = symbolTable[valueIndex].intval;
+                InitialSymTab[varIndex].intval = InitialSymTab[valueIndex].intval;
 
                 assignmentGenerator(varIndex, filename);
          
@@ -628,28 +680,28 @@ void assignmentGenerator(int index, FILE* filename){//**************************
     
     char* location;
     
-    if (strcmp(symbolTable[index].d_type , "integer")==0) {
-        fprintf(stderr, "VALUE: %d\n", symbolTable[index].intval);
-        location = intIn(symbolTable[index].intval, SI, IR, filename);
+    if (strcmp(InitialSymTab[index].type , "integer")==0) {
+        fprintf(stderr, "VALUE: %d\n", InitialSymTab[index].intval);
+        location = intIn(InitialSymTab[index].intval, SI, IR, filename);
         IR++;
-        symbolTable[index].memLoc=strdup(location);
-        /* printf("%d\n", symbolTable[index].intval); */
+        InitialSymTab[index].memLoc=strdup(location);
+        /* printf("%d\n", InitialSymTab[index].intval); */
     }
-    else if(strcmp(symbolTable[index].d_type , "double")==0){
-        /* printf("%f\n", symbolTable[index].dubval); */
+    else if(strcmp(InitialSymTab[index].type , "double")==0){
+        /* printf("%f\n", InitialSymTab[index].dubval); */
     }
-    else if(strcmp(symbolTable[index].d_type , "string")==0){
-        /* printf("%s\n", symbolTable[index].name); */
-        location = strIn(symbolTable[index].name, SI, filename);
+    else if(strcmp(InitialSymTab[index].type , "string")==0){
+        /* printf("%s\n", InitialSymTab[index].name); */
+        location = strIn(InitialSymTab[index].name, SI, filename);
         IR++;
-        symbolTable[index].memLoc=strdup(location);
+        InitialSymTab[index].memLoc=strdup(location);
     }
     free(location);
 }
 
 int ST_get_index(char* name){
     for(int i = 0; i < st_count; i++){
-        if(strcmp(symbolTable[i].name, name) == 0){
+        if(strcmp(InitialSymTab[i].name, name) == 0){
             return i;
         }
     }
@@ -666,7 +718,7 @@ void printStatementGenerator(char* name, FILE* filename){//*********************
     else{
         // Gotta do all this just to get the location to pass to printVar.
         int index = ST_get_index(name);
-        printVar(symbolTable[index].memLoc, symbolTable[index].d_type, filename);
+        printVar(InitialSymTab[index].memLoc, InitialSymTab[index].type, filename);
     }
 }
 
@@ -717,6 +769,22 @@ char* strIn(char* input, int sLoc, FILE* filename){
 }
     
     
+// Symbol Table stack/////
+// Initialize the stack
+void ST_Stack_init() {
+    ST_Stack = (struct SymTabStack*) malloc(sizeof(struct SymTabStack));
+    ST_Stack->top = -1;
+}
 
+// Push an entry onto the stack
+int SymTab_push(struct SymTabEntry* entry) {
+    if (ST_Stack->top == MAX_ST_STACK_SIZE - 1) {
+        return -1; // Stack is full
+    }
+    ST_Stack->top++;
+    int SymTabIndex = ST_Stack->SymTab[ST_Stack->top]->
+    ST_Stack->SymTab[ST_Stack->top][] = *entry;
+    return 0; // Success
+}
     
     
