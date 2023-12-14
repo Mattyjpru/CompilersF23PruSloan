@@ -189,7 +189,7 @@ var:
     ;
 
 assignment:
-    valRef ASSIGN expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
+    valRef ASSIGN expr {$$.nd = buildNode($1.nd, $3.nd, "=");}
 
     | valRef ASSIGN_DIVIDE expr {$$.nd = buildNode($1.nd, $3.nd, $2.name);}
 
@@ -235,8 +235,10 @@ expr:
     ;
     
 value:
-    ICONSTANT makenummutable ////////////////////////////////////////////////////////////////////////
-
+    ICONSTANT {newSymbol('I', $1.name);} makenummutable ////////////////////////////////////////////////////////////////////////
+    {
+        {$$.nd = buildNode(NULL, NULL, $1.name);}
+    }
     | DCONSTANT makenummutable  ////////////////////////////////////////////////////////////////////////
 
     | valRef { $$.nd = $1.nd;}
@@ -384,7 +386,7 @@ forloop:
     ;
     
 valRef:
-    IDENTIFIER { newSymbol('V', $1.name);}
+    IDENTIFIER { newSymbol('V', $1.name); $$.nd=buildNode(NULL, NULL, $1.name);}
 
     | arrayat
 
@@ -395,7 +397,6 @@ chain:
     | assignment COMMA
 
     | expr COMMA
-
 
     | chain chain
 
@@ -537,7 +538,7 @@ struct node* buildNode( struct node* left, struct node* right, char* token){
     newnode->leftchild = left;
     newnode->rightchild = right;
     newnode->token = newstr;
-    /* printf("Built a node: %s\n", newstr); */
+
     return(newnode);
 }
 
@@ -614,7 +615,9 @@ void assignmentGenerator(int index, FILE* filename){//**************************
     }
     
     char* location;
+    
     if (strcmp(symbolTable[index].d_type , "integer")==0) {
+        fprintf(stderr, "VALUE: %d\n", symbolTable[index].intval);
         location = intIn(symbolTable[index].intval, SI, IR, filename);
         IR++;
         symbolTable[index].memLoc=strdup(location);
@@ -678,7 +681,7 @@ void printStr(char* str, FILE* filename){
 void printVar(char* memAddress, char* type, FILE* filename){
     fprintf(stderr, "EAT MY ASS1\n");
     if (strcmp(type , "integer")==0){
-        fprintf(filename, "print_int(%s);\n", memAddress);
+        fprintf(filename, "print_integer(%s);\n", memAddress);
     }
     fprintf(stderr, "EAT MY ASS2\n");
     if (strcmp(type , "string")==0){
