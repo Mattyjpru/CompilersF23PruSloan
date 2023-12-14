@@ -35,6 +35,7 @@
     struct SymTabStack{
         struct SymTabEntry SymTab[MAX_ST_STACK_SIZE][MAX_ST_SIZE];
         int top;
+        int sizes[MAX_ST_STACK_SIZE];
     }*ST_Stack;
 
     struct SymTabRtnValue{
@@ -776,14 +777,14 @@ void ST_Stack_init() {
     ST_Stack->top = -1;
 }
 
-// Push an entry onto the stack
-int SymTab_push(struct SymTabEntry* entry) {
+// Push an array onto the stack
+int push(struct SymTabEntry* entries, int size) {
     if (ST_Stack->top == MAX_ST_STACK_SIZE - 1) {
         return -1; // Stack is full
     }
     ST_Stack->top++;
-    int SymTabIndex = ST_Stack->SymTab[ST_Stack->top]->
-    ST_Stack->SymTab[ST_Stack->top][] = *entry;
+    memcpy(ST_Stack->SymTab[ST_Stack->top], entries, size * sizeof(struct SymTabEntry));
+    ST_Stack->sizes[ST_Stack->top] = size;
     return 0; // Success
 }
     
