@@ -117,13 +117,13 @@ task: function {$$.nd = buildNode($1.nd, NULL, "task");}
     | procedure task {$$.nd = buildNode($1.nd, $2.nd, "task");}
     ;
 
-procedure: K_PROCEDURE IDENTIFIER LPAREN param_list RPAREN block
+procedure: K_PROCEDURE IDENTIFIER {newSymbol('P', $2.name);} LPAREN param_list RPAREN block
     {
-        $$.nd = buildNode($4.nd, $6.nd, $2.name);
+        $$.nd = buildNode($5.nd, $7.nd, $2.name);
     }
     ;
 
-function: K_FUNCTION d_type IDENTIFIER {newSymbol('V', $3.name);} LPAREN param_list RPAREN block
+function: K_FUNCTION d_type IDENTIFIER {newSymbol('F', $3.name);} LPAREN param_list RPAREN block
     {
         $$.nd = buildNode($6.nd, $8.nd, $3.name);
     }
