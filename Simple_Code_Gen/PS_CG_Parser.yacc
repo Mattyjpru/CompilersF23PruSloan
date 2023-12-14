@@ -19,8 +19,11 @@
     //Symbol Table stuff
     int st_count=0;
     char useBuff[16];
-    
-    struct stEntry{
+
+    #define MAX_ST_SIZE 48
+    #define MAX_ST_STACK_SIZE 30
+
+    typedef struct SymTabEntry{
         char* name;
         char* d_type;
         char* use;
@@ -28,11 +31,17 @@
         float dubval;
         int line_no;
         char* memLoc;
-    } symbolTable[48];
-    // struct stEntry SymbolTableList[5][48];
+    }SymTabEntry;
 
-    struct stRtnValue{
-        char * strVal;
+    struct SymTabStack{
+        SymTabEntry SymbolTable[MAX_ST_STACK_SIZE][MAX_ST_SIZE];
+        int top;
+    }ST_Stack;
+
+    ST_Stack->top = -1; // empty stack
+
+    struct SymTabRtnValue{
+        char* strVal;
         int intVal;
         double floatVal;
     };
@@ -46,8 +55,8 @@
     };
     struct node *head;
 ////////func protos
-    struct node* buildNode(struct node* left, struct node* right, char* token);
-    void printtree(struct node* );
+    struct node* buildNode(struct node*, struct node*, char*);
+    void printtree(struct node*);
     void printInorder(struct node *);
     void insert();
     int search(char*);
@@ -60,9 +69,9 @@
     void printStr(char*, FILE*);
     void assignmentGenerator(int, FILE*);
     void printStatementGenerator(char*, FILE*);
-    void printVar(char* memAddress, char* type, FILE* filename);
-    char* strIn(char* input, int sLoc, FILE* filename);
-
+    void printVar(char*, char*, FILE*);
+    char* strIn(char*, int, FILE*);
+    int SymTab_push(SymTabEntry*);
 
     int SI = 0;
     int IR = 1;
@@ -499,5 +508,17 @@ char* strIn(char* input, int sLoc, FILE* filename){
     sprintf(buff, "SMem[SR + %d]", sLoc);
     return buff;
 }
+
+// Symbol Table stack/////
+// Push an entry onto the stack
+int SymTab_push(SymTabEntry* entry) {
+    if (ST_Stack->top == MAX_ST_STACK_SIZE - 1) {
+        return -1; // Stack is full
+    }
+    ST_Stack->top++;
+    ST_Stack->SymbolTable[ST_Stack->top] = entry;
+    return 0; // Success
+}
+
     
     
