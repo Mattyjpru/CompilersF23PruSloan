@@ -614,36 +614,56 @@ void walk(struct node* yesde, FILE* filename){
             /* printf("leaf\n"); */
         }
         else{
-            switch(yesde->token){
-                case "=":
-                    int varIndex = ST_get_index(yesde->leftchild->token);
-                    int valueIndex = ST_get_index(yesde->rightchild->token);
+        
+            if(strcmp(yesde->token,"=")==0){
+                int varIndex = ST_get_index(yesde->leftchild->token);
+                int valueIndex = ST_get_index(yesde->rightchild->token);
 
-                    InitialSymTab[varIndex].intval = InitialSymTab[valueIndex].intval;
+                InitialSymTab[varIndex].intval = InitialSymTab[valueIndex].intval;
 
-                    assignmentGenerator(varIndex, filename);
-                case "print statement":
-                    printStatementGenerator(yesde->rightchild->token, filename);
-                case "while":
-                case "forloop":
-                case "+=":
-                case "/=":
-                case "-=":
-                case "*=":
-                case "%=":
-                case "callfunc":
-                case "reader":
-                case "arg_list":
+                assignmentGenerator(varIndex, filename);}
+            else if(strcmp(yesde->token,"print statement")==0){
+                printStatementGenerator(yesde->rightchild->token, filename);}
+            else if(strcmp(yesde->token,"while")==0){
+
+            }
+            else if(strcmp(yesde->token,"forloop")==0){
+
+            }
+            else if(strcmp(yesde->token,"+=")==0){
+
+            }
+            else if(strcmp(yesde->token,"/=")==0){
+
+            }
+            else if(strcmp(yesde->token,"-=")==0){
+
+            }
+            else if(strcmp(yesde->token,"*=")==0){
+
+            }
+            else if(strcmp(yesde->token,"%=")==0){
+
+            }
+            else if(strcmp(yesde->token,"callfunc")==0){
+
+            }
+            else if(strcmp(yesde->token,"reader")==0){
+
+            }
+            else if(strcmp(yesde->token,"arg_list")==0){
+
+            }
 
 
 
-                default:
-                    if (yesde->leftchild) {
-                        walk(yesde->leftchild, filename);
-                    }
-                    if (yesde->rightchild) {
-                        walk(yesde->rightchild, filename);
-                    }
+            else{
+                if (yesde->leftchild) {
+                    walk(yesde->leftchild, filename);
+                }
+                if (yesde->rightchild) {
+                    walk(yesde->rightchild, filename);
+                }
             }
         }
     }
