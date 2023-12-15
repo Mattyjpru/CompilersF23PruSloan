@@ -5,14 +5,15 @@
     #include <ctype.h>
     #include "lex.yy.c"
 
+    extern int line;
+
     int yyerror(char *msg){
-        printf("Invalid Program: %s\n", msg);
+        printf("Invalid Program: %s, line: %d\n", msg, line);
         exit(0);
     }
 
     int yylex();
     int yywrap();
-    extern int line;
     
     //Symbol Table stuff
     int st_count=0;
@@ -293,7 +294,11 @@ condition: expr relop expr
 
     ;
 
-if: K_IF LPAREN condition RPAREN K_THEN block
+if: K_IF LPAREN condition RPAREN K_THEN ret
+    {
+        $$.nd=buildNode($3.nd, $6.nd, "if");
+    }
+    | K_IF LPAREN condition RPAREN K_THEN block
     {
         $$.nd=buildNode($3.nd, $6.nd, "if");
     }

@@ -5,15 +5,17 @@
     #include <ctype.h>
     #include "lex.yy.c"
 
+    extern int line;
+
     int yyerror(char *msg){
-        printf("Invalid Program: %s\n", msg);
+        printf("Invalid Program: %s, line: %d\n", msg, line);
         exit(0);
     }
 
     int yylex();
     int yywrap();
     extern char* yytext;
-    extern int line;
+    
     extern int yylineno;
 
     //Symbol Table stuff
