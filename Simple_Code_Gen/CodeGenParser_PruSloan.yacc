@@ -156,6 +156,9 @@ block:
     | block block {$$.nd = buildNode($1.nd, $2.nd, "blocks");}
 
     | IDENTIFIER {newSymbol('V', $1.name);} makenummutable SEMI /*{$$.nd = $3.nd;}  NOT SURE HOW TO DO THIS ONE*/
+    {
+        $$.nd=buildNode($1.nd,$3.nd, "mutate");
+    }
 
     | chain SEMI {$$.nd = $1.nd;}
     ;
@@ -388,7 +391,7 @@ makenummutable:
 
 arrayat: IDENTIFIER LBRACKET ICONSTANT RBRACKET 
     {
-        $$.nd=buildNode($1.nd, $3.nd, "arrayat");
+        $$.nd=buildNode($1.nd, buildNode(NULL, NULL,$3.name), "arrayat");
     }
     | IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
     {
@@ -420,7 +423,7 @@ whileloop:
     }
     ;
 forcond:
-    ICONSTANT {$$.nd=$1.nd;}
+    ICONSTANT {$$.nd=buildNode(NULL,NULL, $1.name);}
 
     | IDENTIFIER{$$.nd=$1.nd;}
     
