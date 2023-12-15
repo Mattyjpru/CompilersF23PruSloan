@@ -21,6 +21,9 @@ all: lex.yy.c y.tab.c
 
 4: all
 	./$(BUILD) < te4.f23 | tee $(OUTPUT)
+	
+mg.f23: all
+	./$(BUILD) < mg.f23 | tee $(OUTPUT)
 
 runCode:
 	gcc f23.c -lm ; ./a.out

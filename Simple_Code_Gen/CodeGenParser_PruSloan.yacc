@@ -247,11 +247,11 @@ expr:
 value:
     ICONSTANT {newSymbol('I', $1.name);}  ////////////////////////////////////////////////////////////////////////
     {
-        {$$.nd = buildNode(NULL, NULL, $1.name);}
+        $$.nd = buildNode(NULL, NULL, $1.name);
     }
     | DCONSTANT {newSymbol('D', $1.name);}   ////////////////////////////////////////////////////////////////////////
     {
-        {$$.nd = buildNode(NULL, NULL, $1.name);}
+        $$.nd = buildNode(NULL, NULL, $1.name);
     }
     | valRef { $$.nd = $1.nd;}
 
@@ -374,11 +374,11 @@ reader:
 makenummutable:
     DECREMENT
     {
-        $$.nd=buildNode(NULL,NULL, "--");
+        $$.nd=buildNode(NULL, NULL, "--");
     }
     | INCREMENT
     {
-        $$.nd=buildNode(NULL,NULL, "++");
+        $$.nd=buildNode(NULL, NULL, "++");
     }
     |
     /* {$$ = "_EPSILON_";} */
@@ -388,20 +388,20 @@ makenummutable:
 
 arrayat: IDENTIFIER LBRACKET ICONSTANT RBRACKET 
     {
-        $$.nd=buildNode($1.nd,$3.nd,"arrayat");
+        $$.nd=buildNode($1.nd, $3.nd, "arrayat");
     }
     | IDENTIFIER LBRACKET IDENTIFIER makenummutable RBRACKET 
     {
-        $$.nd=buildNode($1.nd,buildNode($3.nd, $4.nd, "mutate"),"arrayat");
+        $$.nd=buildNode($1.nd,buildNode($3.nd, $4.nd, "mutate"), "arrayat");
     }
     | IDENTIFIER LBRACKET expr RBRACKET
     {
-        $$.nd=buildNode($1.nd,$3.nd,"arrayat");
+        $$.nd=buildNode($1.nd, $3.nd, "arrayat");
     }
     ;
 
 buildarr:
-    IDENTIFIER LBRACKET RBRACKET {newSymbol('V',$1.name);$$.nd=buildNode(NULL, NULL, $1.name);}
+    IDENTIFIER LBRACKET RBRACKET {newSymbol('V',$1.name); $$.nd=buildNode(NULL, NULL, $1.name);}
 
     ;
 
@@ -420,16 +420,10 @@ whileloop:
     }
     ;
 forcond:
-    ICONSTANT
-    {
-        $$.nd=buildNode(NULL,NULL,$1.name);
-    }
+    ICONSTANT {$$.nd=$1.nd;}
+
     | IDENTIFIER{$$.nd=$1.nd;}
-    /* {
-        printf("Node %d: Reduced: forcond: IDENTIFIER\n", nodeCount++);
-        printf("\t Terminal Symbol: IDENTIFIER\n");
-        $$ = "IDENTIFIER";
-    } */
+    
     ;
 forloop:
     K_DO LPAREN IDENTIFIER ASSIGN forcond SEMI condition SEMI IDENTIFIER INCREMENT RPAREN block
@@ -437,7 +431,6 @@ forloop:
 
     | K_DO LPAREN IDENTIFIER ASSIGN forcond SEMI condition SEMI IDENTIFIER DECREMENT RPAREN block
     {$$.nd=buildNode(buildNode($3.nd, $5.nd, "="),buildNode($7.nd,$12.nd,"--"),"forloop");}
-
 
     ;
     
@@ -583,7 +576,7 @@ void printInorder(struct node *tree) {
     if (tree->leftchild) {
         printInorder(tree->leftchild);
     }
-    printf("%s, ", tree->token);
+    fprintf(stderr, "%s, ", tree->token);
     if (tree->rightchild) {
         printInorder(tree->rightchild);
     }
@@ -616,12 +609,12 @@ void walk(struct node* yesde, FILE* filename){
         else{
         
             if(strcmp(yesde->token,"=")==0){
-                int varIndex = ST_get_index(yesde->leftchild->token);
-                int valueIndex = ST_get_index(yesde->rightchild->token);
+                IndexPair varIndexPair = ST_get_index(yesde->leftchild->token);
+                IndexPair valueIndexPair = ST_get_index(yesde->rightchild->token);
 
-                InitialSymTab[varIndex].intval = InitialSymTab[valueIndex].intval;
+                /* InitialSymTab[varIndex].intval = InitialSymTab[valueIndex].intval; */
 
-                assignmentGenerator(varIndex, filename);}
+                assignmentGenerator(1, filename);}
             else if(strcmp(yesde->token,"print statement")==0){
                 printStatementGenerator(yesde->rightchild->token, filename);}
             else if(strcmp(yesde->token,"while")==0){
@@ -677,8 +670,8 @@ void assignmentGenerator(int index, FILE* filename){//**************************
     char* location;
     
     if (strcmp(InitialSymTab[index].type , "integer")==0) {
-        fprintf(stderr, "VALUE: %d\n", InitialSymTab[index].intval);
-        location = intIn(InitialSymTab[index].intval, SI, IR, filename);
+        /* fprintf(stderr, "VALUE: %d\n", InitialSymTab[index].intval); */
+        /* location = intIn(InitialSymTab[index].intval, SI, IR, filename); */
         IR++;
         InitialSymTab[index].memLoc=strdup(location);
         /* printf("%d\n", InitialSymTab[index].intval); */
@@ -699,7 +692,7 @@ IndexPair ST_get_index(char* name){
     for(int i = ST_Stack->top-1; i >= 0; i--){
         int ST_size = ST_Stack->sizes[i];
         for(int j = ST_size-1; j >= 0; j--){
-            if(strcmp(ST_Stack[i][j].name, name) == 0){
+            if(strcmp(ST_Stack->SymTab[i][j].name, name) == 0){
                 return (IndexPair) {i, j};
             }
         }
@@ -716,8 +709,8 @@ void printStatementGenerator(char* name, FILE* filename){//*********************
     }
     else{
         // Gotta do all this just to get the location to pass to printVar.
-        int index = ST_get_index(name);
-        printVar(InitialSymTab[index].memLoc, InitialSymTab[index].type, filename);
+        /* IndexPair indexPair = ST_get_index(name);
+        printVar(InitialSymTab[index].memLoc, InitialSymTab[index].type, filename); */
     }
 }
 
