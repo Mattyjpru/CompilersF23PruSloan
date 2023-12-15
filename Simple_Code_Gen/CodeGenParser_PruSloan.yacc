@@ -618,10 +618,8 @@ void walk(struct node* yesde, FILE* filename){
         else{
         
             if(strcmp(yesde->token,"=")==0){
-                IndexPair varIndexPair = ST_get_index(yesde->leftchild->token);
-                IndexPair valueIndexPair = ST_get_index(yesde->rightchild->token);
-
-                /* InitialSymTab[varIndex].intval = InitialSymTab[valueIndex].intval; */
+                
+                ST_Stack->SymTab[ST_Stack->top][ST_Stack->sizes[ST_Stack->top]].name = strdup(yesde->leftchild->token);
 
                 assignmentGenerator(1, filename);}
             else if(strcmp(yesde->token,"print statement")==0){
@@ -744,11 +742,9 @@ void printStr(char* str, FILE* filename){
 }
 
 void printVar(char* memAddress, char* type, FILE* filename){
-    fprintf(stderr, "EAT MY ASS1\n");
     if (strcmp(type , "integer")==0){
         fprintf(filename, "print_integer(%s);\n", memAddress);
     }
-    fprintf(stderr, "EAT MY ASS2\n");
     if (strcmp(type , "string")==0){
         fprintf(filename, "print_string(%s);\n", memAddress);
     }
