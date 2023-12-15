@@ -96,10 +96,10 @@
 %token<nd_obj> DECREMENT MOD MULTIPLY NE NOT PERIOD PLUS INCREMENT RBRACKET RCURLY RPAREN SEMI
 
 %type<nd_obj> statement program expr condition param_list forcond block d_type var assignment task function procedure print value arg_list
-%type<nd_obj> if ret chain makenummutable reader callfunc arrayat gate relop forloop whileloop valRef buildarr
+%type<nd_obj> if ret chain chainend makenummutable reader callfunc arrayat gate relop forloop whileloop valRef buildarr
 
 %left MINUS PLUS
-//%left DIVIDE MULTIPLY
+%left DIVIDE MULTIPLY
 %start statement 
 
 %%
@@ -230,7 +230,8 @@ d_type:
     ;
 
 expr:
-    value { $$.nd = $1.nd; }
+    
+     LPAREN expr RPAREN { $$.nd = $2.nd;} 
 
     | callfunc { $$.nd = $1.nd;}
 
@@ -243,8 +244,10 @@ expr:
     | expr DIVIDE expr { $$.nd = buildNode($1.nd, $3.nd, $2.name); }
 
     | expr MOD expr { $$.nd = buildNode($1.nd, $3.nd, $2.name); }
+    
+    | value { $$.nd = $1.nd; }
 
-    | LPAREN expr RPAREN { $$.nd = $2.nd;} 
+    
 
     ;
     
@@ -294,11 +297,7 @@ condition: expr relop expr
 
     ;
 
-if: K_IF LPAREN condition RPAREN K_THEN ret
-    {
-        $$.nd=buildNode($3.nd, $6.nd, "if");
-    }
-    | K_IF LPAREN condition RPAREN K_THEN block
+if:  K_IF LPAREN condition RPAREN K_THEN block
     {
         $$.nd=buildNode($3.nd, $6.nd, "if");
     }
@@ -449,20 +448,22 @@ valRef:
 
     ;
 chain:
-    var //COMMA
+    var COMMA
     {$$.nd=$1.nd;}
-    | assignment //COMMA
+    | assignment COMMA
     {$$.nd=$1.nd;}
-    | expr //COMMA
+    | expr COMMA
     {$$.nd=$1.nd;}
-    | chain COMMA chain
+    | chain chain
     {
-        $$.nd=buildNode($1.nd,$3.nd,"chain");
+        $$.nd=buildNode($1.nd,$2.nd,"chain");
     }
-    /* | chain chainend */
-
+    | chain chainend
+    {
+        $$.nd=buildNode($1.nd,$2.nd,"chain");
+    }
     ;
-/* chainend:
+chainend:
     var{ $$.nd = $1.nd; }
 
 
@@ -470,7 +471,7 @@ chain:
 
     | expr{ $$.nd = $1.nd; }
 
-    ; */
+    ;
 
 %%
 extern FILE* yyin;
