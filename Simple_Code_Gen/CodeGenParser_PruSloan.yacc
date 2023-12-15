@@ -309,12 +309,12 @@ if: K_IF LPAREN condition RPAREN K_THEN ret
     ;
 
 ret:
-    K_RETURN value SEMI
+    K_RETURN assignment SEMI
     {
         $$.nd=buildNode(NULL,$2.nd,"return");
         // $$.nd=buildNode(NULL,buildNode(NULL, NULL, $2.name),"return");
     }
-    |K_RETURN assignment SEMI
+    |K_RETURN value SEMI
     {
         $$.nd=buildNode(NULL,$2.nd,"return");
         // $$.nd=buildNode(NULL,buildNode(NULL, NULL, $2.name),"return");
