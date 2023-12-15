@@ -104,7 +104,7 @@
 
 %%
 statement: 
-     program { printf("\nValid Program\n"); /*execute(head); */ printtree(head);}; 
+     program { printf("\nValid Program\n"); execute(head); printtree(head);}; 
 
 program: K_PROGRAM IDENTIFIER {newSymbol('M', $2.name);} LCURLY task RCURLY
     {
