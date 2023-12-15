@@ -585,7 +585,7 @@ void printInorder(struct node *tree) {
     if (tree->leftchild) {
         printInorder(tree->leftchild);
     }
-    fprintf(stderr, "%s, ", tree->token);
+    printf("%s, ", tree->token);
     if (tree->rightchild) {
         printInorder(tree->rightchild);
     }
@@ -618,7 +618,6 @@ void walk(struct node* yesde, FILE* filename){
         else{
         
             if(strcmp(yesde->token,"=")==0){
-                
                 ST_Stack->SymTab[ST_Stack->top][ST_Stack->sizes[ST_Stack->top]].name = strdup(yesde->leftchild->token);
 
                 assignmentGenerator(1, filename);}
